@@ -3,13 +3,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from fastapi import FastAPI, HTTPException
-from models.email_models import ChatRequest, ChatResponse
-from agents.email_agent import email_agent
+from models.email_models import ChatRequest, ProcessingResult
 from routes.auth.auth_route import router as auth_router
+from routes.pending.pending_route import router as pending_router
+from graph.email_graph import run_email_pipeline
 
 app = FastAPI(title="Workday Manager", version="0.1.0")
 
 app.include_router(auth_router)
+app.include_router(pending_router)
 
 
 @app.get("/health")
@@ -22,10 +24,9 @@ async def health():
     return {"status": "ok", "nylas": nylas_status}
 
 
-@app.post("/chat", response_model=ChatResponse)
+@app.post("/chat", response_model=ProcessingResult)
 async def chat(request: ChatRequest):
     try:
-        result = await email_agent.run(request.message)
-        return ChatResponse(reply=result.output)
+        return await run_email_pipeline()
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))

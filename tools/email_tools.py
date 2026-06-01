@@ -16,7 +16,7 @@ def _fetch_messages(n: int) -> List[EmailMeta]:
         sender = ""
         if msg.from_:
             first = msg.from_[0]
-            sender = first.get("name") or first.get("email", "")
+            sender = first.get("email") or first.get("name", "")
 
         date_str = ""
         if msg.date:
@@ -32,10 +32,30 @@ def _fetch_messages(n: int) -> List[EmailMeta]:
                 is_unread=True,
             )
         )
-    # print("email-> ", emails )
     return emails
 
 
 async def list_emails(n: int = 10) -> List[EmailMeta]:
     """Fetch the n most recent unread emails from the connected inbox."""
     return await asyncio.to_thread(_fetch_messages, n)
+
+
+def _fetch_body(email_id: str) -> str:
+    response = nylas.messages.find(NYLAS_GRANT_ID, email_id)
+    return response.data.body or ""
+
+
+async def fetch_email_body(email_id: str) -> str:
+    return await asyncio.to_thread(_fetch_body, email_id)
+
+
+def _mark_read(email_id: str) -> None:
+    nylas.messages.update(
+        NYLAS_GRANT_ID,
+        email_id,
+        request_body={"unread": False},
+    )
+
+
+async def mark_email_read(email_id: str) -> None:
+    await asyncio.to_thread(_mark_read, email_id)
