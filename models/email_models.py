@@ -11,11 +11,6 @@ class EmailMeta(BaseModel):
     is_unread: bool
 
 
-class AgentResponse(BaseModel):
-    summary: str
-    emails: List[EmailMeta]
-
-
 class ChatRequest(BaseModel):
     message: str
 

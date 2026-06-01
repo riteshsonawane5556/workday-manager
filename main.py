@@ -26,6 +26,6 @@ async def health():
 async def chat(request: ChatRequest):
     try:
         result = await email_agent.run(request.message)
-        return ChatResponse(reply=result.data.summary)
+        return ChatResponse(reply=result.output)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))

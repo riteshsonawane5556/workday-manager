@@ -25,3 +25,6 @@ uv run uvicorn main:app --reload        # dev server on http://localhost:8000
 
 ## Pydantic Ai
 Please read pydantic ai related docs here https://pydantic.dev/docs/ai/llms.txt while building and integrating anything related to Ai.
+
+## Note
+Do not add comments
