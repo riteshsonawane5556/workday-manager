@@ -5,12 +5,14 @@ load_dotenv()
 from fastapi import FastAPI, HTTPException
 from models.email_models import ChatRequest, ProcessingResult
 from routes.auth.auth_route import router as auth_router
+from routes.calendar.calendar_route import router as calendar_router
 from routes.pending.pending_route import router as pending_router
 from graph.email_graph import run_email_pipeline
 
 app = FastAPI(title="Workday Manager", version="0.1.0")
 
 app.include_router(auth_router)
+app.include_router(calendar_router)
 app.include_router(pending_router)
 
 
