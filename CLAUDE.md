@@ -43,7 +43,7 @@ POST /pending/{id}/approve
   → removes item from pending_store
 ```
 
-### Three-Agent System
+### Agents
 
 All agents use `groq:llama-3.3-70b-versatile` via pydantic-ai.
 
@@ -52,19 +52,21 @@ All agents use `groq:llama-3.3-70b-versatile` via pydantic-ai.
 | `email_agent` | `agents/email_agent.py` | Lists unread emails (tool: `get_unread_emails`) | `str` |
 | `email_node_agent` | `agents/email_node.py` | Classifies email + drafts reply (tool: `get_email_body`) | `EmailNodeOutput` |
 | `send_agent` | `agents/send_agent.py` | Sends approved drafts (tool: `send_email`, `requires_approval=True`) | `str` |
+| `calendar_agent` | `agents/calendar_agent.py` | Analyzes calendar conflicts, suggests reschedules | `CalendarAnalysisResult` |
 
-### Pydantic-Graph State Machine (`graph/email_graph.py`)
+### Pydantic-Graph State Machines
 
-State: `EmailPipelineState` holds fetched emails, `current_index`, outputs list, and `pending_ids`.
+**Email pipeline** (`graph/email_graph.py`) — State: `EmailPipelineState` holds fetched emails, `current_index`, outputs list, and `pending_ids`. Nodes: `FetchEmailsNode → ClassifyNode → DraftNode → HumanGateNode → ClassifyNode` (loops until all emails processed, then ends with `ProcessingResult`).
 
-Nodes: `FetchEmailsNode → ClassifyNode → DraftNode → HumanGateNode → ClassifyNode` (loops until all emails processed, then ends with `ProcessingResult`).
+**Calendar pipeline** (`graph/calendar_graph.py`) — State: `CalendarPipelineState` holds events, conflicts, and date string. Nodes: `FetchCalendarNode → CalendarNode`. Returns `CalendarAnalysisResult`.
 
 ### Human-in-the-Loop
 
 Actionable emails are stored in `graph/pending_store.py` (in-memory dict, keyed by UUID). The `/pending` routes expose list / approve / reject. Approval calls `send_agent` with pydantic-ai's `DeferredToolRequests/Results` pattern.
 
-### Key Models (`models/email_models.py`)
+### Key Models
 
+**`models/email_models.py`**
 - `EmailMeta` — id, subject, sender, date, snippet, is_unread
 - `EmailNodeOutput` — per-email triage result (classification + optional draft)
 - `EmailClassification` — `urgent | fyi | actionable` + reasoning
@@ -72,14 +74,27 @@ Actionable emails are stored in `graph/pending_store.py` (in-memory dict, keyed 
 - `PendingItem` — stored approval request (UUID id, email metadata, draft)
 - `ProcessingResult` — final pipeline summary
 
-### Nylas Integration (`config/nylas_client.py`, `tools/email_tools.py`)
+**`models/calendar_models.py`**
+- `CalendarEvent` — id, title, start_time/end_time (Unix), participants
+- `ConflictPair` — two overlapping events
+- `RescheduleSuggestion` — event_id, suggested_start, reasoning
+- `CalendarAnalysisResult` — date, total_events, conflicts, suggestions, summary
 
-Nylas SDK is synchronous; all calls are wrapped in `asyncio.to_thread()`. HTML is stripped and bodies truncated to 2000 chars before passing to the LLM.
+### Services and Utils
+
+- `services/pending_service.py` — `send_approved_email(item)`: sends via Nylas, marks original email read
+- `services/calendar_service.py` — `fetch_calendar_data()` and `detect_conflicts()` (O(n²) overlap check)
+- `utils/calendar_utils.py` — `build_calendar_prompt()`: formats events + conflicts into LLM-readable text
+
+### Nylas Integration (`config/nylas_client.py`, `tools/`)
+
+Nylas SDK is synchronous; all calls are wrapped in `asyncio.to_thread()`. HTML is stripped and bodies truncated to 2000 chars before passing to the LLM. Calendar tools use the first calendar on the account and filter by today's UTC date range.
 
 ### Routes
 
 - `GET /health` — Verifies Nylas connection
 - `POST /chat` — Triggers the full email pipeline
+- `POST /calendar/analyze` — Triggers calendar conflict analysis
 - `GET /auth/status` — Stub (Phase 1, not implemented)
 - `GET /pending` — List pending approvals
 - `POST /pending/{id}/approve` — Send the drafted reply
@@ -88,5 +103,5 @@ Nylas SDK is synchronous; all calls are wrapped in `asyncio.to_thread()`. HTML i
 ## Notes
 
 - Do not add comments
-- `controllers/`, `repository/`, `utils/` directories are reserved and currently empty
+- `controllers/` and `repository/` directories are reserved and currently empty
 - `pending_store` is in-memory only — restarts clear all pending items
