@@ -62,6 +62,8 @@ class ClassifyNode(BaseNode[EmailPipelineState]):
         output.email_id = email.id
         output.subject = email.subject
         output.sender = email.sender
+        if output.draft is not None:
+            output.draft.to = email.sender
         ctx.state.outputs.append(output)
         return DraftNode()
 

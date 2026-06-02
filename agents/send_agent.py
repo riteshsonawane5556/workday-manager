@@ -7,7 +7,7 @@ send_agent = Agent(
 )
 
 
-@send_agent.tool(requires_approval=True)
+@send_agent.tool
 def send_email(ctx: RunContext[None], subject: str, body: str, to: str) -> str:
     nylas.messages.send(
         NYLAS_GRANT_ID,
