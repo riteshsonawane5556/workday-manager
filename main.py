@@ -7,13 +7,19 @@ from models.email_models import ChatRequest, ProcessingResult
 from routes.auth.auth_route import router as auth_router
 from routes.calendar.calendar_route import router as calendar_router
 from routes.pending.pending_route import router as pending_router
+from routes.orchestrate.orchestrate_route import router as orchestrate_router
 from graph.email_graph import run_email_pipeline
+from config.logger import get_logger
+
+log = get_logger("main")
 
 app = FastAPI(title="Workday Manager", version="0.1.0")
+log.info("Workday Manager starting up")
 
 app.include_router(auth_router)
 app.include_router(calendar_router)
 app.include_router(pending_router)
+app.include_router(orchestrate_router)
 
 
 @app.get("/health")
@@ -28,7 +34,11 @@ async def health():
 
 @app.post("/chat", response_model=ProcessingResult)
 async def chat(request: ChatRequest):
+    log.info("POST /chat  →  starting email pipeline")
     try:
-        return await run_email_pipeline()
+        result = await run_email_pipeline()
+        log.info("POST /chat  →  done  processed=%d  actionable=%d", result.processed, result.actionable)
+        return result
     except Exception as exc:
+        log.error("POST /chat  →  error: %s", exc, exc_info=True)
         raise HTTPException(status_code=500, detail=str(exc))
