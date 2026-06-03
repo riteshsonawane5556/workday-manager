@@ -3,12 +3,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from fastapi import FastAPI, HTTPException
-from models.email_models import ChatRequest, ProcessingResult
+from models.email_models import ChatRequest
+from models.orchestrator_models import OrchestratorResult
 from routes.auth.auth_route import router as auth_router
 from routes.calendar.calendar_route import router as calendar_router
 from routes.pending.pending_route import router as pending_router
 from routes.orchestrate.orchestrate_route import router as orchestrate_router
-from graph.email_graph import run_email_pipeline
+from graph.planner_graph import run_orchestrator_pipeline
 from config.logger import get_logger
 
 log = get_logger("main")
@@ -32,12 +33,12 @@ async def health():
     return {"status": "ok", "nylas": nylas_status}
 
 
-@app.post("/chat", response_model=ProcessingResult)
+@app.post("/chat", response_model=OrchestratorResult)
 async def chat(request: ChatRequest):
-    log.info("POST /chat  →  starting email pipeline")
+    log.info("POST /chat  →  starting workday pipeline")
     try:
-        result = await run_email_pipeline()
-        log.info("POST /chat  →  done  processed=%d  actionable=%d", result.processed, result.actionable)
+        result = await run_orchestrator_pipeline("check and triage my inbox")
+        log.info("POST /chat  →  done")
         return result
     except Exception as exc:
         log.error("POST /chat  →  error: %s", exc, exc_info=True)
