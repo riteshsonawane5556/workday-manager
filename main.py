@@ -35,11 +35,11 @@ async def health():
 
 @app.post("/chat", response_model=OrchestratorResult)
 async def chat(request: ChatRequest):
-    log.info("POST /chat  →  starting workday pipeline")
+    log.info("POST /chat  ->  starting workday pipeline")
     try:
         result = await run_orchestrator_pipeline("check and triage my inbox")
-        log.info("POST /chat  →  done")
+        log.info("POST /chat  ->  done")
         return result
     except Exception as exc:
-        log.error("POST /chat  →  error: %s", exc, exc_info=True)
+        log.error("POST /chat  ->  error: %s", exc, exc_info=True)
         raise HTTPException(status_code=500, detail=str(exc))

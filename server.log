@@ -1,0 +1,11 @@
+warning: `VIRTUAL_ENV=C:\Users\Coditas-Admin\AppData\Local\Python\pythoncore-3.14-64` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+INFO:     Will watch for changes in these directories: ['C:\\Users\\Coditas-Admin\\Documents\\Ai\\workday-manager']
+10:59:53  INFO      [main]  Workday Manager starting up
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [24444] using WatchFiles
+10:59:58  INFO      [main]  Workday Manager starting up
+INFO:     Started server process [24792]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'models\orchestrator_models.py'. Reloading...
+ 

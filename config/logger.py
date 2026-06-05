@@ -5,6 +5,10 @@ import sys
 def get_logger(name: str) -> logging.Logger:
     logger = logging.getLogger(name)
     if not logger.handlers:
+        try:
+            sys.stdout.reconfigure(encoding="utf-8")
+        except (AttributeError, ValueError):
+            pass
         handler = logging.StreamHandler(sys.stdout)
         handler.setFormatter(
             logging.Formatter(

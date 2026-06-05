@@ -9,6 +9,6 @@ router = APIRouter(prefix="/orchestrate", tags=["orchestrate"])
 @router.post("", response_model=OrchestratorResult)
 async def orchestrate(request: OrchestratorRequest):
     try:
-        return await run_orchestrator_pipeline(request.message)
+        return await run_orchestrator_pipeline(request.message, session_id=request.session_id)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
