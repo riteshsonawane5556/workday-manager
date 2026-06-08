@@ -8,4 +8,314 @@ INFO:     Started server process [24792]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 WARNING:  WatchFiles detected changes in 'models\orchestrator_models.py'. Reloading...
- 
+ 2026-06-08 11:08:22  DEBUG     [test]  debug message - file only
+2026-06-08 11:08:22  INFO      [test]  info message - file only
+2026-06-08 11:08:22  WARNING   [test]  warning - also on console
+2026-06-08 11:08:23  INFO      [main]  Workday Manager starting up
+2026-06-08 11:11:39  INFO      [workday_graph]  === Workday pipeline START  query='I want to schedule meets'  session='default' ===
+2026-06-08 11:11:39  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'I want to schedule meets'
+2026-06-08 11:11:40  DEBUG     [workday_graph]  [model-request] prompt: I want to schedule meets
+2026-06-08 11:11:40  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule meetings","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-08 11:11:40  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 11:11:40  INFO      [workday_graph]  PlannerNode  ->  decision: intent='schedule meetings'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-08 11:11:40  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-08 11:11:40  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Monday 2026-06-08 11:11 AM  day_overview=False
+2026-06-08 11:11:43  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 11:11 AM (Asia/Kolkata). Today is day_offset=0.
+User request: I want to schedule meets
+2026-06-08 11:11:43  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {}
+2026-06-08 11:11:43  DEBUG     [workday_graph]  [tool-return] get_events -> No events scheduled today.
+2026-06-08 11:11:43  DEBUG     [workday_graph]  [model-response] text: What’s the title of the meeting you’d like to schedule?
+2026-06-08 11:11:43  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=True  reply='What’s the title of the meeting you’d like to schedule?'
+2026-06-08 11:11:43  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-08 11:11:43  INFO      [workday_graph]  SynthesizeNode  ->  calendar agent awaiting user, returning its reply directly
+2026-06-08 11:11:43  INFO      [workday_graph]  === Workday pipeline END  planner_h=3  cal_action_h=4  synth_h=0  cal_open=True ===
+2026-06-08 11:12:33  INFO      [workday_graph]  === Workday pipeline START  query='a meet at 12pm is client call and meet at 1pm is for internal discussion'  session='default' ===
+2026-06-08 11:12:33  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'a meet at 12pm is client call and meet at 1pm is for internal discussion'
+2026-06-08 11:12:33  DEBUG     [workday_graph]  [model-request] prompt: I want to schedule meets
+2026-06-08 11:12:33  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule meetings","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-08 11:12:33  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 11:12:33  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: a meet at 12pm is client call and meet at 1pm is for internal discussion
+2026-06-08 11:12:33  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"provide meeting details","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-08 11:12:33  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 11:12:33  INFO      [workday_graph]  PlannerNode  ->  decision: intent='provide meeting details'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-08 11:12:33  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-08 11:12:33  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Monday 2026-06-08 11:12 AM  day_overview=False
+2026-06-08 11:12:36  INFO      [calendar_action_agent]  create_event tool -> created id='44hnbqbfl62320t9ruokmi2h8g' title='client call' at Mon Jun 08, 12:00 PM
+2026-06-08 11:12:39  INFO      [calendar_action_agent]  get_events tool -> returned 1 events
+2026-06-08 11:12:41  INFO      [calendar_action_agent]  check_conflicts tool -> no conflicts among 1 events
+2026-06-08 11:12:45  INFO      [calendar_action_agent]  create_event tool -> created id='a62qcojbi4ro2kgm2hlcilj08k' title='internal discussion' at Mon Jun 08, 01:00 PM
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 11:11 AM (Asia/Kolkata). Today is day_offset=0.
+User request: I want to schedule meets
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {}
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [tool-return] get_events -> No events scheduled today.
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [model-response] text: What’s the title of the meeting you’d like to schedule?
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 11:12 AM (Asia/Kolkata). Today is day_offset=0.
+User request: a meet at 12pm is client call and meet at 1pm is for internal discussion
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [model-response] tool-call: create_event  args: {"day_offset":0,"duration_minutes":30,"hour":12,"minute":0,"participants":[],"title":"client call"}
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [tool-return] create_event -> Created event 'client call' on Mon Jun 08, 12:00 PM (id=44hnbqbfl62320t9ruokmi2h8g).
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {}
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [tool-return] get_events -> Events today:
+id=44hnbqbfl62320t9ruokmi2h8g | title='client call' | 12:00 PM-12:30 PM | start_unix=1780900200 | end_unix=1780902000 | attendees=none
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [model-response] tool-call: check_conflicts  args: {}
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [tool-return] check_conflicts -> No conflicts today.
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [model-response] tool-call: create_event  args: {"day_offset":0,"duration_minutes":30,"hour":13,"minute":0,"participants":[],"title":"internal discussion"}
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [tool-return] create_event -> Created event 'internal discussion' on Mon Jun 08, 01:00 PM (id=a62qcojbi4ro2kgm2hlcilj08k).
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [model-response] text: Both meetings have been added: “client call” at 12 PM and “internal discussion” at 1 PM today. Let me know if you need anything else.
+2026-06-08 11:12:45  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=True  awaiting_user=False  reply='Both meetings have been added: “client call” at 12\u202fPM and “internal discussion” at 1\u202fPM today. Let me know if you need anything else.'
+2026-06-08 11:12:45  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [model-request] prompt: User query: "a meet at 12pm is client call and meet at 1pm is for internal discussion"
+Intent: "provide meeting details"
+
+[CALENDAR ACTION]
+Both meetings have been added: “client call” at 12 PM and “internal discussion” at 1 PM today. Let me know if you need anything else.
+Status: Calendar changed
+
+2026-06-08 11:12:45  DEBUG     [workday_graph]  [model-response] text: Your calendar has been updated with two new meetings: "client call" at 12 PM and "internal discussion" at 1 PM today.
+2026-06-08 11:12:45  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-08 11:12:45  INFO      [workday_graph]  === Workday pipeline END  planner_h=6  cal_action_h=14  synth_h=2  cal_open=False ===
+2026-06-08 11:30:25  INFO      [main]  Workday Manager starting up
+2026-06-08 11:30:30  INFO      [main]  Workday Manager starting up
+2026-06-08 11:36:42  INFO      [main]  Workday Manager starting up
+2026-06-08 11:41:15  INFO      [main]  Workday Manager starting up
+2026-06-08 11:41:20  INFO      [main]  Workday Manager starting up
+2026-06-08 11:45:29  INFO      [main]  Workday Manager starting up
+2026-06-08 11:45:56  INFO      [main]  Workday Manager starting up
+2026-06-08 11:46:30  INFO      [workday_graph]  === Workday pipeline START  query='I want to schedule a meet'  session='default' ===
+2026-06-08 11:46:30  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'I want to schedule a meet'
+2026-06-08 11:46:31  DEBUG     [workday_graph]  [model-request] prompt: I want to schedule a meet
+2026-06-08 11:46:31  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"intent":"schedule meeting","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-08 11:46:31  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 11:46:31  INFO      [workday_graph]  PlannerNode  ->  decision: intent='schedule meeting'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-08 11:46:31  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-08 11:46:31  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Monday 2026-06-08 11:46 AM  day_overview=False
+2026-06-08 11:46:33  INFO      [calendar_action_agent]  get_events tool -> returned 2 events
+2026-06-08 11:46:34  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 11:46 AM (Asia/Kolkata). Today is day_offset=0.
+User request: I want to schedule a meet
+2026-06-08 11:46:34  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {}
+2026-06-08 11:46:34  DEBUG     [workday_graph]  [tool-return] get_events -> Events today:
+id=44hnbqbfl62320t9ruokmi2h8g | title='client call' | 12:00 PM-12:30 PM | start_unix=1780900200 | end_unix=1780902000 | attendees=none
+id=a62qcojbi4ro2kgm2hlcilj08k | title='internal discussion' | 01:00 PM-01:30 PM | start_unix=1780903800 | end_unix=1780905600 | attendees=none
+2026-06-08 11:46:34  DEBUG     [workday_graph]  [model-response] text: What should be the title of the meeting you’d like to schedule?
+2026-06-08 11:46:34  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=True  reply='What should be the title of the meeting you’d like to schedule?'
+2026-06-08 11:46:34  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-08 11:46:34  INFO      [workday_graph]  SynthesizeNode  ->  calendar agent awaiting user, returning its reply directly
+2026-06-08 11:46:34  INFO      [workday_graph]  === Workday pipeline END  planner_h=3  cal_action_h=4  synth_h=0  cal_open=True ===
+2026-06-08 11:47:03  INFO      [workday_graph]  === Workday pipeline START  query='A meet at 2pm is a sprint planning and a meet at 2:30 is for plan allocation'  session='default' ===
+2026-06-08 11:47:03  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'A meet at 2pm is a sprint planning and a meet at 2:30 is for plan allocation'
+2026-06-08 11:47:03  DEBUG     [workday_graph]  [model-request] prompt: I want to schedule a meet
+2026-06-08 11:47:03  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"intent":"schedule meeting","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-08 11:47:03  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 11:47:03  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: A meet at 2pm is a sprint planning and a meet at 2:30 is for plan allocation
+2026-06-08 11:47:03  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"intent":"continue scheduling meetings","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-08 11:47:03  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 11:47:03  INFO      [workday_graph]  PlannerNode  ->  decision: intent='continue scheduling meetings'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-08 11:47:03  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-08 11:47:03  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Monday 2026-06-08 11:47 AM  day_overview=False
+2026-06-08 11:47:07  INFO      [calendar_action_agent]  create_event tool -> created id='gn7siitcoc2jg5un7lub60qbgg' title='sprint planning' at Mon Jun 08, 02:00 PM
+2026-06-08 11:47:09  INFO      [calendar_action_agent]  get_events tool -> returned 3 events
+2026-06-08 11:47:11  INFO      [calendar_action_agent]  check_conflicts tool -> no conflicts among 3 events
+2026-06-08 11:47:15  INFO      [calendar_action_agent]  create_event tool -> created id='7u0jolg50f19gfmbqcke44vtjc' title='plan allocation' at Mon Jun 08, 02:30 PM
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 11:46 AM (Asia/Kolkata). Today is day_offset=0.
+User request: I want to schedule a meet
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {}
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [tool-return] get_events -> Events today:
+id=44hnbqbfl62320t9ruokmi2h8g | title='client call' | 12:00 PM-12:30 PM | start_unix=1780900200 | end_unix=1780902000 | attendees=none
+id=a62qcojbi4ro2kgm2hlcilj08k | title='internal discussion' | 01:00 PM-01:30 PM | start_unix=1780903800 | end_unix=1780905600 | attendees=none
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [model-response] text: What should be the title of the meeting you’d like to schedule?
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 11:47 AM (Asia/Kolkata). Today is day_offset=0.
+User request: A meet at 2pm is a sprint planning and a meet at 2:30 is for plan allocation
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [model-response] tool-call: create_event  args: {"day_offset":0,"duration_minutes":30,"hour":14,"minute":0,"participants":[],"title":"sprint planning"}
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [tool-return] create_event -> Created event 'sprint planning' on Mon Jun 08, 02:00 PM (id=gn7siitcoc2jg5un7lub60qbgg).
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {}
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [tool-return] get_events -> Events today:
+id=44hnbqbfl62320t9ruokmi2h8g | title='client call' | 12:00 PM-12:30 PM | start_unix=1780900200 | end_unix=1780902000 | attendees=none
+id=a62qcojbi4ro2kgm2hlcilj08k | title='internal discussion' | 01:00 PM-01:30 PM | start_unix=1780903800 | end_unix=1780905600 | attendees=none
+id=gn7siitcoc2jg5un7lub60qbgg | title='sprint planning' | 02:00 PM-02:30 PM | start_unix=1780907400 | end_unix=1780909200 | attendees=none
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [model-response] tool-call: check_conflicts  args: {}
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [tool-return] check_conflicts -> No conflicts today.
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [model-response] tool-call: create_event  args: {"day_offset":0,"duration_minutes":30,"hour":14,"minute":30,"participants":[],"title":"plan allocation"}
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [tool-return] create_event -> Created event 'plan allocation' on Mon Jun 08, 02:30 PM (id=7u0jolg50f19gfmbqcke44vtjc).
+2026-06-08 11:47:15  DEBUG     [workday_graph]  [model-response] text: Your meetings have been scheduled: “sprint planning” at 2:00 PM – 2:30 PM and “plan allocation” at 2:30 PM – 3:00 PM today.
+2026-06-08 11:47:15  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=True  awaiting_user=False  reply='Your meetings have been scheduled: “sprint planning” at\u202f2:00\u202fPM\u202f–\u202f2:30\u202fPM and “plan allocation” at\u202f2:30\u202fPM\u202f–\u202f3:00\u202fPM today.'
+2026-06-08 11:47:15  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-08 11:47:16  DEBUG     [workday_graph]  [model-request] prompt: User query: "A meet at 2pm is a sprint planning and a meet at 2:30 is for plan allocation"
+Intent: "continue scheduling meetings"
+
+[CALENDAR ACTION]
+Your meetings have been scheduled: “sprint planning” at 2:00 PM – 2:30 PM and “plan allocation” at 2:30 PM – 3:00 PM today.
+Status: Calendar changed
+
+2026-06-08 11:47:16  DEBUG     [workday_graph]  [model-response] text: Your calendar has been updated with two new meetings: "sprint planning" from 2:00 PM to 2:30 PM and "plan allocation" from 2:30 PM to 3:00 PM today.
+2026-06-08 11:47:16  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-08 11:47:16  INFO      [workday_graph]  === Workday pipeline END  planner_h=6  cal_action_h=14  synth_h=2  cal_open=False ===
+2026-06-08 11:55:39  INFO      [main]  Workday Manager starting up
+2026-06-08 11:57:25  INFO      [main]  Workday Manager starting up
+2026-06-08 11:59:12  INFO      [workday_graph]  === Workday pipeline START  query='Hey'  session='default' ===
+2026-06-08 11:59:12  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'Hey'
+2026-06-08 11:59:13  DEBUG     [workday_graph]  [model-request] prompt: Hey
+2026-06-08 11:59:13  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"SynthesizeNode"}
+2026-06-08 11:59:13  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 11:59:13  INFO      [workday_graph]  PlannerNode  ->  decision: intent='greeting'  next_node='SynthesizeNode'  needs_email=False  needs_calendar=False
+2026-06-08 11:59:13  INFO      [workday_graph]  PlannerNode  ->  routing to SynthesizeNode
+2026-06-08 11:59:13  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-08 11:59:13  WARNING   [workday_graph]  SynthesizeNode  ->  no pipeline results available, synthesizing from query alone
+2026-06-08 11:59:13  DEBUG     [workday_graph]  [model-request] prompt: User query: "Hey"
+Intent: "greeting"
+
+No data was retrieved from any pipeline.
+2026-06-08 11:59:13  DEBUG     [workday_graph]  [model-response] text: Nothing could be retrieved at this time.
+2026-06-08 11:59:13  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-08 11:59:13  INFO      [workday_graph]  === Workday pipeline END  planner_h=3  cal_action_h=0  synth_h=2  cal_open=False ===
+2026-06-08 11:59:19  INFO      [workday_graph]  === Workday pipeline START  query='Hey'  session='default' ===
+2026-06-08 11:59:19  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'Hey'
+2026-06-08 11:59:19  DEBUG     [workday_graph]  [model-request] prompt: Hey
+2026-06-08 11:59:19  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"SynthesizeNode"}
+2026-06-08 11:59:19  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 11:59:19  DEBUG     [workday_graph]  [model-request] prompt: Hey
+2026-06-08 11:59:19  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"SynthesizeNode"}
+2026-06-08 11:59:19  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 11:59:19  INFO      [workday_graph]  PlannerNode  ->  decision: intent='greeting'  next_node='SynthesizeNode'  needs_email=False  needs_calendar=False
+2026-06-08 11:59:19  INFO      [workday_graph]  PlannerNode  ->  routing to SynthesizeNode
+2026-06-08 11:59:19  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-08 11:59:19  WARNING   [workday_graph]  SynthesizeNode  ->  no pipeline results available, synthesizing from query alone
+2026-06-08 11:59:20  DEBUG     [workday_graph]  [model-request] prompt: User query: "Hey"
+Intent: "greeting"
+
+No data was retrieved from any pipeline.
+2026-06-08 11:59:20  DEBUG     [workday_graph]  [model-response] text: Nothing could be retrieved at this time.
+2026-06-08 11:59:20  DEBUG     [workday_graph]  [model-request] prompt: User query: "Hey"
+Intent: "greeting"
+
+No data was retrieved from any pipeline.
+2026-06-08 11:59:20  DEBUG     [workday_graph]  [model-response] text: Nothing could be retrieved at this time.
+2026-06-08 11:59:20  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-08 11:59:20  INFO      [workday_graph]  === Workday pipeline END  planner_h=6  cal_action_h=0  synth_h=4  cal_open=False ===
+2026-06-08 11:59:36  INFO      [workday_graph]  === Workday pipeline START  query='I want to schedule a meet'  session='default' ===
+2026-06-08 11:59:36  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'I want to schedule a meet'
+2026-06-08 11:59:36  DEBUG     [workday_graph]  [model-request] prompt: Hey
+2026-06-08 11:59:36  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"SynthesizeNode"}
+2026-06-08 11:59:36  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 11:59:36  DEBUG     [workday_graph]  [model-request] prompt: Hey
+2026-06-08 11:59:36  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"SynthesizeNode"}
+2026-06-08 11:59:36  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 11:59:36  DEBUG     [workday_graph]  [model-request] prompt: I want to schedule a meet
+2026-06-08 11:59:36  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule meeting","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-08 11:59:36  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 11:59:36  INFO      [workday_graph]  PlannerNode  ->  decision: intent='schedule meeting'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-08 11:59:36  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-08 11:59:36  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Monday 2026-06-08 11:59 AM  day_overview=False
+2026-06-08 11:59:41  INFO      [calendar_action_agent]  get_events tool -> returned 4 events
+2026-06-08 11:59:41  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 11:59 AM (Asia/Kolkata). Today is day_offset=0.
+User request: I want to schedule a meet
+2026-06-08 11:59:41  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {}
+2026-06-08 11:59:41  DEBUG     [workday_graph]  [tool-return] get_events -> Events today:
+id=44hnbqbfl62320t9ruokmi2h8g | title='client call' | 12:00 PM-12:30 PM | start_unix=1780900200 | end_unix=1780902000 | attendees=none
+id=a62qcojbi4ro2kgm2hlcilj08k | title='internal discussion' | 01:00 PM-01:30 PM | start_unix=1780903800 | end_unix=1780905600 | attendees=none
+id=gn7siitcoc2jg5un7lub60qbgg | title='sprint planning' | 02:00 PM-02:30 PM | start_unix=1780907400 | end_unix=1780909200 | attendees=none
+id=7u0jolg50f19gfmbqcke44vtjc | title='plan allocation' | 02:30 PM-03:00 PM | start_unix=1780909200 | end_unix=1780911000 | attendees=none
+2026-06-08 11:59:41  DEBUG     [workday_graph]  [model-response] text: What’s the title of the meeting you’d like to schedule?
+2026-06-08 11:59:41  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=True  reply='What’s the title of the meeting you’d like to schedule?'
+2026-06-08 11:59:41  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-08 11:59:41  INFO      [workday_graph]  SynthesizeNode  ->  calendar agent awaiting user, returning its reply directly
+2026-06-08 11:59:41  INFO      [workday_graph]  === Workday pipeline END  planner_h=9  cal_action_h=4  synth_h=4  cal_open=True ===
+2026-06-08 12:14:37  INFO      [workday_graph]  === Workday pipeline START  query='A meet at 3pm is a sprint planning and a meet at 3:30 is for plan allocationt'  session='default' ===
+2026-06-08 12:14:37  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'A meet at 3pm is a sprint planning and a meet at 3:30 is for plan allocationt'
+2026-06-08 12:14:37  DEBUG     [workday_graph]  [model-request] prompt: Hey
+2026-06-08 12:14:37  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"SynthesizeNode"}
+2026-06-08 12:14:37  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 12:14:37  DEBUG     [workday_graph]  [model-request] prompt: Hey
+2026-06-08 12:14:37  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"SynthesizeNode"}
+2026-06-08 12:14:37  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 12:14:37  DEBUG     [workday_graph]  [model-request] prompt: I want to schedule a meet
+2026-06-08 12:14:37  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule meeting","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-08 12:14:37  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 12:14:37  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: A meet at 3pm is a sprint planning and a meet at 3:30 is for plan allocationt
+2026-06-08 12:14:37  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"continue calendar action","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-08 12:14:37  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 12:14:37  INFO      [workday_graph]  PlannerNode  ->  decision: intent='continue calendar action'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-08 12:14:37  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-08 12:14:37  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Monday 2026-06-08 12:14 PM  day_overview=False
+2026-06-08 12:14:39  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 11:59 AM (Asia/Kolkata). Today is day_offset=0.
+User request: I want to schedule a meet
+2026-06-08 12:14:39  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {}
+2026-06-08 12:14:39  DEBUG     [workday_graph]  [tool-return] get_events -> Events today:
+id=44hnbqbfl62320t9ruokmi2h8g | title='client call' | 12:00 PM-12:30 PM | start_unix=1780900200 | end_unix=1780902000 | attendees=none
+id=a62qcojbi4ro2kgm2hlcilj08k | title='internal discussion' | 01:00 PM-01:30 PM | start_unix=1780903800 | end_unix=1780905600 | attendees=none
+id=gn7siitcoc2jg5un7lub60qbgg | title='sprint planning' | 02:00 PM-02:30 PM | start_unix=1780907400 | end_unix=1780909200 | attendees=none
+id=7u0jolg50f19gfmbqcke44vtjc | title='plan allocation' | 02:30 PM-03:00 PM | start_unix=1780909200 | end_unix=1780911000 | attendees=none
+2026-06-08 12:14:39  DEBUG     [workday_graph]  [model-response] text: What’s the title of the meeting you’d like to schedule?
+2026-06-08 12:14:39  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 12:14 PM (Asia/Kolkata). Today is day_offset=0.
+User request: A meet at 3pm is a sprint planning and a meet at 3:30 is for plan allocationt
+2026-06-08 12:14:39  DEBUG     [workday_graph]  [model-response] text: Would you like to reschedule “sprint planning” to 3:00 PM‑3:30 PM and “plan allocation” to 3:30 PM‑4:00 PM?
+2026-06-08 12:14:39  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=True  reply='Would you like to reschedule “sprint planning” to\u202f3:00\u202fPM‑3:30\u202fPM and “plan allocation” to\u202f3:30\u202fPM‑4:00\u202fPM?'
+2026-06-08 12:14:39  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-08 12:14:39  INFO      [workday_graph]  SynthesizeNode  ->  calendar agent awaiting user, returning its reply directly
+2026-06-08 12:14:39  INFO      [workday_graph]  === Workday pipeline END  planner_h=12  cal_action_h=6  synth_h=4  cal_open=True ===
+2026-06-08 12:18:55  INFO      [workday_graph]  === Workday pipeline START  query='Yes'  session='default' ===
+2026-06-08 12:18:55  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'Yes'
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [model-request] prompt: Hey
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"SynthesizeNode"}
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [model-request] prompt: Hey
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"SynthesizeNode"}
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [model-request] prompt: I want to schedule a meet
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule meeting","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: A meet at 3pm is a sprint planning and a meet at 3:30 is for plan allocationt
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"continue calendar action","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: Yes
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"continue calendar action","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-08 12:18:56  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 12:18:56  INFO      [workday_graph]  PlannerNode  ->  decision: intent='continue calendar action'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-08 12:18:56  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-08 12:18:56  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Monday 2026-06-08 12:18 PM  day_overview=False
+2026-06-08 12:19:00  INFO      [calendar_action_agent]  update_event tool -> updated id='gn7siitcoc2jg5un7lub60qbgg'
+2026-06-08 12:19:04  INFO      [calendar_action_agent]  update_event tool -> updated id='7u0jolg50f19gfmbqcke44vtjc'
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 11:59 AM (Asia/Kolkata). Today is day_offset=0.
+User request: I want to schedule a meet
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {}
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [tool-return] get_events -> Events today:
+id=44hnbqbfl62320t9ruokmi2h8g | title='client call' | 12:00 PM-12:30 PM | start_unix=1780900200 | end_unix=1780902000 | attendees=none
+id=a62qcojbi4ro2kgm2hlcilj08k | title='internal discussion' | 01:00 PM-01:30 PM | start_unix=1780903800 | end_unix=1780905600 | attendees=none
+id=gn7siitcoc2jg5un7lub60qbgg | title='sprint planning' | 02:00 PM-02:30 PM | start_unix=1780907400 | end_unix=1780909200 | attendees=none
+id=7u0jolg50f19gfmbqcke44vtjc | title='plan allocation' | 02:30 PM-03:00 PM | start_unix=1780909200 | end_unix=1780911000 | attendees=none
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-response] text: What’s the title of the meeting you’d like to schedule?
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 12:14 PM (Asia/Kolkata). Today is day_offset=0.
+User request: A meet at 3pm is a sprint planning and a meet at 3:30 is for plan allocationt
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-response] text: Would you like to reschedule “sprint planning” to 3:00 PM‑3:30 PM and “plan allocation” to 3:30 PM‑4:00 PM?
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 12:18 PM (Asia/Kolkata). Today is day_offset=0.
+User request: Yes
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-response] tool-call: update_event  args: {"day_offset":0,"duration_minutes":30,"event_id":"gn7siitcoc2jg5un7lub60qbgg","hour":15,"minute":0}
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [tool-return] update_event -> Updated event id=gn7siitcoc2jg5un7lub60qbgg.
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-response] tool-call: update_event  args: {"day_offset":0,"duration_minutes":30,"event_id":"7u0jolg50f19gfmbqcke44vtjc","hour":15,"minute":30}
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [tool-return] update_event -> Updated event id=7u0jolg50f19gfmbqcke44vtjc.
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-response] text: The “sprint planning” meeting is now set for 3:00 PM‑3:30 PM, and the “plan allocation” meeting is set for 3:30 PM‑4:00 PM.
+2026-06-08 12:19:05  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=True  awaiting_user=False  reply='The “sprint planning” meeting is now set for\u202f3:00\u202fPM‑3:30\u202fPM, and the “plan allocation” meeting is set for\u202f3:30\u202fPM‑4:00\u202fPM.'
+2026-06-08 12:19:05  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-request] prompt: User query: "Hey"
+Intent: "greeting"
+
+No data was retrieved from any pipeline.
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-response] text: Nothing could be retrieved at this time.
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-request] prompt: User query: "Hey"
+Intent: "greeting"
+
+No data was retrieved from any pipeline.
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-response] text: Nothing could be retrieved at this time.
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-request] prompt: User query: "Yes"
+Intent: "continue calendar action"
+
+[CALENDAR ACTION]
+The “sprint planning” meeting is now set for 3:00 PM‑3:30 PM, and the “plan allocation” meeting is set for 3:30 PM‑4:00 PM.
+Status: Calendar changed
+
+2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-response] text: Your calendar has been updated: the "sprint planning" meeting is now from 3:00 PM to 3:30 PM, and the "plan allocation" meeting is from 3:30 PM to 4:00 PM.
+2026-06-08 12:19:05  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-08 12:19:05  INFO      [workday_graph]  === Workday pipeline END  planner_h=15  cal_action_h=12  synth_h=6  cal_open=False ===

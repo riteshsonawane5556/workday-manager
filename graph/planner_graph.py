@@ -8,15 +8,12 @@ with warnings.catch_warnings():
 
 from agents.planner_agent import planner_agent
 from agents.synthesize_agent import synthesize_agent
-from agents.calendar_agent import calendar_agent
 from agents.calendar_action_agent import calendar_action_agent
 from agents.email_node import email_node_agent
 from graph.pending_store import pending_store
 from models.orchestrator_models import AgentDecision, OrchestratorResult, OrchestratorState
 from models.email_models import ProcessingResult
-from services.calendar_service import fetch_calendar_data
-from utils.calendar_utils import build_calendar_prompt
-from config.logger import get_logger
+from config.logger import get_logger, log_agent_run
 
 log = get_logger("workday_graph")
 
@@ -33,7 +30,7 @@ def _clean_body(raw: str) -> str:
 class PlannerNode(BaseNode[OrchestratorState]):
     async def run(
         self, ctx: GraphRunContext[OrchestratorState]
-    ) -> "ClarifyNode | FetchEmailsNode | FetchCalendarNode | CalendarActionNode | SynthesizeNode":
+    ) -> "ClarifyNode | FetchEmailsNode | CalendarActionNode | SynthesizeNode":
         log.info("PlannerNode  ->  running planner_agent on query: %r", ctx.state.query)
         if ctx.state.calendar_action_open:
             planner_prompt = (
@@ -48,6 +45,7 @@ class PlannerNode(BaseNode[OrchestratorState]):
             planner_prompt,
             message_history=ctx.state.planner_history,
         )
+        log_agent_run(log, result)
         ctx.state.planner_history += result.new_messages()
         ctx.state.decision = result.output
         decision = ctx.state.decision
@@ -58,7 +56,6 @@ class PlannerNode(BaseNode[OrchestratorState]):
 
         _node_map: dict[str, type] = {
             "FetchEmailsNode": FetchEmailsNode,
-            "FetchCalendarNode": FetchCalendarNode,
             "CalendarActionNode": CalendarActionNode,
             "ClarifyNode": ClarifyNode,
             "SynthesizeNode": SynthesizeNode,
@@ -126,6 +123,7 @@ class ClassifyNode(BaseNode[OrchestratorState]):
             f"Email ID: {email.id}\nFrom: {email.sender}\n"
             f"Subject: {email.subject}\nDate: {email.date}\nBody:\n{body}"
         )
+        log_agent_run(log, result)
         output = result.output
         output.email_id = email.id
         output.subject = email.subject
@@ -167,7 +165,7 @@ class HumanGateNode(BaseNode[OrchestratorState]):
 class BuildEmailResultNode(BaseNode[OrchestratorState]):
     async def run(
         self, ctx: GraphRunContext[OrchestratorState]
-    ) -> "FetchCalendarNode | SynthesizeNode":
+    ) -> "CalendarActionNode | SynthesizeNode":
         total = len(ctx.state.emails)
         ctx.state.email_result = ProcessingResult(
             processed=total,
@@ -179,36 +177,9 @@ class BuildEmailResultNode(BaseNode[OrchestratorState]):
             total, len(ctx.state.pending_ids), len(ctx.state.pending_ids),
         )
         if ctx.state.decision.needs_calendar:
-            log.info("BuildEmailResultNode  ->  calendar needed, routing to FetchCalendarNode")
-            return FetchCalendarNode()
+            log.info("BuildEmailResultNode  ->  calendar needed, routing to CalendarActionNode")
+            return CalendarActionNode()
         log.info("BuildEmailResultNode  ->  routing to SynthesizeNode")
-        return SynthesizeNode()
-
-
-@dataclass
-class FetchCalendarNode(BaseNode[OrchestratorState]):
-    async def run(self, ctx: GraphRunContext[OrchestratorState]) -> "CalendarNode":
-        log.info("FetchCalendarNode  ->  fetching calendar data")
-        ctx.state.events, ctx.state.conflicts, ctx.state.date_str = await fetch_calendar_data()
-        log.info(
-            "FetchCalendarNode  ->  fetched %d events, %d conflicts for %s",
-            len(ctx.state.events), len(ctx.state.conflicts), ctx.state.date_str,
-        )
-        return CalendarNode()
-
-
-@dataclass
-class CalendarNode(BaseNode[OrchestratorState]):
-    async def run(self, ctx: GraphRunContext[OrchestratorState]) -> "SynthesizeNode":
-        log.info("CalendarNode  ->  running calendar_agent on %d events", len(ctx.state.events))
-        prompt = build_calendar_prompt(ctx.state.events, ctx.state.conflicts, ctx.state.date_str)
-        result = await calendar_agent.run(prompt)
-        output = result.output
-        output.date = ctx.state.date_str
-        output.total_events = len(ctx.state.events)
-        output.conflicts = ctx.state.conflicts
-        ctx.state.calendar_result = output
-        log.info("CalendarNode  ->  analysis done: %d suggestions", len(output.suggestions))
         return SynthesizeNode()
 
 
@@ -226,22 +197,35 @@ class CalendarActionNode(BaseNode[OrchestratorState]):
         now_unix = int(now_local.timestamp())
         now_label = now_local.strftime("%A %Y-%m-%d %I:%M %p")
 
+        day_overview = ctx.state.decision.needs_email and ctx.state.decision.needs_calendar
         deps = CalendarDeps(user_tz=tz_name, now_unix=now_unix, now_label=now_label)
+        if day_overview:
+            request = (
+                "Give a read-only summary of today's calendar as part of a full day briefing: call "
+                "get_events and check_conflicts, then describe today's schedule and flag any conflicts. "
+                "Do NOT create, change, or cancel anything and do NOT ask a follow-up question."
+            )
+        else:
+            request = ctx.state.query
         prompt = (
             f"Current local date and time: {now_label} ({tz_name}). Today is day_offset=0.\n"
-            f"User request: {ctx.state.query}"
+            f"User request: {request}"
         )
 
-        log.info("CalendarActionNode  ->  running agentic calendar_action_agent  now=%s", now_label)
+        log.info(
+            "CalendarActionNode  ->  running agentic calendar_action_agent  now=%s  day_overview=%s",
+            now_label, day_overview,
+        )
         result = await calendar_action_agent.run(
             prompt,
             deps=deps,
             message_history=ctx.state.calendar_action_history,
         )
+        log_agent_run(log, result)
         ctx.state.calendar_action_history += result.new_messages()
         reply = result.output
         changed = deps.changed_calendar
-        awaiting_user = not changed
+        awaiting_user = (not changed) and not day_overview
         log.info(
             "CalendarActionNode  ->  changed_calendar=%s  awaiting_user=%s  reply=%r",
             changed, awaiting_user, reply,
@@ -270,17 +254,13 @@ class SynthesizeNode(BaseNode[OrchestratorState]):
             lines += [
                 "[EMAILS]",
                 f"Processed: {er.processed} | Actionable: {er.actionable} | Pending drafts: {len(er.pending_ids)}",
-                "",
             ]
-
-        if ctx.state.calendar_result is not None:
-            cr = ctx.state.calendar_result
-            lines += [
-                "[CALENDAR]",
-                f"Date: {cr.date} | Total events: {cr.total_events} | Conflicts: {len(cr.conflicts)}",
-                f"Summary: {cr.summary}",
-                "",
-            ]
+            for o in ctx.state.email_outputs:
+                draft_note = " (draft reply ready)" if o.draft is not None else ""
+                lines.append(
+                    f"  - [{o.classification.label.upper()}] {o.subject!r} from {o.sender}{draft_note}"
+                )
+            lines.append("")
 
         if ctx.state.calendar_action_result is not None:
             car = ctx.state.calendar_action_result
@@ -299,7 +279,7 @@ class SynthesizeNode(BaseNode[OrchestratorState]):
                 "",
             ]
 
-        if ctx.state.email_result is None and ctx.state.calendar_result is None and ctx.state.calendar_action_result is None:
+        if ctx.state.email_result is None and ctx.state.calendar_action_result is None:
             log.warning("SynthesizeNode  ->  no pipeline results available, synthesizing from query alone")
             lines.append("No data was retrieved from any pipeline.")
 
@@ -308,13 +288,13 @@ class SynthesizeNode(BaseNode[OrchestratorState]):
             context,
             message_history=ctx.state.synthesize_history,
         )
+        log_agent_run(log, synthesis)
         ctx.state.synthesize_history += synthesis.new_messages()
         log.info("SynthesizeNode  ->  synthesis complete")
 
         return End(OrchestratorResult(
             summary=synthesis.output,
             email_result=ctx.state.email_result,
-            calendar_result=ctx.state.calendar_result,
             calendar_action_result=ctx.state.calendar_action_result,
         ))
 
@@ -330,8 +310,6 @@ with warnings.catch_warnings():
             DraftNode,
             HumanGateNode,
             BuildEmailResultNode,
-            FetchCalendarNode,
-            CalendarNode,
             CalendarActionNode,
             SynthesizeNode,
         ),

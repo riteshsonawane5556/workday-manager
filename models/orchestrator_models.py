@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from pydantic_ai.messages import ModelMessage
 
 from models.email_models import EmailMeta, EmailNodeOutput, ProcessingResult
-from models.calendar_models import CalendarAnalysisResult, CalendarActionResult, CalendarEvent, ConflictPair
+from models.calendar_models import CalendarActionResult
 
 
 class AgentDecision(BaseModel):
@@ -23,7 +23,6 @@ class OrchestratorRequest(BaseModel):
 class OrchestratorResult(BaseModel):
     summary: str
     email_result: ProcessingResult | None = None
-    calendar_result: CalendarAnalysisResult | None = None
     calendar_action_result: CalendarActionResult | None = None
     clarification_question: str | None = None
 
@@ -42,10 +41,5 @@ class OrchestratorState:
     email_outputs: list[EmailNodeOutput] = field(default_factory=list)
     pending_ids: list[str] = field(default_factory=list)
 
-    events: list[CalendarEvent] = field(default_factory=list)
-    conflicts: list[ConflictPair] = field(default_factory=list)
-    date_str: str = ""
-
     email_result: ProcessingResult | None = field(default=None)
-    calendar_result: CalendarAnalysisResult | None = field(default=None)
     calendar_action_result: CalendarActionResult | None = field(default=None)

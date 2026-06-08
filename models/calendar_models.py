@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Literal, Optional
 from pydantic import BaseModel
 
 
@@ -14,21 +13,6 @@ class CalendarEvent(BaseModel):
 class ConflictPair(BaseModel):
     event_a: CalendarEvent
     event_b: CalendarEvent
-
-
-class RescheduleSuggestion(BaseModel):
-    event_id: str
-    title: str
-    suggested_start: str
-    reasoning: str
-
-
-class CalendarAnalysisResult(BaseModel):
-    date: str
-    total_events: int
-    conflicts: list[ConflictPair]
-    suggestions: list[RescheduleSuggestion]
-    summary: str
 
 
 @dataclass

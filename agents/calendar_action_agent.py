@@ -4,7 +4,7 @@ from zoneinfo import ZoneInfo
 from pydantic_ai import Agent, RunContext
 
 from config.logger import get_logger
-from models.calendar_models import CalendarDeps
+from models.calendar_models import CalendarDeps, ConflictPair
 from tools.calendar_tools import (
     clock_to_unix,
     create_event as create_event_tool,
@@ -39,9 +39,19 @@ calendar_action_agent = Agent(
         "  - If a requested time today has already passed (compare against the current time you were "
         "given), ask whether to book it for tomorrow instead rather than silently shifting it.\n"
         "  - Default duration_minutes is 30 when unspecified.\n\n"
+        "CONFLICTS:\n"
+        "  - When the user asks about clashes, double-bookings, or 'what conflicts do I have', call "
+        "get_events then check_conflicts and report each overlapping pair in plain language. If "
+        "check_conflicts reports none, say the day is clash-free.\n"
+        "  - When you list the day's schedule, also call check_conflicts and proactively mention any "
+        "overlaps you find - do not make the user ask.\n"
+        "  - Before booking or rescheduling into a slot, you can call check_conflicts to confirm the "
+        "slot is free. If a clash exists, describe it and ask whether to book anyway (see WORKFLOW).\n"
+        "  - To resolve a conflict, suggest moving the shorter event to a nearby free slot on the same "
+        "day, then make the change only after the user confirms (it is an UPDATE - confirm first).\n\n"
         "WORKFLOW (every turn):\n"
         "  1. Call get_events first to see what is already scheduled.\n"
-        "  2. CREATE: you need a title and a start time. If either is missing, ask ONE concise question "
+        "  2. CREATE: you need a title, a start time and duration. If either is missing, ask ONE concise question "
         "for exactly the missing piece - never invent a title or time. If a different event overlaps the "
         "requested slot, do NOT create yet: describe the clash and ask whether to book anyway; call "
         "create_event only if the user confirms (e.g. 'yes', 'book it anyway'). If the slot is free and "
@@ -62,6 +72,7 @@ calendar_action_agent = Agent(
         "calendar, confirm exactly what changed (title and time). If you are waiting on the user, end "
         "with a clear question. Carry context across turns: a short reply like 'yes', '3pm', or 'call it "
         "Standup' continues the previous request - combine it with what was already established."
+        
     ),
 )
 
@@ -83,6 +94,35 @@ async def get_events(ctx: RunContext[CalendarDeps]) -> str:
         )
     log.info("get_events tool -> returned %d events", len(events))
     return "Events today:\n" + "\n".join(lines)
+
+
+@calendar_action_agent.tool
+async def check_conflicts(ctx: RunContext[CalendarDeps]) -> str:
+    tz = ZoneInfo(ctx.deps.user_tz)
+    events = await fetch_today_events()
+    ordered = sorted(events, key=lambda e: e.start_time)
+    conflicts: list[ConflictPair] = []
+    for i in range(len(ordered)):
+        for j in range(i + 1, len(ordered)):
+            a, b = ordered[i], ordered[j]
+            if a.start_time < b.end_time and a.end_time > b.start_time:
+                conflicts.append(ConflictPair(event_a=a, event_b=b))
+    if not conflicts:
+        log.info("check_conflicts tool -> no conflicts among %d events", len(events))
+        return "No conflicts today."
+    lines = []
+    for c in conflicts:
+        a, b = c.event_a, c.event_b
+        a_s = datetime.fromtimestamp(a.start_time, tz=tz).strftime("%I:%M %p")
+        a_e = datetime.fromtimestamp(a.end_time, tz=tz).strftime("%I:%M %p")
+        b_s = datetime.fromtimestamp(b.start_time, tz=tz).strftime("%I:%M %p")
+        b_e = datetime.fromtimestamp(b.end_time, tz=tz).strftime("%I:%M %p")
+        lines.append(
+            f"{a.title!r} ({a_s}-{a_e}, id={a.id}) overlaps "
+            f"{b.title!r} ({b_s}-{b_e}, id={b.id})"
+        )
+    log.info("check_conflicts tool -> found %d conflict(s)", len(conflicts))
+    return f"{len(conflicts)} conflict(s) today:\n" + "\n".join(lines)
 
 
 @calendar_action_agent.tool
