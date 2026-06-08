@@ -13,6 +13,7 @@ This project uses `uv` (not pip or poetry):
 ```bash
 uv sync                              # install dependencies
 uv add <package>                     # add a dependency
+uv run alembic upgrade head          # apply DB migrations (run before first start)
 uv run uvicorn main:app --reload     # dev server on http://localhost:8000
 ```
 
@@ -22,6 +23,11 @@ Copy `.env.example` and fill in:
 - `NYLAS_API_KEY` + `NYLAS_GRANT_ID` — Nylas email/calendar credentials
 - `GROQ_API_KEY` — LLM access (llama-3.3-70b-versatile)
 - `USER_TIMEZONE` — IANA timezone string (default: `Asia/Kolkata`)
+- `DATABASE_URL` — SQLAlchemy async DB URL (default: `sqlite+aiosqlite:///./workday.db`)
+
+## Database & Migrations
+
+SQLite (via SQLAlchemy 2.0 async + `aiosqlite`) backs the session and pending stores. Schema is owned by Alembic — run `uv run alembic upgrade head` before first start. To change the schema, edit the ORM models in `models/db_models.py`, then `uv run alembic revision --autogenerate -m "..."` and `uv run alembic upgrade head`. Alembic's `env.py` reads `DATABASE_URL` and runs migrations against the sync form of the URL (it strips `+aiosqlite`); the app uses the async form at runtime — both hit the same file.
 
 ## Pydantic AI
 
@@ -82,8 +88,10 @@ PlannerNode
 
 ### Session & State Storage
 
-- `graph/session_store.py` (`SessionStore`) — in-memory per-session conversation histories (planner, calendar, synthesize message lists). Keyed by `session_id` passed in the request.
-- `graph/pending_store.py` (`PendingStore`) — in-memory dict of actionable emails awaiting human approval, keyed by UUID. Both stores are cleared on restart.
+Both stores are SQLite-backed (SQLAlchemy 2.0 async) and **persist across restarts**. Their async methods (`get`/`set`, `add`/`list_all`/`get`/`has_email`/`remove`) acquire a session via `config/database.py`'s `get_session()`. ORM tables live in `models/db_models.py`.
+
+- `graph/session_store.py` (`SessionStore`) — per-session conversation histories (planner, calendar_action, synthesize) plus the `calendar_action_open` flag, keyed by `session_id`. Message lists are serialized to JSON columns via pydantic-ai's `ModelMessagesTypeAdapter` (`session_history` table).
+- `graph/pending_store.py` (`PendingStore`) — actionable emails awaiting human approval, keyed by UUID, with the `DraftReply` stored as JSON (`pending_item` table).
 
 ### Key Models
 

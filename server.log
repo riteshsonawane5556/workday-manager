@@ -319,3 +319,843 @@ Status: Calendar changed
 2026-06-08 12:19:05  DEBUG     [workday_graph]  [model-response] text: Your calendar has been updated: the "sprint planning" meeting is now from 3:00 PM to 3:30 PM, and the "plan allocation" meeting is from 3:30 PM to 4:00 PM.
 2026-06-08 12:19:05  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
 2026-06-08 12:19:05  INFO      [workday_graph]  === Workday pipeline END  planner_h=15  cal_action_h=12  synth_h=6  cal_open=False ===
+2026-06-08 13:34:06  INFO      [main]  Workday Manager starting up
+2026-06-08 13:34:27  INFO      [main]  Workday Manager starting up
+2026-06-08 13:34:32  INFO      [main]  Workday Manager starting up
+2026-06-08 13:37:16  INFO      [workday_graph]  === Workday pipeline START  query='Hi'  session='default' ===
+2026-06-08 13:37:16  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'Hi'
+2026-06-08 13:37:17  DEBUG     [workday_graph]  [model-request] prompt: Hi
+2026-06-08 13:37:17  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"InteractNode"}
+2026-06-08 13:37:17  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 13:37:17  INFO      [workday_graph]  PlannerNode  ->  decision: intent='greeting'  next_node='InteractNode'  needs_email=False  needs_calendar=False
+2026-06-08 13:37:17  INFO      [workday_graph]  PlannerNode  ->  routing to InteractNode
+2026-06-08 13:37:17  INFO      [workday_graph]  InteractNode  ->  conversational message, responding directly
+2026-06-08 13:37:17  DEBUG     [workday_graph]  [model-request] prompt: The user sent a conversational message: "Hi"
+Respond naturally and warmly. Briefly mention you can help with emails and calendar.
+2026-06-08 13:37:17  DEBUG     [workday_graph]  [model-response] text: Hello, it's nice to connect with you. I'm here to help you stay on top of your day - whether that's managing your inbox or keeping track of your schedule. How can I assist you today?
+2026-06-08 13:37:17  INFO      [workday_graph]  === Workday pipeline END  planner_h=3  cal_action_h=0  synth_h=2  cal_open=False ===
+2026-06-08 13:37:46  INFO      [workday_graph]  === Workday pipeline START  query='Plan a day for me'  session='default' ===
+2026-06-08 13:37:46  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'Plan a day for me'
+2026-06-08 13:37:47  DEBUG     [workday_graph]  [model-request] prompt: Hi
+2026-06-08 13:37:47  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"InteractNode"}
+2026-06-08 13:37:47  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 13:37:47  DEBUG     [workday_graph]  [model-request] prompt: Plan a day for me
+2026-06-08 13:37:47  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"day_overview","needs_calendar":true,"needs_clarification":false,"needs_email":true,"next_node":"FetchEmailsNode"}
+2026-06-08 13:37:47  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 13:37:47  INFO      [workday_graph]  PlannerNode  ->  decision: intent='day_overview'  next_node='FetchEmailsNode'  needs_email=True  needs_calendar=True
+2026-06-08 13:37:47  INFO      [workday_graph]  PlannerNode  ->  routing to FetchEmailsNode
+2026-06-08 13:37:47  INFO      [workday_graph]  FetchEmailsNode  ->  fetching up to 10 emails
+2026-06-08 13:37:49  INFO      [workday_graph]  FetchEmailsNode  ->  fetched 10 emails
+2026-06-08 13:37:49  INFO      [workday_graph]  ClassifyNode  ->  [1/10] subject='Welcome to Logfire: Get Started Quickly'  from='hello@pydantic.dev'
+2026-06-08 13:37:49  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19ea5ce4429754b4'
+2026-06-08 13:37:49  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 13:37:50  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19ea5ce4429754b4
+From: hello@pydantic.dev
+Subject: Welcome to Logfire: Get Started Quickly
+Date: 2026-06-08 11:26
+Body:
+Setup in minutes ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ Welcome to Logfire - Get started with easy observability. Welcome to Logfire! We're obsessed with making observability easy. Here's what you do to get up and running: Log into Logfire From your Organisation, click New project to create your first project Install the SDK with pip install logfire Authenticate with logfire auth Create a Python script (see here about using other languages ) and instrument your app: import logfire logfire.configure() logfire​.info('Hello, {name}!', name='world') That's it - your logs will appear within seconds in the Logfire UI. For more details, see our getting started guide Got questions? Here are some ways to get in touch, or just reply to this email. Best, The Pydantic Team Pydantic Services, Inc. ・ pydantic.dev ・ github/pydantic Unsubscribe
+2026-06-08 13:37:50  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an introductory email with instructions on how to get started with Logfire, and there is no urgency or request for action."},"draft":null,"email_id":"19ea5ce4429754b4","sender":"hello@pydantic.dev","subject":"Welcome to Logfire: Get Started Quickly"}
+2026-06-08 13:37:50  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 13:37:50  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 13:37:50  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 13:37:50  INFO      [workday_graph]  ClassifyNode  ->  [2/10] subject='Resurgence of weakness expected below 23,300 while US-markets saw deep cuts overnight'  from='updates@info.kotakneo.com'
+2026-06-08 13:37:50  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19ea5765cb35e2a9'
+2026-06-08 13:37:51  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 13:37:52  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19ea5765cb35e2a9
+From: updates@info.kotakneo.com
+Subject: Resurgence of weakness expected below 23,300 while US-markets saw deep cuts overnight
+Date: 2026-06-08 09:50
+Body:
+:root { supported-color-schemes: light dark; color-scheme: light dark; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 400; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 500; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 700; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmWUlfBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* Base styles (for desktop and default) */ #outlook a, body { padding: 0; } .ReadMsgBody { width: 100%; } .ExternalClass { width: 100%; } .ExternalClass, img, .ExternalClass font, .ExternalClass td, .ExternalClass div, .ExternalClass span, .ExternalClass p { line-height: 100%; } .mobileFourCol a { text-decoration: underline !important; } table, td { mso-table-lspace: 0; mso-table-rspace: 0; } table, td, tr { border-collapse: collapse; } td, body, span, p, div, li, a, th { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-line-height-rule: exactly; } body { margin: 0; width: 100% !important; -webkit-font-smoothing: antialiased; } img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; } a[x-apple-data-detectors] { color: inherit 
+2026-06-08 13:37:52  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an informational update about market trends and does not require a reply or immediate attention."},"draft":null,"email_id":"19ea5765cb35e2a9","sender":"updates@info.kotakneo.com","subject":"Resurgence of weakness expected below 23,300 while US-markets saw deep cuts overnight"}
+2026-06-08 13:37:52  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 13:37:52  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 13:37:52  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 13:37:52  INFO      [workday_graph]  ClassifyNode  ->  [3/10] subject='CVLKRA KYC Alert ReferenceId - 387092992'  from='gogreen@cvlindia.in'
+2026-06-08 13:37:52  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19ea37756ae3716d'
+2026-06-08 13:37:52  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 13:37:53  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19ea37756ae3716d
+From: gogreen@cvlindia.in
+Subject: CVLKRA KYC Alert ReferenceId - 387092992
+Date: 2026-06-08 00:32
+Body:
+Dear RITESH KISHOR SONAVNE, Your KYC record bearing PAN OKXXXXXX9H has been fetched by AXIS SECURITIES LIMITED. As per SEBI guidelines, an intermediary with whom you are dealing with in securities market (broking/demat/mutual fund) needs to download your KYC details from KRA system to update their records when a Client opens an Account or transacts through the said Intermediary. Please be informed that CVL KRA deals with KRA KYC and can assist with queries pertaining ONLY to KYC. We do not create any account nor provide platform for investing. Kindly contact AXIS SECURITIES LIMITED at ANAND.SHAH@AXISSECURITIES.IN regarding such queries. This is an automated mail, kindly do not reply to this mail. Regards, CVL-KRA
+2026-06-08 13:37:53  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an automated notification and does not require any action or reply from the recipient. It is meant to inform the recipient that their KYC record has been fetched by AXIS SECURITIES LIMITED and provides contact information for queries related to the same."},"draft":null,"email_id":"19ea37756ae3716d","sender":"gogreen@cvlindia.in","subject":"CVLKRA KYC Alert ReferenceId - 387092992"}
+2026-06-08 13:37:53  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 13:37:53  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 13:37:53  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 13:37:53  INFO      [workday_graph]  ClassifyNode  ->  [4/10] subject='Your Weekend Spend Could Build Wealth 👀'  from='kotakneo@info.kotaksecurities.co.in'
+2026-06-08 13:37:53  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e9d1a8d84714b0'
+2026-06-08 13:37:54  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 13:37:54  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e9d1a8d84714b0
+From: kotakneo@info.kotaksecurities.co.in
+Subject: Your Weekend Spend Could Build Wealth 👀
+Date: 2026-06-06 18:53
+Body:
+body { margin: 0; padding: 0; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color: #ffffff; } img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; display: block; } table { border-collapse: collapse !important; mso-table-lspace: 0pt; mso-table-rspace: 0pt; } td { mso-line-height-rule: exactly; } .ExternalClass { width: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } p { margin: 0 0 15px 0; } a { text-decoration: none; color: #fd241d; } .ql-size-small { font-size: 0.75em; } .ql-size-large { font-size: 1.5em; } .ql-size-huge { font-size: 2.5em; } @media screen and (max-width: 600px) { .insight-box td{padding:10px !important;} .bottom-three tr td{padding:5px 5px !important;} .container { width: 100% !important; max-width: 100% !important; } .stack { display: block !important; width: 100% !important; max-width: 100% !important; } .mobile-padding { padding-left: 15px !important; padding-right: 15px !important; } .mobile-center { text-align: center !important; } .mobile-text-small { font-size: 12px !important; } .responsive-tab { display: block !important; width: auto !important; margin-bottom: 10px !important; } .spacer{display:none;} } @media (prefers-color-scheme: dark) { .dark-img { display: block !important; width: auto !important; overflow: visible !important; float: none !important; max-height: inherit !important; line-height: auto !important; margin-top: 0px !important; visibility: inherit !important; } .light-img { display: none !important; } body, .body-bg { background-color: #1a1a1a !important; color: #f0f0f0 !important; } .container-bg { background-color: #1a1a1a !important; } .text-dark { color: #f0f0f0 !important; } .text-grey { color: #bbbbbb !important; } .border-light { border-color: #444444 !important; } .footer-bg { background-color: #111111 !
+2026-06-08 13:37:54  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email appears to be a promotional or informational message, and does not require a response or immediate attention."},"draft":null,"email_id":"19e9d1a8d84714b0","sender":"kotakneo@info.kotaksecurities.co.in","subject":"Your Weekend Spend Could Build Wealth 👀"}
+2026-06-08 13:37:54  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 13:37:54  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 13:37:54  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 13:37:54  INFO      [workday_graph]  ClassifyNode  ->  [5/10] subject='New privacy settings for Search services'  from='google-noreply@google.com'
+2026-06-08 13:37:54  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e9a4a4a084a927'
+2026-06-08 13:37:55  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 13:37:56  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e9a4a4a084a927
+From: google-noreply@google.com
+Subject: New privacy settings for Search services
+Date: 2026-06-06 05:47
+Body:
+96 *{box-sizing:border-box}body{margin:0;padding:0}a[x-apple-data-detectors]{color:inherit!important;text-decoration:inherit!important}#MessageViewBody a{color:inherit;text-decoration:none}p{line-height:inherit}.desktop_hide,.desktop_hide table{mso-hide:all;display:none;max-height:0;overflow:hidden}.image_block img+div{display:none}sub,sup{font-size:75%;line-height:0}#converted-body .list_block ol,#converted-body .list_block ul,.body [class~=x_list_block] ol,.body [class~=x_list_block] ul,u+.body .list_block ol,u+.body .list_block ul{padding-left:20px} @media (max-width:590px){.mobile_hide{display:none}.row-content{width:100%!important}.stack .column{width:100%;display:block}.mobile_hide{min-height:0;max-height:0;max-width:0;overflow:hidden;font-size:0}.desktop_hide,.desktop_hide table{display:table!important;max-height:none!important}.row-2 .column-1 .block-2.image_block td.pad{padding:0!important}.row-2 .column-1{padding:5px 0!important}} sup, sub { font-size: 100% !important; } sup { mso-text-raise:10% } sub { mso-text-raise:-10% } riteshsonawane280@gmail.com Hello Ritesh, We’re updating our settings to give you even more control over saved history and personalized recommendations across Google Search services, including Search, Maps, Shopping, Hotels, Flights, Translate, and News. You’ll see this change in your Google Account in the next few days. What’s changing Previously, saving history and personalization were managed by Web &amp; App Activity. Going forward, we&#39;re introducing two new settings to help you better tailor your experience: Search Services History and Personalized Recommendations . These settings let you revisit your past searches and decide if you want your experience to be personalized. You can turn these settings on or off at any time. As people increasingly search in new ways, like searching a photo with Lens, Search Services History now includes media from your interactions, which you can stop saving at any time. How this affects your ac
+2026-06-08 13:37:56  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an informational update from Google about changes to their privacy settings, and does not require any action or reply from the recipient."},"draft":null,"email_id":"19e9a4a4a084a927","sender":"google-noreply@google.com","subject":"New privacy settings for Search services"}
+2026-06-08 13:37:56  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 13:37:56  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 13:37:56  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 13:37:56  INFO      [workday_graph]  ClassifyNode  ->  [6/10] subject='Persistent sandboxes and Docker support, now in Vercel Sandbox'  from='ship@info.vercel.com'
+2026-06-08 13:37:56  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e9957adbe3d2c1'
+2026-06-08 13:37:57  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 13:37:57  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e9957adbe3d2c1
+From: ship@info.vercel.com
+Subject: Persistent sandboxes and Docker support, now in Vercel Sandbox
+Date: 2026-06-06 01:22
+Body:
+Persistent sandboxes and Docker support, now in Vercel Sandbox #outlook a { padding:0; } table { border-spacing:0;} img { border:0;height:auto;line-height:100%; outline:none;text-decoration:none;-ms-interpolation-mode:bicubic; } p { display:block; } :root { color-scheme: light dark; } code { background-color: #f2f2f2; white-space: nowrap; border-radius: 4px; padding: 2px 4px; border: 1px solid #e6e6e6; font-family: 'Geist Mono', 'Courier New', Courier, monospace; font-size: 0.9em; } @media (prefers-color-scheme: dark) { code { background-color: #1a1a1a; border-color: #292929; } } 96 table { border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt; } .mj-outlook-group-fix { width:100% !important; } @import url(https://client-data.knak.io/production/company_data/672a519344809/custom-fonts/672b8bb24c152/fonts.css); @import url(https://client-data.knak.io/production/company_data/672a519344809/custom-fonts/672b8bb24c152/fonts.css); @media only screen and (min-width:480px) { .mj-column-per-100 { width:100% !important; max-width: 100%; } } body, .body { margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%; } [data-ogsc] .img-container img:hover, [data-ogsb] .img-container img:hover { background-color: transparent !important } .links-0070F3-underline a { color: #0070F3; text-decoration: underline; } #body #main [x-apple-data-detectors-type] { color: inherit !important; -webkit-text-decoration-color: inherit !important; text-decoration: inherit !important; font-weight: inherit !important; } .links-000000-underline a { color: #000000; text-decoration: underline; } .links-0070F3 a { color: #0070F3; text-decoration: none; } u ~ div ul, u ~ div ol {margin-left: -3px} [data-ogsc] .social-container img:hover, [data-ogsb] .social-container img:hover { background-color: transparent !important } .links-8F8F8F-underline a { color: #8F8F8F; text-decoration: underline; } @media only screen and (min-width:480px) { .font-size-37px { font-size: 37px !importa
+2026-06-08 13:37:57  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an informational update about new features in Vercel Sandbox and does not require any action or immediate attention."},"draft":null,"email_id":"19e9957adbe3d2c1","sender":"ship@info.vercel.com","subject":"Persistent sandboxes and Docker support, now in Vercel Sandbox"}
+2026-06-08 13:37:57  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 13:37:57  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 13:37:57  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 13:37:57  INFO      [workday_graph]  ClassifyNode  ->  [7/10] subject='ones.trade, see mr_vijayy_95, sudhanshutrivediofficial and more in your feed'  from='follow-suggestions@mail.instagram.com'
+2026-06-08 13:37:57  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e98c72d6dd4947'
+2026-06-08 13:37:58  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 13:37:59  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e98c72d6dd4947
+From: follow-suggestions@mail.instagram.com
+Subject: ones.trade, see mr_vijayy_95, sudhanshutrivediofficial and more in your feed
+Date: 2026-06-05 22:44
+Body:
+Facebook @media all and (max-width: 480px){*[class].ib_t{min-width:100%!important}*[class].ib_row{display:block!important}*[class].ib_ext{display:block!important;padding:10px 0 5px;vertical-align:top!important;width:100%!important}*[class].ib_img,*[class].ib_mid{vertical-align:top!important}*[class].mb_blk{display:block!important;padding-bottom:10px;width:100%!important}*[class].mb_hide{display:none!important}*[class].mb_inl{display:inline!important}*[class].d_mb_flex{display:block!important}}.d_mb_show{display:none}.d_mb_flex{display:flex}@media only screen and (max-device-width: 480px){.d_mb_hide{display:none!important}.d_mb_show,.d_mb_flex{display:block!important}}.mb_text h1,.mb_text h2,.mb_text h3,.mb_text h4,.mb_text h5,.mb_text h6{line-height:normal}.mb_work_text h1{font-size:18px;line-height:normal;margin-top:4px}.mb_work_text h2,.mb_work_text h3{font-size:16px;line-height:normal;margin-top:4px}.mb_work_text h4,.mb_work_text h5,.mb_work_text h6{font-size:14px;line-height:normal}.mb_work_text a{color:#1270e9}.mb_work_text p{margin-top:4px} &nbsp; &nbsp;&nbsp;&nbsp; New people to discover Suggested accounts based on your interests: mr_vijayy_95 , sudhanshutrivediofficial , and 4 others. Open&nbsp;Instagram &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Suggested for you See all Vijay Chavan mr_vijayy_95 Followed by rajchavan_09 View&nbsp;profile Dr Sudhanshu Trivedi sudhanshutrivediofficial Followed by dipanshu_sapate_2004, devjani398 and 10 others View&nbsp;profile Eknath Shinde - एकनाथ शिंदे mieknathshinde Followed by sarthakpatil1007, _vijay_borude_1526 and 8 others View&nbsp;profile Gautam Adani gautam.adani Followed by kashid9905, devjani398 and 23 others View&nbsp;profile Sagar Gade patil sagargadepatil1996 View&nbsp;profile Dr. Shrikant Lata Eknath Shinde drshrikantshinde Followed by sarthakpatil1007, dipanshu_sapate_2004 and 2 others View&nbsp;profile 1 You have 1 notification you may not have seen. &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp
+2026-06-08 13:37:59  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an informational notification about suggested accounts to follow on Instagram, and does not require any immediate action or response."},"draft":null,"email_id":"19e98c72d6dd4947","sender":"follow-suggestions@mail.instagram.com","subject":"ones.trade, see mr_vijayy_95, sudhanshutrivediofficial and more in your feed"}
+2026-06-08 13:37:59  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 13:37:59  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 13:37:59  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 13:37:59  INFO      [workday_graph]  ClassifyNode  ->  [8/10] subject="Ritesh, Marathwada Mitra Mandal's College of Engineering, Pune has a new post for you"  from='updates-noreply@linkedin.com'
+2026-06-08 13:37:59  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e98723c8fa3abb'
+2026-06-08 13:37:59  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 13:38:00  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e98723c8fa3abb
+From: updates-noreply@linkedin.com
+Subject: Ritesh, Marathwada Mitra Mandal's College of Engineering, Pune has a new post for you
+Date: 2026-06-05 21:11
+Body:
+@media (max-width: 512px) { .mercado-container { width: 100% !important; } } @media (max-width: 480px) { .inline-button, .inline-button table { display: none !important; } .full-width-button, .full-width-button table { display: table !important; } } @media (max-width: 320px) { .games-notification-badge { display: none !important; } } body {font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Fira Sans', Ubuntu, Oxygen, 'Oxygen Sans', Cantarell, 'Droid Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Lucida Grande', Helvetica, Arial, sans-serif;} 🏆 A Proud Milestone for MMCOE Pune! Marathwada Mitra Mandal’s College of… ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Marathwada Mitra Mandal's College of Engineering, Pune 11,065 followers 🏆 A Proud Milestone for MMCOE Pune! Marathwada Mitra Mandal’s College of Engineering (MMCOE), Pune, has… see more 194 · 3 Comments Read more LinkedIn News India 8,745,816 followers India's semiconductor story is entering a new phase, suggest reports. Chip startups are moving from… see more 98 · 16 Comments Read more See more on LinkedIn Get the new LinkedIn desktop app Also available on mobile This email was intended for Ritesh Sonawane (Student at Marathwada Mitra Mandal&#39;s College of Engineering, Pune) Learn why we included this. You are receiving Network Conversations emails. Some content may be automatically translated based on your settings . Unsubscribe · Help © 2026 LinkedIn Corporation, 1&zwnj;000 West Maude Avenue, Sunnyvale, CA 94085. LinkedIn and the LinkedIn logo are registered trademarks of LinkedIn.
+2026-06-08 13:38:00  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an informational update about a new post on LinkedIn and does not require any action or response."},"draft":null,"email_id":"19e98723c8fa3abb","sender":"updates-noreply@linkedin.com","subject":"Ritesh, Marathwada Mitra Mandal's College of Engineering, Pune has a new post for you"}
+2026-06-08 13:38:00  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 13:38:00  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 13:38:00  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 13:38:00  INFO      [workday_graph]  ClassifyNode  ->  [9/10] subject='RITESH , Got 60 seconds? We have 2 questions!'  from='kotakneo@info.kotaksecurities.co.in'
+2026-06-08 13:38:00  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e97d8d8c9dc9d5'
+2026-06-08 13:38:01  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 13:38:02  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e97d8d8c9dc9d5
+From: kotakneo@info.kotaksecurities.co.in
+Subject: RITESH , Got 60 seconds? We have 2 questions!
+Date: 2026-06-05 18:23
+Body:
+:root { color-scheme: light dark; supported-color-schemes: light dark; } .reactmarkdown p { margin: 0; } .reactmarkdown a { color: rgba(109, 109, 109, 1); font-weight: 500; } @media (max-width: 640px) { .mob_Min_height { min-height: auto !important; } .sm-my-17 { margin-top: 17px !important; margin-bottom: 17px !important; } .sm-mx-0 { margin-left: 0 !important; margin-right: 0 !important; } .sm-ml-116 { margin-left: 116px !important; } .sm-ml-0 { margin-left: 0 !important; } .sm-block { display: block !important; } .sm-inline-block { display: inline-block !important; } .sm-table-cell { display: table-cell !important; } .sm-table-row { display: table-row !important; } .sm-hidden { display: none !important; } .sm-h-145 { height: 145px !important; } .sm-h-32 { height: 32px !important; } .sm-h-280 { height: 280px !important; } .sm-h-8 { height: 8px !important; } .sm-h-68 { height: 68px !important; } .sm-h-79 { height: 79px !important; } .sm-w-full { width: 100% !important; } .sm-w-60 { width: 60px !important; } .sm-w-278 { width: 278px !important; } .sm-w-295 { width: 295px !important; } .sm-w-294 { width: 294px !important; } .sm-w-6 { width: 6px !important; } .sm-bg-cover { background-size: cover !important; } .sm-bg-voucher { background-size: 294px 93px !important; } .sm-px-0 { padding-left: 0 !important; padding-right: 0 !important; } .sm-px-20 { padding-left: 20px !important; padding-right: 20px !important; } .sm-px-22 { padding-left: 22px !important; padding-right: 22px !important; } .sm-px-27 { padding-left: 27px !important; padding-right: 27px !important; } .sm-px-35 { padding-left: 35px !important; padding-right: 35px !important; } .sm-px-10 { padding-left: 10px !important; padding-right: 10px !important; } .sm-px-15 { padding-left: 15px !important; padding-right: 15px !important; } .sm-py-20 { padding-top: 20px !important; padding-bottom: 20px !important; } .sm-px-4 { padding-left: 4px !important; padding-right: 4px !important; } .sm-py-8 { padding-top: 8px !i
+2026-06-08 13:38:02  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email appears to be promotional and does not require a reply or immediate attention. It is likely a marketing email from Kotak Securities, and the content is informational."},"draft":null,"email_id":"19e97d8d8c9dc9d5","sender":"kotakneo@info.kotaksecurities.co.in","subject":"RITESH , Got 60 seconds? We have 2 questions!"}
+2026-06-08 13:38:02  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 13:38:02  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 13:38:02  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 13:38:02  INFO      [workday_graph]  ClassifyNode  ->  [10/10] subject='Meet request'  from='ritesh.sonawane@coditas.com'
+2026-06-08 13:38:02  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e964e532fe0d25'
+2026-06-08 13:38:02  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 13:38:03  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e964e532fe0d25
+From: ritesh.sonawane@coditas.com
+Subject: Meet request
+Date: 2026-06-05 11:12
+Body:
+Hi, Could we schedule a quick meeting to discuss the current task and align on the next steps? Please let me know a convenient time for you. Thanks, Ritesh Please do not print this email unless it is absolutely necessary. This e-mail communication and any attachments to it are confidential and privileged to Coditas and are strictly intended only for the personal and confidential use of the designated recipient(s) named above. If you are not the intended recipient of this message, you are hereby notified that any review, dissemination, distribution, or copying of this message is strictly prohibited and may be unlawful. Please notify the sender immediately and destroy all copies of this message along with all attachments thereto.
+2026-06-08 13:38:03  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"actionable","reasoning":"The email requests a meeting to discuss the current task and align on the next steps, which requires a response to schedule a convenient time."},"draft":{"body":"Dear Ritesh, I'd be happy to discuss the current task and next steps. Please let me suggest a few times that work for me, and I'll look forward to hearing back from you to finalize a meeting time.","subject":"Re: Meet request","to":"ritesh.sonawane@coditas.com"},"email_id":"19e964e532fe0d25","sender":"ritesh.sonawane@coditas.com","subject":"Meet request"}
+2026-06-08 13:38:03  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 13:38:03  INFO      [workday_graph]  ClassifyNode  ->  classified as 'actionable'  (draft=True)
+2026-06-08 13:38:03  INFO      [workday_graph]  DraftNode  ->  email is actionable with draft -> routing to HumanGateNode
+2026-06-08 13:38:03  INFO      [workday_graph]  HumanGateNode  ->  stored pending draft  id='17692cea-84c7-48fc-bb73-424371355fc2'  subject='Meet request'
+2026-06-08 13:38:03  INFO      [workday_graph]  ClassifyNode  ->  all 10 emails processed -> BuildEmailResultNode  (actionable=1)
+2026-06-08 13:38:03  INFO      [workday_graph]  BuildEmailResultNode  ->  email result built: processed=10  actionable=1  pending=1
+2026-06-08 13:38:03  INFO      [workday_graph]  BuildEmailResultNode  ->  calendar needed, routing to CalendarActionNode
+2026-06-08 13:38:03  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Monday 2026-06-08 01:38 PM  day_overview=True
+2026-06-08 13:38:06  INFO      [calendar_action_agent]  get_events tool -> returned 4 events
+2026-06-08 13:38:08  INFO      [calendar_action_agent]  check_conflicts tool -> no conflicts among 4 events
+2026-06-08 13:38:08  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 01:38 PM (Asia/Kolkata). Today is day_offset=0.
+User request: Give a read-only summary of today's calendar as part of a full day briefing: call get_events and check_conflicts, then describe today's schedule and flag any conflicts. Do NOT create, change, or cancel anything and do NOT ask a follow-up question.
+2026-06-08 13:38:08  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {}
+2026-06-08 13:38:08  DEBUG     [workday_graph]  [tool-return] get_events -> Events today:
+id=44hnbqbfl62320t9ruokmi2h8g | title='client call' | 12:00 PM-12:30 PM | start_unix=1780900200 | end_unix=1780902000 | attendees=none
+id=a62qcojbi4ro2kgm2hlcilj08k | title='internal discussion' | 01:00 PM-01:30 PM | start_unix=1780903800 | end_unix=1780905600 | attendees=none
+id=gn7siitcoc2jg5un7lub60qbgg | title='sprint planning' | 03:00 PM-03:30 PM | start_unix=1780911000 | end_unix=1780912800 | attendees=none
+id=7u0jolg50f19gfmbqcke44vtjc | title='plan allocation' | 03:30 PM-04:00 PM | start_unix=1780912800 | end_unix=1780914600 | attendees=none
+2026-06-08 13:38:08  DEBUG     [workday_graph]  [model-response] tool-call: check_conflicts  args: {}
+2026-06-08 13:38:08  DEBUG     [workday_graph]  [tool-return] check_conflicts -> No conflicts today.
+2026-06-08 13:38:08  DEBUG     [workday_graph]  [model-response] text: Today's schedule:
+
+- 12:00 PM – 12:30 PM: client call  
+- 1:00 PM – 1:30 PM: internal discussion  
+- 3:00 PM – 3:30 PM: sprint planning  
+- 3:30 PM – 4:00 PM: plan allocation  
+
+There are no conflicts.
+2026-06-08 13:38:08  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=False  reply="Today's schedule:\n\n- 12:00\u202fPM – 12:30\u202fPM: client call  \n- 1:00\u202fPM – 1:30\u202fPM: internal discussion  \n- 3:00\u202fPM – 3:30\u202fPM: sprint planning  \n- 3:30\u202fPM – 4:00\u202fPM: plan allocation  \n\nThere are no conflicts."
+2026-06-08 13:38:08  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-08 13:38:09  DEBUG     [workday_graph]  [model-request] prompt: The user sent a conversational message: "Hi"
+Respond naturally and warmly. Briefly mention you can help with emails and calendar.
+2026-06-08 13:38:09  DEBUG     [workday_graph]  [model-response] text: Hello, it's nice to connect with you. I'm here to help you stay on top of your day - whether that's managing your inbox or keeping track of your schedule. How can I assist you today?
+2026-06-08 13:38:09  DEBUG     [workday_graph]  [model-request] prompt: User query: "Plan a day for me"
+Intent: "day_overview"
+
+[EMAILS]
+Processed: 10 | Actionable: 1 | Pending drafts: 1
+  - [FYI] 'Welcome to Logfire: Get Started Quickly' from hello@pydantic.dev
+  - [FYI] 'Resurgence of weakness expected below 23,300 while US-markets saw deep cuts overnight' from updates@info.kotakneo.com
+  - [FYI] 'CVLKRA KYC Alert ReferenceId - 387092992' from gogreen@cvlindia.in
+  - [FYI] 'Your Weekend Spend Could Build Wealth 👀' from kotakneo@info.kotaksecurities.co.in
+  - [FYI] 'New privacy settings for Search services' from google-noreply@google.com
+  - [FYI] 'Persistent sandboxes and Docker support, now in Vercel Sandbox' from ship@info.vercel.com
+  - [FYI] 'ones.trade, see mr_vijayy_95, sudhanshutrivediofficial and more in your feed' from follow-suggestions@mail.instagram.com
+  - [FYI] "Ritesh, Marathwada Mitra Mandal's College of Engineering, Pune has a new post for you" from updates-noreply@linkedin.com
+  - [FYI] 'RITESH , Got 60 seconds? We have 2 questions!' from kotakneo@info.kotaksecurities.co.in
+  - [ACTIONABLE] 'Meet request' from ritesh.sonawane@coditas.com (draft reply ready)
+
+[CALENDAR ACTION]
+Today's schedule:
+
+- 12:00 PM – 12:30 PM: client call  
+- 1:00 PM – 1:30 PM: internal discussion  
+- 3:00 PM – 3:30 PM: sprint planning  
+- 3:30 PM – 4:00 PM: plan allocation  
+
+There are no conflicts.
+Status: No change made
+
+2026-06-08 13:38:09  DEBUG     [workday_graph]  [model-response] text: You have a fairly busy day ahead with several meetings, including a client call, an internal discussion, sprint planning, and plan allocation. On the email front, you have one actionable item, a meet request from ritesh.sonawane@coditas.com, along with several FYI emails that you may want to review when you have a moment. Nothing has been changed in your calendar.
+2026-06-08 13:38:09  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-08 13:38:09  INFO      [workday_graph]  === Workday pipeline END  planner_h=6  cal_action_h=6  synth_h=4  cal_open=False ===
+2026-06-08 13:48:18  INFO      [main]  Workday Manager starting up
+2026-06-08 13:48:25  INFO      [main]  Workday Manager starting up
+2026-06-08 13:48:34  INFO      [main]  Workday Manager starting up
+2026-06-08 13:48:42  INFO      [main]  Workday Manager starting up
+2026-06-08 13:48:50  INFO      [main]  Workday Manager starting up
+2026-06-08 13:49:03  INFO      [main]  Workday Manager starting up
+2026-06-08 13:49:14  INFO      [main]  Workday Manager starting up
+2026-06-08 13:49:19  INFO      [main]  Workday Manager starting up
+2026-06-08 13:50:46  INFO      [workday_graph]  FetchEmailsNode  ->  fetching up to 10 emails
+2026-06-08 13:50:46  ERROR     [workday_graph]  FetchEmailsNode  ->  failed to fetch emails: nylas down
+Traceback (most recent call last):
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\graph\planner_graph.py", line 106, in run
+    ctx.state.emails = await list_emails(self.n)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 7, in boom
+RuntimeError: nylas down
+2026-06-08 13:50:46  INFO      [workday_graph]  FetchEmailsNode  ->  fetched 0 emails
+2026-06-08 13:50:46  INFO      [workday_graph]  ClassifyNode  ->  all 0 emails processed -> BuildEmailResultNode  (actionable=0)
+2026-06-08 14:09:08  INFO      [main]  Workday Manager starting up
+2026-06-08 14:09:28  INFO      [main]  Workday Manager starting up
+2026-06-08 14:09:41  INFO      [main]  Workday Manager starting up
+2026-06-08 14:09:58  INFO      [main]  Workday Manager starting up
+2026-06-08 14:10:09  INFO      [main]  Workday Manager starting up
+2026-06-08 14:10:28  INFO      [main]  Workday Manager starting up
+2026-06-08 14:10:34  INFO      [main]  Workday Manager starting up
+2026-06-08 14:10:40  INFO      [main]  Workday Manager starting up
+2026-06-08 14:10:58  INFO      [main]  Workday Manager starting up
+2026-06-08 14:11:07  INFO      [main]  Workday Manager starting up
+2026-06-08 14:11:13  INFO      [main]  Workday Manager starting up
+2026-06-08 14:11:21  INFO      [main]  Workday Manager starting up
+2026-06-08 14:11:45  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-06-08 14:12:33  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-06-08 14:13:25  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-06-08 14:31:22  INFO      [workday_graph]  === Workday pipeline START  query='Hey'  session='default' ===
+2026-06-08 14:31:22  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'Hey'
+2026-06-08 14:31:24  DEBUG     [workday_graph]  [model-request] prompt: Hey
+2026-06-08 14:31:24  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"InteractNode"}
+2026-06-08 14:31:24  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:31:24  INFO      [workday_graph]  PlannerNode  ->  decision: intent='greeting'  next_node='InteractNode'  needs_email=False  needs_calendar=False
+2026-06-08 14:31:24  INFO      [workday_graph]  PlannerNode  ->  routing to InteractNode
+2026-06-08 14:31:24  INFO      [workday_graph]  InteractNode  ->  conversational message, responding directly
+2026-06-08 14:31:24  DEBUG     [workday_graph]  [model-request] prompt: The user sent a conversational message: "Hey"
+Respond naturally and warmly. Briefly mention you can help with emails and calendar.
+2026-06-08 14:31:24  DEBUG     [workday_graph]  [model-response] text: Hello. It's nice to connect with you. I'm here to help you stay on top of your workday, whether that's catching up on important emails in your inbox or checking your calendar for upcoming events. How can I assist you today?
+2026-06-08 14:31:24  INFO      [workday_graph]  === Workday pipeline END  planner_h=3  cal_action_h=0  synth_h=2  cal_open=False ===
+2026-06-08 14:32:37  INFO      [workday_graph]  === Workday pipeline START  query='Plan a day for me'  session='default' ===
+2026-06-08 14:32:37  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'Plan a day for me'
+2026-06-08 14:32:37  DEBUG     [workday_graph]  [model-request] prompt: Hey
+2026-06-08 14:32:37  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"InteractNode"}
+2026-06-08 14:32:37  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:32:37  DEBUG     [workday_graph]  [model-request] prompt: Plan a day for me
+2026-06-08 14:32:37  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"day planning","needs_calendar":true,"needs_clarification":false,"needs_email":true,"next_node":"FetchEmailsNode"}
+2026-06-08 14:32:37  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:32:37  INFO      [workday_graph]  PlannerNode  ->  decision: intent='day planning'  next_node='FetchEmailsNode'  needs_email=True  needs_calendar=True
+2026-06-08 14:32:37  INFO      [workday_graph]  PlannerNode  ->  routing to FetchEmailsNode
+2026-06-08 14:32:38  INFO      [workday_graph]  FetchEmailsNode  ->  fetching up to 10 emails
+2026-06-08 14:32:40  INFO      [workday_graph]  FetchEmailsNode  ->  fetched 10 emails
+2026-06-08 14:32:40  INFO      [workday_graph]  ClassifyNode  ->  [1/10] subject='Welcome to Logfire: Get Started Quickly'  from='hello@pydantic.dev'
+2026-06-08 14:32:40  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19ea5ce4429754b4'
+2026-06-08 14:32:42  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:32:43  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19ea5ce4429754b4
+From: hello@pydantic.dev
+Subject: Welcome to Logfire: Get Started Quickly
+Date: 2026-06-08 11:26
+Body:
+Setup in minutes ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ Welcome to Logfire - Get started with easy observability. Welcome to Logfire! We're obsessed with making observability easy. Here's what you do to get up and running: Log into Logfire From your Organisation, click New project to create your first project Install the SDK with pip install logfire Authenticate with logfire auth Create a Python script (see here about using other languages ) and instrument your app: import logfire logfire.configure() logfire​.info('Hello, {name}!', name='world') That's it - your logs will appear within seconds in the Logfire UI. For more details, see our getting started guide Got questions? Here are some ways to get in touch, or just reply to this email. Best, The Pydantic Team Pydantic Services, Inc. ・ pydantic.dev ・ github/pydantic Unsubscribe
+2026-06-08 14:32:43  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an automated welcome message with instructions on how to get started with Logfire, and does not require a reply or immediate attention."},"draft":null,"email_id":"19ea5ce4429754b4","sender":"hello@pydantic.dev","subject":"Welcome to Logfire: Get Started Quickly"}
+2026-06-08 14:32:43  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:32:43  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:32:43  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:32:43  INFO      [workday_graph]  ClassifyNode  ->  [2/10] subject='Resurgence of weakness expected below 23,300 while US-markets saw deep cuts overnight'  from='updates@info.kotakneo.com'
+2026-06-08 14:32:43  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19ea5765cb35e2a9'
+2026-06-08 14:32:44  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:32:44  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19ea5765cb35e2a9
+From: updates@info.kotakneo.com
+Subject: Resurgence of weakness expected below 23,300 while US-markets saw deep cuts overnight
+Date: 2026-06-08 09:50
+Body:
+:root { supported-color-schemes: light dark; color-scheme: light dark; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 400; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 500; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 700; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmWUlfBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* Base styles (for desktop and default) */ #outlook a, body { padding: 0; } .ReadMsgBody { width: 100%; } .ExternalClass { width: 100%; } .ExternalClass, img, .ExternalClass font, .ExternalClass td, .ExternalClass div, .ExternalClass span, .ExternalClass p { line-height: 100%; } .mobileFourCol a { text-decoration: underline !important; } table, td { mso-table-lspace: 0; mso-table-rspace: 0; } table, td, tr { border-collapse: collapse; } td, body, span, p, div, li, a, th { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-line-height-rule: exactly; } body { margin: 0; width: 100% !important; -webkit-font-smoothing: antialiased; } img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; } a[x-apple-data-detectors] { color: inherit 
+2026-06-08 14:32:44  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an informational update about market trends and does not require any immediate action or response."},"draft":null,"email_id":"19ea5765cb35e2a9","sender":"updates@info.kotakneo.com","subject":"Resurgence of weakness expected below 23,300 while US-markets saw deep cuts overnight"}
+2026-06-08 14:32:44  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:32:44  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:32:44  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:32:44  INFO      [workday_graph]  ClassifyNode  ->  [3/10] subject='CVLKRA KYC Alert ReferenceId - 387092992'  from='gogreen@cvlindia.in'
+2026-06-08 14:32:44  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19ea37756ae3716d'
+2026-06-08 14:32:45  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:32:46  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19ea37756ae3716d
+From: gogreen@cvlindia.in
+Subject: CVLKRA KYC Alert ReferenceId - 387092992
+Date: 2026-06-08 00:32
+Body:
+Dear RITESH KISHOR SONAVNE, Your KYC record bearing PAN OKXXXXXX9H has been fetched by AXIS SECURITIES LIMITED. As per SEBI guidelines, an intermediary with whom you are dealing with in securities market (broking/demat/mutual fund) needs to download your KYC details from KRA system to update their records when a Client opens an Account or transacts through the said Intermediary. Please be informed that CVL KRA deals with KRA KYC and can assist with queries pertaining ONLY to KYC. We do not create any account nor provide platform for investing. Kindly contact AXIS SECURITIES LIMITED at ANAND.SHAH@AXISSECURITIES.IN regarding such queries. This is an automated mail, kindly do not reply to this mail. Regards, CVL-KRA
+2026-06-08 14:32:46  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an automated notification and explicitly states not to reply. It is for informational purposes only, providing an update about the KYC record."},"draft":null,"email_id":"19ea37756ae3716d","sender":"gogreen@cvlindia.in","subject":"CVLKRA KYC Alert ReferenceId - 387092992"}
+2026-06-08 14:32:46  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:32:46  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:32:46  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:32:46  INFO      [workday_graph]  ClassifyNode  ->  [4/10] subject='Your Weekend Spend Could Build Wealth 👀'  from='kotakneo@info.kotaksecurities.co.in'
+2026-06-08 14:32:46  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e9d1a8d84714b0'
+2026-06-08 14:32:47  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:32:48  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e9d1a8d84714b0
+From: kotakneo@info.kotaksecurities.co.in
+Subject: Your Weekend Spend Could Build Wealth 👀
+Date: 2026-06-06 18:53
+Body:
+body { margin: 0; padding: 0; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color: #ffffff; } img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; display: block; } table { border-collapse: collapse !important; mso-table-lspace: 0pt; mso-table-rspace: 0pt; } td { mso-line-height-rule: exactly; } .ExternalClass { width: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } p { margin: 0 0 15px 0; } a { text-decoration: none; color: #fd241d; } .ql-size-small { font-size: 0.75em; } .ql-size-large { font-size: 1.5em; } .ql-size-huge { font-size: 2.5em; } @media screen and (max-width: 600px) { .insight-box td{padding:10px !important;} .bottom-three tr td{padding:5px 5px !important;} .container { width: 100% !important; max-width: 100% !important; } .stack { display: block !important; width: 100% !important; max-width: 100% !important; } .mobile-padding { padding-left: 15px !important; padding-right: 15px !important; } .mobile-center { text-align: center !important; } .mobile-text-small { font-size: 12px !important; } .responsive-tab { display: block !important; width: auto !important; margin-bottom: 10px !important; } .spacer{display:none;} } @media (prefers-color-scheme: dark) { .dark-img { display: block !important; width: auto !important; overflow: visible !important; float: none !important; max-height: inherit !important; line-height: auto !important; margin-top: 0px !important; visibility: inherit !important; } .light-img { display: none !important; } body, .body-bg { background-color: #1a1a1a !important; color: #f0f0f0 !important; } .container-bg { background-color: #1a1a1a !important; } .text-dark { color: #f0f0f0 !important; } .text-grey { color: #bbbbbb !important; } .border-light { border-color: #444444 !important; } .footer-bg { background-color: #111111 !
+2026-06-08 14:32:48  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email appears to be a promotional or informational message, and does not require any immediate action or response."},"draft":null,"email_id":"19e9d1a8d84714b0","sender":"kotakneo@info.kotaksecurities.co.in","subject":"Your Weekend Spend Could Build Wealth "}
+2026-06-08 14:32:48  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:32:48  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:32:48  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:32:48  INFO      [workday_graph]  ClassifyNode  ->  [5/10] subject='New privacy settings for Search services'  from='google-noreply@google.com'
+2026-06-08 14:32:48  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e9a4a4a084a927'
+2026-06-08 14:32:49  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:32:50  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e9a4a4a084a927
+From: google-noreply@google.com
+Subject: New privacy settings for Search services
+Date: 2026-06-06 05:47
+Body:
+96 *{box-sizing:border-box}body{margin:0;padding:0}a[x-apple-data-detectors]{color:inherit!important;text-decoration:inherit!important}#MessageViewBody a{color:inherit;text-decoration:none}p{line-height:inherit}.desktop_hide,.desktop_hide table{mso-hide:all;display:none;max-height:0;overflow:hidden}.image_block img+div{display:none}sub,sup{font-size:75%;line-height:0}#converted-body .list_block ol,#converted-body .list_block ul,.body [class~=x_list_block] ol,.body [class~=x_list_block] ul,u+.body .list_block ol,u+.body .list_block ul{padding-left:20px} @media (max-width:590px){.mobile_hide{display:none}.row-content{width:100%!important}.stack .column{width:100%;display:block}.mobile_hide{min-height:0;max-height:0;max-width:0;overflow:hidden;font-size:0}.desktop_hide,.desktop_hide table{display:table!important;max-height:none!important}.row-2 .column-1 .block-2.image_block td.pad{padding:0!important}.row-2 .column-1{padding:5px 0!important}} sup, sub { font-size: 100% !important; } sup { mso-text-raise:10% } sub { mso-text-raise:-10% } riteshsonawane280@gmail.com Hello Ritesh, We’re updating our settings to give you even more control over saved history and personalized recommendations across Google Search services, including Search, Maps, Shopping, Hotels, Flights, Translate, and News. You’ll see this change in your Google Account in the next few days. What’s changing Previously, saving history and personalization were managed by Web &amp; App Activity. Going forward, we&#39;re introducing two new settings to help you better tailor your experience: Search Services History and Personalized Recommendations . These settings let you revisit your past searches and decide if you want your experience to be personalized. You can turn these settings on or off at any time. As people increasingly search in new ways, like searching a photo with Lens, Search Services History now includes media from your interactions, which you can stop saving at any time. How this affects your ac
+2026-06-08 14:32:50  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is informational and does not require a reply. It is about updating privacy settings for Google Search services."},"draft":null,"email_id":"19e9a4a4a084a927","sender":"google-noreply@google.com","subject":"New privacy settings for Search services"}
+2026-06-08 14:32:50  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:32:50  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:32:50  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:32:50  INFO      [workday_graph]  ClassifyNode  ->  [6/10] subject='Persistent sandboxes and Docker support, now in Vercel Sandbox'  from='ship@info.vercel.com'
+2026-06-08 14:32:50  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e9957adbe3d2c1'
+2026-06-08 14:32:52  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:32:52  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e9957adbe3d2c1
+From: ship@info.vercel.com
+Subject: Persistent sandboxes and Docker support, now in Vercel Sandbox
+Date: 2026-06-06 01:22
+Body:
+Persistent sandboxes and Docker support, now in Vercel Sandbox #outlook a { padding:0; } table { border-spacing:0;} img { border:0;height:auto;line-height:100%; outline:none;text-decoration:none;-ms-interpolation-mode:bicubic; } p { display:block; } :root { color-scheme: light dark; } code { background-color: #f2f2f2; white-space: nowrap; border-radius: 4px; padding: 2px 4px; border: 1px solid #e6e6e6; font-family: 'Geist Mono', 'Courier New', Courier, monospace; font-size: 0.9em; } @media (prefers-color-scheme: dark) { code { background-color: #1a1a1a; border-color: #292929; } } 96 table { border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt; } .mj-outlook-group-fix { width:100% !important; } @import url(https://client-data.knak.io/production/company_data/672a519344809/custom-fonts/672b8bb24c152/fonts.css); @import url(https://client-data.knak.io/production/company_data/672a519344809/custom-fonts/672b8bb24c152/fonts.css); @media only screen and (min-width:480px) { .mj-column-per-100 { width:100% !important; max-width: 100%; } } body, .body { margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%; } [data-ogsc] .img-container img:hover, [data-ogsb] .img-container img:hover { background-color: transparent !important } .links-0070F3-underline a { color: #0070F3; text-decoration: underline; } #body #main [x-apple-data-detectors-type] { color: inherit !important; -webkit-text-decoration-color: inherit !important; text-decoration: inherit !important; font-weight: inherit !important; } .links-000000-underline a { color: #000000; text-decoration: underline; } .links-0070F3 a { color: #0070F3; text-decoration: none; } u ~ div ul, u ~ div ol {margin-left: -3px} [data-ogsc] .social-container img:hover, [data-ogsb] .social-container img:hover { background-color: transparent !important } .links-8F8F8F-underline a { color: #8F8F8F; text-decoration: underline; } @media only screen and (min-width:480px) { .font-size-37px { font-size: 37px !importa
+2026-06-08 14:32:52  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is informational and does not require a reply or immediate attention. It appears to be a newsletter or update about new features in Vercel Sandbox."},"draft":null,"email_id":"19e9957adbe3d2c1","sender":"ship@info.vercel.com","subject":"Persistent sandboxes and Docker support, now in Vercel Sandbox"}
+2026-06-08 14:32:52  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:32:52  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:32:52  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:32:52  INFO      [workday_graph]  ClassifyNode  ->  [7/10] subject='ones.trade, see mr_vijayy_95, sudhanshutrivediofficial and more in your feed'  from='follow-suggestions@mail.instagram.com'
+2026-06-08 14:32:52  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e98c72d6dd4947'
+2026-06-08 14:32:53  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:32:55  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e98c72d6dd4947
+From: follow-suggestions@mail.instagram.com
+Subject: ones.trade, see mr_vijayy_95, sudhanshutrivediofficial and more in your feed
+Date: 2026-06-05 22:44
+Body:
+Facebook @media all and (max-width: 480px){*[class].ib_t{min-width:100%!important}*[class].ib_row{display:block!important}*[class].ib_ext{display:block!important;padding:10px 0 5px;vertical-align:top!important;width:100%!important}*[class].ib_img,*[class].ib_mid{vertical-align:top!important}*[class].mb_blk{display:block!important;padding-bottom:10px;width:100%!important}*[class].mb_hide{display:none!important}*[class].mb_inl{display:inline!important}*[class].d_mb_flex{display:block!important}}.d_mb_show{display:none}.d_mb_flex{display:flex}@media only screen and (max-device-width: 480px){.d_mb_hide{display:none!important}.d_mb_show,.d_mb_flex{display:block!important}}.mb_text h1,.mb_text h2,.mb_text h3,.mb_text h4,.mb_text h5,.mb_text h6{line-height:normal}.mb_work_text h1{font-size:18px;line-height:normal;margin-top:4px}.mb_work_text h2,.mb_work_text h3{font-size:16px;line-height:normal;margin-top:4px}.mb_work_text h4,.mb_work_text h5,.mb_work_text h6{font-size:14px;line-height:normal}.mb_work_text a{color:#1270e9}.mb_work_text p{margin-top:4px} &nbsp; &nbsp;&nbsp;&nbsp; New people to discover Suggested accounts based on your interests: mr_vijayy_95 , sudhanshutrivediofficial , and 4 others. Open&nbsp;Instagram &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Suggested for you See all Vijay Chavan mr_vijayy_95 Followed by rajchavan_09 View&nbsp;profile Dr Sudhanshu Trivedi sudhanshutrivediofficial Followed by dipanshu_sapate_2004, devjani398 and 10 others View&nbsp;profile Eknath Shinde - एकनाथ शिंदे mieknathshinde Followed by sarthakpatil1007, _vijay_borude_1526 and 8 others View&nbsp;profile Gautam Adani gautam.adani Followed by kashid9905, devjani398 and 23 others View&nbsp;profile Sagar Gade patil sagargadepatil1996 View&nbsp;profile Dr. Shrikant Lata Eknath Shinde drshrikantshinde Followed by sarthakpatil1007, dipanshu_sapate_2004 and 2 others View&nbsp;profile 1 You have 1 notification you may not have seen. &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp
+2026-06-08 14:32:55  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an informational update about suggested accounts to follow on Instagram, and does not require any immediate action or response."},"draft":null,"email_id":"19e98c72d6dd4947","sender":"follow-suggestions@mail.instagram.com","subject":"ones.trade, see mr_vijayy_95, sudhanshutrivediofficial and more in your feed"}
+2026-06-08 14:32:55  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:32:55  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:32:55  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:32:55  INFO      [workday_graph]  ClassifyNode  ->  [8/10] subject="Ritesh, Marathwada Mitra Mandal's College of Engineering, Pune has a new post for you"  from='updates-noreply@linkedin.com'
+2026-06-08 14:32:55  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e98723c8fa3abb'
+2026-06-08 14:32:56  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:32:56  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e98723c8fa3abb
+From: updates-noreply@linkedin.com
+Subject: Ritesh, Marathwada Mitra Mandal's College of Engineering, Pune has a new post for you
+Date: 2026-06-05 21:11
+Body:
+@media (max-width: 512px) { .mercado-container { width: 100% !important; } } @media (max-width: 480px) { .inline-button, .inline-button table { display: none !important; } .full-width-button, .full-width-button table { display: table !important; } } @media (max-width: 320px) { .games-notification-badge { display: none !important; } } body {font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Fira Sans', Ubuntu, Oxygen, 'Oxygen Sans', Cantarell, 'Droid Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Lucida Grande', Helvetica, Arial, sans-serif;} 🏆 A Proud Milestone for MMCOE Pune! Marathwada Mitra Mandal’s College of… ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Marathwada Mitra Mandal's College of Engineering, Pune 11,065 followers 🏆 A Proud Milestone for MMCOE Pune! Marathwada Mitra Mandal’s College of Engineering (MMCOE), Pune, has… see more 194 · 3 Comments Read more LinkedIn News India 8,745,816 followers India's semiconductor story is entering a new phase, suggest reports. Chip startups are moving from… see more 98 · 16 Comments Read more See more on LinkedIn Get the new LinkedIn desktop app Also available on mobile This email was intended for Ritesh Sonawane (Student at Marathwada Mitra Mandal&#39;s College of Engineering, Pune) Learn why we included this. You are receiving Network Conversations emails. Some content may be automatically translated based on your settings . Unsubscribe · Help © 2026 LinkedIn Corporation, 1&zwnj;000 West Maude Avenue, Sunnyvale, CA 94085. LinkedIn and the LinkedIn logo are registered trademarks of LinkedIn.
+2026-06-08 14:32:56  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an informational update from LinkedIn about a new post from Marathwada Mitra Mandal's College of Engineering, Pune. It does not require any immediate attention or response, so it is classified as 'fyi'."},"draft":null,"email_id":"19e98723c8fa3abb","sender":"updates-noreply@linkedin.com","subject":"Ritesh, Marathwada Mitra Mandal's College of Engineering, Pune has a new post for you"}
+2026-06-08 14:32:56  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:32:56  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:32:56  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:32:56  INFO      [workday_graph]  ClassifyNode  ->  [9/10] subject='RITESH , Got 60 seconds? We have 2 questions!'  from='kotakneo@info.kotaksecurities.co.in'
+2026-06-08 14:32:56  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e97d8d8c9dc9d5'
+2026-06-08 14:32:57  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:32:58  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e97d8d8c9dc9d5
+From: kotakneo@info.kotaksecurities.co.in
+Subject: RITESH , Got 60 seconds? We have 2 questions!
+Date: 2026-06-05 18:23
+Body:
+:root { color-scheme: light dark; supported-color-schemes: light dark; } .reactmarkdown p { margin: 0; } .reactmarkdown a { color: rgba(109, 109, 109, 1); font-weight: 500; } @media (max-width: 640px) { .mob_Min_height { min-height: auto !important; } .sm-my-17 { margin-top: 17px !important; margin-bottom: 17px !important; } .sm-mx-0 { margin-left: 0 !important; margin-right: 0 !important; } .sm-ml-116 { margin-left: 116px !important; } .sm-ml-0 { margin-left: 0 !important; } .sm-block { display: block !important; } .sm-inline-block { display: inline-block !important; } .sm-table-cell { display: table-cell !important; } .sm-table-row { display: table-row !important; } .sm-hidden { display: none !important; } .sm-h-145 { height: 145px !important; } .sm-h-32 { height: 32px !important; } .sm-h-280 { height: 280px !important; } .sm-h-8 { height: 8px !important; } .sm-h-68 { height: 68px !important; } .sm-h-79 { height: 79px !important; } .sm-w-full { width: 100% !important; } .sm-w-60 { width: 60px !important; } .sm-w-278 { width: 278px !important; } .sm-w-295 { width: 295px !important; } .sm-w-294 { width: 294px !important; } .sm-w-6 { width: 6px !important; } .sm-bg-cover { background-size: cover !important; } .sm-bg-voucher { background-size: 294px 93px !important; } .sm-px-0 { padding-left: 0 !important; padding-right: 0 !important; } .sm-px-20 { padding-left: 20px !important; padding-right: 20px !important; } .sm-px-22 { padding-left: 22px !important; padding-right: 22px !important; } .sm-px-27 { padding-left: 27px !important; padding-right: 27px !important; } .sm-px-35 { padding-left: 35px !important; padding-right: 35px !important; } .sm-px-10 { padding-left: 10px !important; padding-right: 10px !important; } .sm-px-15 { padding-left: 15px !important; padding-right: 15px !important; } .sm-py-20 { padding-top: 20px !important; padding-bottom: 20px !important; } .sm-px-4 { padding-left: 4px !important; padding-right: 4px !important; } .sm-py-8 { padding-top: 8px !i
+2026-06-08 14:32:58  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email appears to be a promotional or informational message, and does not require a reply or immediate attention."},"draft":null,"email_id":"19e97d8d8c9dc9d5","sender":"kotakneo@info.kotaksecurities.co.in","subject":"RITESH , Got 60 seconds? We have 2 questions!"}
+2026-06-08 14:32:58  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:32:58  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:32:58  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:32:58  INFO      [workday_graph]  ClassifyNode  ->  [10/10] subject='Meet request'  from='ritesh.sonawane@coditas.com'
+2026-06-08 14:32:58  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e964e532fe0d25'
+2026-06-08 14:33:00  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:33:01  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e964e532fe0d25
+From: ritesh.sonawane@coditas.com
+Subject: Meet request
+Date: 2026-06-05 11:12
+Body:
+Hi, Could we schedule a quick meeting to discuss the current task and align on the next steps? Please let me know a convenient time for you. Thanks, Ritesh Please do not print this email unless it is absolutely necessary. This e-mail communication and any attachments to it are confidential and privileged to Coditas and are strictly intended only for the personal and confidential use of the designated recipient(s) named above. If you are not the intended recipient of this message, you are hereby notified that any review, dissemination, distribution, or copying of this message is strictly prohibited and may be unlawful. Please notify the sender immediately and destroy all copies of this message along with all attachments thereto.
+2026-06-08 14:33:01  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"actionable","reasoning":"The email is requesting a meeting to discuss the current task and align on the next steps, which requires a response to schedule the meeting."},"draft":{"body":"Dear Ritesh, I'd be happy to schedule a meeting to discuss the current task and next steps. Please let me know a few convenient time slots, and I'll do my best to accommodate one of them. Best regards,","subject":"Re: Meet request","to":"ritesh.sonawane@coditas.com"},"email_id":"19e964e532fe0d25","sender":"ritesh.sonawane@coditas.com","subject":"Meet request"}
+2026-06-08 14:33:01  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:33:01  INFO      [workday_graph]  ClassifyNode  ->  classified as 'actionable'  (draft=True)
+2026-06-08 14:33:01  INFO      [workday_graph]  DraftNode  ->  email is actionable with draft -> routing to HumanGateNode
+2026-06-08 14:33:01  INFO      [workday_graph]  HumanGateNode  ->  stored pending draft  id='d6e0135c-71b0-4298-a7cc-2d530a206124'  subject='Meet request'
+2026-06-08 14:33:01  INFO      [workday_graph]  ClassifyNode  ->  all 10 emails processed -> BuildEmailResultNode  (actionable=1)
+2026-06-08 14:33:01  INFO      [workday_graph]  BuildEmailResultNode  ->  email result built: processed=10  actionable=1  pending=1
+2026-06-08 14:33:01  INFO      [workday_graph]  BuildEmailResultNode  ->  calendar needed, routing to CalendarActionNode
+2026-06-08 14:33:01  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Monday 2026-06-08 02:33 PM  day_overview=True
+2026-06-08 14:33:05  INFO      [calendar_action_agent]  get_events tool -> returned 4 events
+2026-06-08 14:33:08  INFO      [calendar_action_agent]  check_conflicts tool -> no conflicts among 4 events
+2026-06-08 14:33:09  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 02:33 PM (Asia/Kolkata). Today is day_offset=0.
+User request: Give a read-only summary of today's calendar as part of a full day briefing: call get_events and check_conflicts, then describe today's schedule and flag any conflicts. Do NOT create, change, or cancel anything and do NOT ask a follow-up question.
+2026-06-08 14:33:09  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {}
+2026-06-08 14:33:09  DEBUG     [workday_graph]  [tool-return] get_events -> Events today:
+id=44hnbqbfl62320t9ruokmi2h8g | title='client call' | 12:00 PM-12:30 PM | start_unix=1780900200 | end_unix=1780902000 | attendees=none
+id=a62qcojbi4ro2kgm2hlcilj08k | title='internal discussion' | 01:00 PM-01:30 PM | start_unix=1780903800 | end_unix=1780905600 | attendees=none
+id=gn7siitcoc2jg5un7lub60qbgg | title='sprint planning' | 03:00 PM-03:30 PM | start_unix=1780911000 | end_unix=1780912800 | attendees=none
+id=7u0jolg50f19gfmbqcke44vtjc | title='plan allocation' | 03:30 PM-04:00 PM | start_unix=1780912800 | end_unix=1780914600 | attendees=none
+2026-06-08 14:33:09  DEBUG     [workday_graph]  [model-response] tool-call: check_conflicts  args: {}
+2026-06-08 14:33:09  DEBUG     [workday_graph]  [tool-return] check_conflicts -> No conflicts today.
+2026-06-08 14:33:09  DEBUG     [workday_graph]  [model-response] text: Today's schedule:
+
+- 12:00 PM – 12:30 PM: **client call**  
+- 1:00 PM – 1:30 PM: **internal discussion**  
+- 3:00 PM – 3:30 PM: **sprint planning**  
+- 3:30 PM – 4:00 PM: **plan allocation**
+
+No conflicts were found.
+2026-06-08 14:33:09  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=False  reply="Today's schedule:\n\n- 12:00\u202fPM\u202f–\u202f12:30\u202fPM: **client call**  \n- 1:00\u202fPM\u202f–\u202f1:30\u202fPM: **internal discussion**  \n- 3:00\u202fPM\u202f–\u202f3:30\u202fPM: **sprint planning**  \n- 3:30\u202fPM\u202f–\u202f4:00\u202fPM: **plan allocation**\n\nNo conflicts were found."
+2026-06-08 14:33:09  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-08 14:33:11  DEBUG     [workday_graph]  [model-request] prompt: The user sent a conversational message: "Hey"
+Respond naturally and warmly. Briefly mention you can help with emails and calendar.
+2026-06-08 14:33:11  DEBUG     [workday_graph]  [model-response] text: Hello. It's nice to connect with you. I'm here to help you stay on top of your workday, whether that's catching up on important emails in your inbox or checking your calendar for upcoming events. How can I assist you today?
+2026-06-08 14:33:11  DEBUG     [workday_graph]  [model-request] prompt: User query: "Plan a day for me"
+Intent: "day planning"
+
+[EMAILS]
+Processed: 10 | Actionable: 1 | Pending drafts: 1
+  - [FYI] 'Welcome to Logfire: Get Started Quickly' from hello@pydantic.dev
+  - [FYI] 'Resurgence of weakness expected below 23,300 while US-markets saw deep cuts overnight' from updates@info.kotakneo.com
+  - [FYI] 'CVLKRA KYC Alert ReferenceId - 387092992' from gogreen@cvlindia.in
+  - [FYI] 'Your Weekend Spend Could Build Wealth 👀' from kotakneo@info.kotaksecurities.co.in
+  - [FYI] 'New privacy settings for Search services' from google-noreply@google.com
+  - [FYI] 'Persistent sandboxes and Docker support, now in Vercel Sandbox' from ship@info.vercel.com
+  - [FYI] 'ones.trade, see mr_vijayy_95, sudhanshutrivediofficial and more in your feed' from follow-suggestions@mail.instagram.com
+  - [FYI] "Ritesh, Marathwada Mitra Mandal's College of Engineering, Pune has a new post for you" from updates-noreply@linkedin.com
+  - [FYI] 'RITESH , Got 60 seconds? We have 2 questions!' from kotakneo@info.kotaksecurities.co.in
+  - [ACTIONABLE] 'Meet request' from ritesh.sonawane@coditas.com (draft reply ready)
+
+[CALENDAR ACTION]
+Today's schedule:
+
+- 12:00 PM – 12:30 PM: **client call**  
+- 1:00 PM – 1:30 PM: **internal discussion**  
+- 3:00 PM – 3:30 PM: **sprint planning**  
+- 3:30 PM – 4:00 PM: **plan allocation**
+
+No conflicts were found.
+Status: No change made
+
+2026-06-08 14:33:11  DEBUG     [workday_graph]  [model-response] text: I'd be happy to help plan your day. You have a busy schedule ahead with a client call, internal discussion, sprint planning, and plan allocation. On the email front, you have one actionable item - a meet request from ritesh.sonawane@coditas.com, for which a draft reply is ready. You also have several FYI emails that you may want to glance over when you have a moment. Let me know if there's anything specific you'd like to focus on or if you need help with anything else.
+2026-06-08 14:33:11  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-08 14:33:11  INFO      [workday_graph]  === Workday pipeline END  planner_h=6  cal_action_h=6  synth_h=4  cal_open=False ===
+2026-06-08 14:33:54  INFO      [workday_graph]  === Workday pipeline START  query='give me a In detailed plan with timing'  session='default' ===
+2026-06-08 14:33:54  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'give me a In detailed plan with timing'
+2026-06-08 14:33:55  DEBUG     [workday_graph]  [model-request] prompt: Hey
+2026-06-08 14:33:55  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"InteractNode"}
+2026-06-08 14:33:55  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:33:55  DEBUG     [workday_graph]  [model-request] prompt: Plan a day for me
+2026-06-08 14:33:55  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"day planning","needs_calendar":true,"needs_clarification":false,"needs_email":true,"next_node":"FetchEmailsNode"}
+2026-06-08 14:33:55  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:33:55  DEBUG     [workday_graph]  [model-request] prompt: give me a In detailed plan with timing
+2026-06-08 14:33:55  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"day planning with timing","needs_calendar":true,"needs_clarification":false,"needs_email":true,"next_node":"FetchEmailsNode"}
+2026-06-08 14:33:55  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:33:55  INFO      [workday_graph]  PlannerNode  ->  decision: intent='day planning with timing'  next_node='FetchEmailsNode'  needs_email=True  needs_calendar=True
+2026-06-08 14:33:55  INFO      [workday_graph]  PlannerNode  ->  routing to FetchEmailsNode
+2026-06-08 14:33:55  INFO      [workday_graph]  FetchEmailsNode  ->  fetching up to 10 emails
+2026-06-08 14:33:57  INFO      [workday_graph]  FetchEmailsNode  ->  fetched 10 emails
+2026-06-08 14:33:57  INFO      [workday_graph]  ClassifyNode  ->  [1/10] subject='Welcome to Logfire: Get Started Quickly'  from='hello@pydantic.dev'
+2026-06-08 14:33:57  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19ea5ce4429754b4'
+2026-06-08 14:33:58  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:33:59  ERROR     [workday_graph]  ClassifyNode  ->  failed on email '19ea5ce4429754b4', skipping: Exceeded maximum output retries (1)
+Traceback (most recent call last):
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_output.py", line 164, in run_output_validate_hooks
+    validated = await capability.on_output_validate_error(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 492, in on_output_validate_error
+    raise error
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 485, in on_output_validate_error
+    return await capability.on_output_validate_error(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\abstract.py", line 785, in on_output_validate_error
+    raise error
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 485, in on_output_validate_error
+    return await capability.on_output_validate_error(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\abstract.py", line 785, in on_output_validate_error
+    raise error
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 485, in on_output_validate_error
+    return await capability.on_output_validate_error(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\abstract.py", line 785, in on_output_validate_error
+    raise error
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_output.py", line 155, in run_output_validate_hooks
+    validated = await capability.wrap_output_validate(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 473, in wrap_output_validate
+    return await chain(output)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 653, in wrapped
+    return await cap.wrap_output_validate(ctx, output_context=output_context, output=output, handler=inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\abstract.py", line 767, in wrap_output_validate
+    return await handler(output)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 653, in wrapped
+    return await cap.wrap_output_validate(ctx, output_context=output_context, output=output, handler=inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\abstract.py", line 767, in wrap_output_validate
+    return await handler(output)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 653, in wrapped
+    return await cap.wrap_output_validate(ctx, output_context=output_context, output=output, handler=inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\abstract.py", line 767, in wrap_output_validate
+    return await handler(output)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_output.py", line 97, in do_validate
+    semantic, state = processor.hook_validate(data, run_context=run_context, allow_partial=allow_partial)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_output.py", line 1005, in hook_validate
+    validated = self.validate(data, allow_partial=allow_partial, validation_context=run_context.validation_context)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_output.py", line 944, in validate
+    return self.validator.validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for EmailNodeOutput
+  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='<function=final_result({...aft": null})</function>', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_agent_graph.py", line 1227, in _run_stream
+    self._next_node = await self._handle_text_response(ctx, text, text_processor)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_agent_graph.py", line 1322, in _handle_text_response
+    result_data = await _output.run_output_with_hooks(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_output.py", line 342, in run_output_with_hooks
+    validated = await run_output_validate_hooks(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_output.py", line 169, in run_output_validate_hooks
+    raise _make_retry_prompt(hook_error, run_context) from hook_error
+pydantic_ai.exceptions.ToolRetryError: 1 validation error
+__root__
+  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='<function=final_result({"email_id": "19ea5ce4429754b4", "subject": "Welcome to Logfire: Get Started Quickly", "sender": "hello@pydantic.dev", "classification": {"label": "fyi", "reasoning": "The email is an automated welcome message with setup instructions and does not require a response."}, "draft": null})</function>']
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\graph\planner_graph.py", line 144, in run
+    result = await email_node_agent.run(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\agent\abstract.py", line 444, in run
+    node = await agent_run.next(node)  # pyright: ignore[reportArgumentType]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\run.py", line 404, in next
+    return await self._run_node_with_hooks(node, self._advance_graph)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\run.py", line 328, in _run_node_with_hooks
+    return await self._wrap_and_advance(run_context, node, step_fn)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\run.py", line 298, in _wrap_and_advance
+    result = await cap.on_node_run_error(run_context, node=node, error=e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 256, in on_node_run_error
+    raise error
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 253, in on_node_run_error
+    return await capability.on_node_run_error(ctx, node=node, error=error)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\abstract.py", line 477, in on_node_run_error
+    raise error
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 253, in on_node_run_error
+    return await capability.on_node_run_error(ctx, node=node, error=error)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\abstract.py", line 477, in on_node_run_error
+    raise error
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 253, in on_node_run_error
+    return await capability.on_node_run_error(ctx, node=node, error=error)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\abstract.py", line 477, in on_node_run_error
+    raise error
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\run.py", line 296, in _wrap_and_advance
+    result = await cap.wrap_node_run(run_context, node=node, handler=step_fn)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 242, in wrap_node_run
+    return await chain(node)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 628, in wrapped
+    return await cap.wrap_node_run(ctx, node=node, handler=inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\abstract.py", line 456, in wrap_node_run
+    return await handler(node)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 628, in wrapped
+    return await cap.wrap_node_run(ctx, node=node, handler=inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\abstract.py", line 456, in wrap_node_run
+    return await handler(node)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\combined.py", line 628, in wrapped
+    return await cap.wrap_node_run(ctx, node=node, handler=inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\capabilities\abstract.py", line 456, in wrap_node_run
+    return await handler(node)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\run.py", line 274, in _advance_graph
+    task = await self._graph_run.next(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_graph\graph_builder.py", line 557, in next
+    return await anext(self)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_graph\graph_builder.py", line 534, in __anext__
+    raise self._next.error
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_graph\graph_builder.py", line 844, in _run_tracked_task
+    result = await self._run_task(t_)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_graph\graph_builder.py", line 886, in _run_task
+    output = await node.call(step_context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_graph\step.py", line 253, in _call_node
+    return await node.run(GraphRunContext(state=ctx.state, deps=ctx.deps))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_agent_graph.py", line 1061, in run
+    async with self.stream(ctx):
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Coditas-Admin\AppData\Roaming\uv\python\cpython-3.12.12-windows-x86_64-none\Lib\contextlib.py", line 217, in __aexit__
+    await anext(self.gen)
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_agent_graph.py", line 1081, in stream
+    async for _event in stream:
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_agent_graph.py", line 1245, in _run_stream
+    async for event in self._events_iterator:
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_agent_graph.py", line 1239, in _run_stream
+    ctx.state.consume_output_retry(ctx.deps.max_output_retries, error=e)
+  File "C:\Users\Coditas-Admin\Documents\Ai\workday-manager\.venv\Lib\site-packages\pydantic_ai\_agent_graph.py", line 175, in consume_output_retry
+    raise exceptions.UnexpectedModelBehavior(message) from error
+pydantic_ai.exceptions.UnexpectedModelBehavior: Exceeded maximum output retries (1)
+2026-06-08 14:33:59  INFO      [workday_graph]  ClassifyNode  ->  [2/10] subject='Resurgence of weakness expected below 23,300 while US-markets saw deep cuts overnight'  from='updates@info.kotakneo.com'
+2026-06-08 14:33:59  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19ea5765cb35e2a9'
+2026-06-08 14:34:00  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:34:01  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19ea5765cb35e2a9
+From: updates@info.kotakneo.com
+Subject: Resurgence of weakness expected below 23,300 while US-markets saw deep cuts overnight
+Date: 2026-06-08 09:50
+Body:
+:root { supported-color-schemes: light dark; color-scheme: light dark; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 400; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 500; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 700; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmWUlfBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* Base styles (for desktop and default) */ #outlook a, body { padding: 0; } .ReadMsgBody { width: 100%; } .ExternalClass { width: 100%; } .ExternalClass, img, .ExternalClass font, .ExternalClass td, .ExternalClass div, .ExternalClass span, .ExternalClass p { line-height: 100%; } .mobileFourCol a { text-decoration: underline !important; } table, td { mso-table-lspace: 0; mso-table-rspace: 0; } table, td, tr { border-collapse: collapse; } td, body, span, p, div, li, a, th { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-line-height-rule: exactly; } body { margin: 0; width: 100% !important; -webkit-font-smoothing: antialiased; } img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; } a[x-apple-data-detectors] { color: inherit 
+2026-06-08 14:34:01  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an informational update about market trends and does not require any immediate action or response."},"draft":null,"email_id":"19ea5765cb35e2a9","sender":"updates@info.kotakneo.com","subject":"Resurgence of weakness expected below 23,300 while US-markets saw deep cuts overnight"}
+2026-06-08 14:34:01  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:34:01  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:34:01  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:34:01  INFO      [workday_graph]  ClassifyNode  ->  [3/10] subject='CVLKRA KYC Alert ReferenceId - 387092992'  from='gogreen@cvlindia.in'
+2026-06-08 14:34:01  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19ea37756ae3716d'
+2026-06-08 14:34:02  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:34:03  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19ea37756ae3716d
+From: gogreen@cvlindia.in
+Subject: CVLKRA KYC Alert ReferenceId - 387092992
+Date: 2026-06-08 00:32
+Body:
+Dear RITESH KISHOR SONAVNE, Your KYC record bearing PAN OKXXXXXX9H has been fetched by AXIS SECURITIES LIMITED. As per SEBI guidelines, an intermediary with whom you are dealing with in securities market (broking/demat/mutual fund) needs to download your KYC details from KRA system to update their records when a Client opens an Account or transacts through the said Intermediary. Please be informed that CVL KRA deals with KRA KYC and can assist with queries pertaining ONLY to KYC. We do not create any account nor provide platform for investing. Kindly contact AXIS SECURITIES LIMITED at ANAND.SHAH@AXISSECURITIES.IN regarding such queries. This is an automated mail, kindly do not reply to this mail. Regards, CVL-KRA
+2026-06-08 14:34:03  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an automated notification and does not require a reply. It only provides informational content about the KYC record being fetched by AXIS SECURITIES LIMITED."},"draft":null,"email_id":"19ea37756ae3716d","sender":"gogreen@cvlindia.in","subject":"CVLKRA KYC Alert ReferenceId - 387092992"}
+2026-06-08 14:34:03  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:34:03  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:34:03  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:34:03  INFO      [workday_graph]  ClassifyNode  ->  [4/10] subject='Your Weekend Spend Could Build Wealth 👀'  from='kotakneo@info.kotaksecurities.co.in'
+2026-06-08 14:34:03  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e9d1a8d84714b0'
+2026-06-08 14:34:05  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:34:06  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e9d1a8d84714b0
+From: kotakneo@info.kotaksecurities.co.in
+Subject: Your Weekend Spend Could Build Wealth 👀
+Date: 2026-06-06 18:53
+Body:
+body { margin: 0; padding: 0; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color: #ffffff; } img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; display: block; } table { border-collapse: collapse !important; mso-table-lspace: 0pt; mso-table-rspace: 0pt; } td { mso-line-height-rule: exactly; } .ExternalClass { width: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } p { margin: 0 0 15px 0; } a { text-decoration: none; color: #fd241d; } .ql-size-small { font-size: 0.75em; } .ql-size-large { font-size: 1.5em; } .ql-size-huge { font-size: 2.5em; } @media screen and (max-width: 600px) { .insight-box td{padding:10px !important;} .bottom-three tr td{padding:5px 5px !important;} .container { width: 100% !important; max-width: 100% !important; } .stack { display: block !important; width: 100% !important; max-width: 100% !important; } .mobile-padding { padding-left: 15px !important; padding-right: 15px !important; } .mobile-center { text-align: center !important; } .mobile-text-small { font-size: 12px !important; } .responsive-tab { display: block !important; width: auto !important; margin-bottom: 10px !important; } .spacer{display:none;} } @media (prefers-color-scheme: dark) { .dark-img { display: block !important; width: auto !important; overflow: visible !important; float: none !important; max-height: inherit !important; line-height: auto !important; margin-top: 0px !important; visibility: inherit !important; } .light-img { display: none !important; } body, .body-bg { background-color: #1a1a1a !important; color: #f0f0f0 !important; } .container-bg { background-color: #1a1a1a !important; } .text-dark { color: #f0f0f0 !important; } .text-grey { color: #bbbbbb !important; } .border-light { border-color: #444444 !important; } .footer-bg { background-color: #111111 !
+2026-06-08 14:34:06  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email appears to be promotional and does not require immediate attention or a reply."},"draft":null,"email_id":"19e9d1a8d84714b0","sender":"kotakneo@info.kotaksecurities.co.in","subject":"Your Weekend Spend Could Build Wealth "}
+2026-06-08 14:34:06  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:34:06  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:34:06  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:34:06  INFO      [workday_graph]  ClassifyNode  ->  [5/10] subject='New privacy settings for Search services'  from='google-noreply@google.com'
+2026-06-08 14:34:06  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e9a4a4a084a927'
+2026-06-08 14:34:06  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:34:08  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e9a4a4a084a927
+From: google-noreply@google.com
+Subject: New privacy settings for Search services
+Date: 2026-06-06 05:47
+Body:
+96 *{box-sizing:border-box}body{margin:0;padding:0}a[x-apple-data-detectors]{color:inherit!important;text-decoration:inherit!important}#MessageViewBody a{color:inherit;text-decoration:none}p{line-height:inherit}.desktop_hide,.desktop_hide table{mso-hide:all;display:none;max-height:0;overflow:hidden}.image_block img+div{display:none}sub,sup{font-size:75%;line-height:0}#converted-body .list_block ol,#converted-body .list_block ul,.body [class~=x_list_block] ol,.body [class~=x_list_block] ul,u+.body .list_block ol,u+.body .list_block ul{padding-left:20px} @media (max-width:590px){.mobile_hide{display:none}.row-content{width:100%!important}.stack .column{width:100%;display:block}.mobile_hide{min-height:0;max-height:0;max-width:0;overflow:hidden;font-size:0}.desktop_hide,.desktop_hide table{display:table!important;max-height:none!important}.row-2 .column-1 .block-2.image_block td.pad{padding:0!important}.row-2 .column-1{padding:5px 0!important}} sup, sub { font-size: 100% !important; } sup { mso-text-raise:10% } sub { mso-text-raise:-10% } riteshsonawane280@gmail.com Hello Ritesh, We’re updating our settings to give you even more control over saved history and personalized recommendations across Google Search services, including Search, Maps, Shopping, Hotels, Flights, Translate, and News. You’ll see this change in your Google Account in the next few days. What’s changing Previously, saving history and personalization were managed by Web &amp; App Activity. Going forward, we&#39;re introducing two new settings to help you better tailor your experience: Search Services History and Personalized Recommendations . These settings let you revisit your past searches and decide if you want your experience to be personalized. You can turn these settings on or off at any time. As people increasingly search in new ways, like searching a photo with Lens, Search Services History now includes media from your interactions, which you can stop saving at any time. How this affects your ac
+2026-06-08 14:34:08  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is informational and does not require any immediate action or response. It is about updating privacy settings in Google Search services, which is a general notification and does not need a reply."},"draft":null,"email_id":"19e9a4a4a084a927","sender":"google-noreply@google.com","subject":"New privacy settings for Search services"}
+2026-06-08 14:34:08  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:34:08  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:34:08  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:34:08  INFO      [workday_graph]  ClassifyNode  ->  [6/10] subject='Persistent sandboxes and Docker support, now in Vercel Sandbox'  from='ship@info.vercel.com'
+2026-06-08 14:34:08  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e9957adbe3d2c1'
+2026-06-08 14:34:09  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:34:10  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e9957adbe3d2c1
+From: ship@info.vercel.com
+Subject: Persistent sandboxes and Docker support, now in Vercel Sandbox
+Date: 2026-06-06 01:22
+Body:
+Persistent sandboxes and Docker support, now in Vercel Sandbox #outlook a { padding:0; } table { border-spacing:0;} img { border:0;height:auto;line-height:100%; outline:none;text-decoration:none;-ms-interpolation-mode:bicubic; } p { display:block; } :root { color-scheme: light dark; } code { background-color: #f2f2f2; white-space: nowrap; border-radius: 4px; padding: 2px 4px; border: 1px solid #e6e6e6; font-family: 'Geist Mono', 'Courier New', Courier, monospace; font-size: 0.9em; } @media (prefers-color-scheme: dark) { code { background-color: #1a1a1a; border-color: #292929; } } 96 table { border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt; } .mj-outlook-group-fix { width:100% !important; } @import url(https://client-data.knak.io/production/company_data/672a519344809/custom-fonts/672b8bb24c152/fonts.css); @import url(https://client-data.knak.io/production/company_data/672a519344809/custom-fonts/672b8bb24c152/fonts.css); @media only screen and (min-width:480px) { .mj-column-per-100 { width:100% !important; max-width: 100%; } } body, .body { margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%; } [data-ogsc] .img-container img:hover, [data-ogsb] .img-container img:hover { background-color: transparent !important } .links-0070F3-underline a { color: #0070F3; text-decoration: underline; } #body #main [x-apple-data-detectors-type] { color: inherit !important; -webkit-text-decoration-color: inherit !important; text-decoration: inherit !important; font-weight: inherit !important; } .links-000000-underline a { color: #000000; text-decoration: underline; } .links-0070F3 a { color: #0070F3; text-decoration: none; } u ~ div ul, u ~ div ol {margin-left: -3px} [data-ogsc] .social-container img:hover, [data-ogsb] .social-container img:hover { background-color: transparent !important } .links-8F8F8F-underline a { color: #8F8F8F; text-decoration: underline; } @media only screen and (min-width:480px) { .font-size-37px { font-size: 37px !importa
+2026-06-08 14:34:10  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is informational, announcing new features in Vercel Sandbox, and does not require a reply or immediate attention."},"draft":null,"email_id":"19e9957adbe3d2c1","sender":"ship@info.vercel.com","subject":"Persistent sandboxes and Docker support, now in Vercel Sandbox"}
+2026-06-08 14:34:10  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:34:10  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:34:10  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:34:10  INFO      [workday_graph]  ClassifyNode  ->  [7/10] subject='ones.trade, see mr_vijayy_95, sudhanshutrivediofficial and more in your feed'  from='follow-suggestions@mail.instagram.com'
+2026-06-08 14:34:10  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e98c72d6dd4947'
+2026-06-08 14:34:11  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:34:12  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e98c72d6dd4947
+From: follow-suggestions@mail.instagram.com
+Subject: ones.trade, see mr_vijayy_95, sudhanshutrivediofficial and more in your feed
+Date: 2026-06-05 22:44
+Body:
+Facebook @media all and (max-width: 480px){*[class].ib_t{min-width:100%!important}*[class].ib_row{display:block!important}*[class].ib_ext{display:block!important;padding:10px 0 5px;vertical-align:top!important;width:100%!important}*[class].ib_img,*[class].ib_mid{vertical-align:top!important}*[class].mb_blk{display:block!important;padding-bottom:10px;width:100%!important}*[class].mb_hide{display:none!important}*[class].mb_inl{display:inline!important}*[class].d_mb_flex{display:block!important}}.d_mb_show{display:none}.d_mb_flex{display:flex}@media only screen and (max-device-width: 480px){.d_mb_hide{display:none!important}.d_mb_show,.d_mb_flex{display:block!important}}.mb_text h1,.mb_text h2,.mb_text h3,.mb_text h4,.mb_text h5,.mb_text h6{line-height:normal}.mb_work_text h1{font-size:18px;line-height:normal;margin-top:4px}.mb_work_text h2,.mb_work_text h3{font-size:16px;line-height:normal;margin-top:4px}.mb_work_text h4,.mb_work_text h5,.mb_work_text h6{font-size:14px;line-height:normal}.mb_work_text a{color:#1270e9}.mb_work_text p{margin-top:4px} &nbsp; &nbsp;&nbsp;&nbsp; New people to discover Suggested accounts based on your interests: mr_vijayy_95 , sudhanshutrivediofficial , and 4 others. Open&nbsp;Instagram &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Suggested for you See all Vijay Chavan mr_vijayy_95 Followed by rajchavan_09 View&nbsp;profile Dr Sudhanshu Trivedi sudhanshutrivediofficial Followed by dipanshu_sapate_2004, devjani398 and 10 others View&nbsp;profile Eknath Shinde - एकनाथ शिंदे mieknathshinde Followed by sarthakpatil1007, _vijay_borude_1526 and 8 others View&nbsp;profile Gautam Adani gautam.adani Followed by kashid9905, devjani398 and 23 others View&nbsp;profile Sagar Gade patil sagargadepatil1996 View&nbsp;profile Dr. Shrikant Lata Eknath Shinde drshrikantshinde Followed by sarthakpatil1007, dipanshu_sapate_2004 and 2 others View&nbsp;profile 1 You have 1 notification you may not have seen. &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp
+2026-06-08 14:34:12  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an automated notification from Instagram suggesting new accounts to follow based on the user's interests. It does not require any immediate attention or action, and therefore can be classified as 'fyi'."},"draft":null,"email_id":"19e98c72d6dd4947","sender":"follow-suggestions@mail.instagram.com","subject":"ones.trade, see mr_vijayy_95, sudhanshutrivediofficial and more in your feed"}
+2026-06-08 14:34:12  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:34:12  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:34:12  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:34:12  INFO      [workday_graph]  ClassifyNode  ->  [8/10] subject="Ritesh, Marathwada Mitra Mandal's College of Engineering, Pune has a new post for you"  from='updates-noreply@linkedin.com'
+2026-06-08 14:34:12  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e98723c8fa3abb'
+2026-06-08 14:34:13  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:34:15  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e98723c8fa3abb
+From: updates-noreply@linkedin.com
+Subject: Ritesh, Marathwada Mitra Mandal's College of Engineering, Pune has a new post for you
+Date: 2026-06-05 21:11
+Body:
+@media (max-width: 512px) { .mercado-container { width: 100% !important; } } @media (max-width: 480px) { .inline-button, .inline-button table { display: none !important; } .full-width-button, .full-width-button table { display: table !important; } } @media (max-width: 320px) { .games-notification-badge { display: none !important; } } body {font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Fira Sans', Ubuntu, Oxygen, 'Oxygen Sans', Cantarell, 'Droid Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Lucida Grande', Helvetica, Arial, sans-serif;} 🏆 A Proud Milestone for MMCOE Pune! Marathwada Mitra Mandal’s College of… ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Marathwada Mitra Mandal's College of Engineering, Pune 11,065 followers 🏆 A Proud Milestone for MMCOE Pune! Marathwada Mitra Mandal’s College of Engineering (MMCOE), Pune, has… see more 194 · 3 Comments Read more LinkedIn News India 8,745,816 followers India's semiconductor story is entering a new phase, suggest reports. Chip startups are moving from… see more 98 · 16 Comments Read more See more on LinkedIn Get the new LinkedIn desktop app Also available on mobile This email was intended for Ritesh Sonawane (Student at Marathwada Mitra Mandal&#39;s College of Engineering, Pune) Learn why we included this. You are receiving Network Conversations emails. Some content may be automatically translated based on your settings . Unsubscribe · Help © 2026 LinkedIn Corporation, 1&zwnj;000 West Maude Avenue, Sunnyvale, CA 94085. LinkedIn and the LinkedIn logo are registered trademarks of LinkedIn.
+2026-06-08 14:34:15  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an automated notification from LinkedIn about a new post from Marathwada Mitra Mandal's College of Engineering, Pune, and does not require any action or reply from the recipient."},"draft":null,"email_id":"19e98723c8fa3abb","sender":"updates-noreply@linkedin.com","subject":"Ritesh, Marathwada Mitra Mandal's College of Engineering, Pune has a new post for you"}
+2026-06-08 14:34:15  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:34:15  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:34:15  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:34:15  INFO      [workday_graph]  ClassifyNode  ->  [9/10] subject='RITESH , Got 60 seconds? We have 2 questions!'  from='kotakneo@info.kotaksecurities.co.in'
+2026-06-08 14:34:15  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19e97d8d8c9dc9d5'
+2026-06-08 14:34:16  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-08 14:34:17  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19e97d8d8c9dc9d5
+From: kotakneo@info.kotaksecurities.co.in
+Subject: RITESH , Got 60 seconds? We have 2 questions!
+Date: 2026-06-05 18:23
+Body:
+:root { color-scheme: light dark; supported-color-schemes: light dark; } .reactmarkdown p { margin: 0; } .reactmarkdown a { color: rgba(109, 109, 109, 1); font-weight: 500; } @media (max-width: 640px) { .mob_Min_height { min-height: auto !important; } .sm-my-17 { margin-top: 17px !important; margin-bottom: 17px !important; } .sm-mx-0 { margin-left: 0 !important; margin-right: 0 !important; } .sm-ml-116 { margin-left: 116px !important; } .sm-ml-0 { margin-left: 0 !important; } .sm-block { display: block !important; } .sm-inline-block { display: inline-block !important; } .sm-table-cell { display: table-cell !important; } .sm-table-row { display: table-row !important; } .sm-hidden { display: none !important; } .sm-h-145 { height: 145px !important; } .sm-h-32 { height: 32px !important; } .sm-h-280 { height: 280px !important; } .sm-h-8 { height: 8px !important; } .sm-h-68 { height: 68px !important; } .sm-h-79 { height: 79px !important; } .sm-w-full { width: 100% !important; } .sm-w-60 { width: 60px !important; } .sm-w-278 { width: 278px !important; } .sm-w-295 { width: 295px !important; } .sm-w-294 { width: 294px !important; } .sm-w-6 { width: 6px !important; } .sm-bg-cover { background-size: cover !important; } .sm-bg-voucher { background-size: 294px 93px !important; } .sm-px-0 { padding-left: 0 !important; padding-right: 0 !important; } .sm-px-20 { padding-left: 20px !important; padding-right: 20px !important; } .sm-px-22 { padding-left: 22px !important; padding-right: 22px !important; } .sm-px-27 { padding-left: 27px !important; padding-right: 27px !important; } .sm-px-35 { padding-left: 35px !important; padding-right: 35px !important; } .sm-px-10 { padding-left: 10px !important; padding-right: 10px !important; } .sm-px-15 { padding-left: 15px !important; padding-right: 15px !important; } .sm-py-20 { padding-top: 20px !important; padding-bottom: 20px !important; } .sm-px-4 { padding-left: 4px !important; padding-right: 4px !important; } .sm-py-8 { padding-top: 8px !i
+2026-06-08 14:34:17  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email appears to be a promotional or survey email and does not require any immediate action or response."},"draft":null,"email_id":"19e97d8d8c9dc9d5","sender":"kotakneo@info.kotaksecurities.co.in","subject":"RITESH , Got 60 seconds? We have 2 questions!"}
+2026-06-08 14:34:17  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-08 14:34:17  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-08 14:34:17  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-08 14:34:17  INFO      [workday_graph]  ClassifyNode  ->  [10/10] subject='Meet request'  from='ritesh.sonawane@coditas.com'
+2026-06-08 14:34:17  DEBUG     [workday_graph]  ClassifyNode  ->  email '19e964e532fe0d25' already in pending store, skipping
+2026-06-08 14:34:17  INFO      [workday_graph]  ClassifyNode  ->  all 10 emails processed -> BuildEmailResultNode  (actionable=0)
+2026-06-08 14:34:17  INFO      [workday_graph]  BuildEmailResultNode  ->  email result built: processed=10  actionable=0  pending=0
+2026-06-08 14:34:17  INFO      [workday_graph]  BuildEmailResultNode  ->  calendar needed, routing to CalendarActionNode
+2026-06-08 14:34:17  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Monday 2026-06-08 02:34 PM  day_overview=True
+2026-06-08 14:34:20  INFO      [calendar_action_agent]  get_events tool -> returned 4 events
+2026-06-08 14:34:23  INFO      [calendar_action_agent]  check_conflicts tool -> no conflicts among 4 events
+2026-06-08 14:34:24  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Monday 2026-06-08 02:34 PM (Asia/Kolkata). Today is day_offset=0.
+User request: Give a read-only summary of today's calendar as part of a full day briefing: call get_events and check_conflicts, then describe today's schedule and flag any conflicts. Do NOT create, change, or cancel anything and do NOT ask a follow-up question.
+2026-06-08 14:34:24  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {}
+2026-06-08 14:34:24  DEBUG     [workday_graph]  [tool-return] get_events -> Events today:
+id=44hnbqbfl62320t9ruokmi2h8g | title='client call' | 12:00 PM-12:30 PM | start_unix=1780900200 | end_unix=1780902000 | attendees=none
+id=a62qcojbi4ro2kgm2hlcilj08k | title='internal discussion' | 01:00 PM-01:30 PM | start_unix=1780903800 | end_unix=1780905600 | attendees=none
+id=gn7siitcoc2jg5un7lub60qbgg | title='sprint planning' | 03:00 PM-03:30 PM | start_unix=1780911000 | end_unix=1780912800 | attendees=none
+id=7u0jolg50f19gfmbqcke44vtjc | title='plan allocation' | 03:30 PM-04:00 PM | start_unix=1780912800 | end_unix=1780914600 | attendees=none
+2026-06-08 14:34:24  DEBUG     [workday_graph]  [model-response] tool-call: check_conflicts  args: {}
+2026-06-08 14:34:24  DEBUG     [workday_graph]  [tool-return] check_conflicts -> No conflicts today.
+2026-06-08 14:34:24  DEBUG     [workday_graph]  [model-response] text: Today's schedule:
+
+- 12:00 PM – 12:30 PM: **client call**  
+- 1:00 PM – 1:30 PM: **internal discussion**  
+- 3:00 PM – 3:30 PM: **sprint planning**  
+- 3:30 PM – 4:00 PM: **plan allocation**
+
+There are no conflicts in today's calendar.
+2026-06-08 14:34:24  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=False  reply="Today's schedule:\n\n- 12:00\u202fPM\u202f–\u202f12:30\u202fPM: **client call**  \n- 1:00\u202fPM\u202f–\u202f1:30\u202fPM: **internal discussion**  \n- 3:00\u202fPM\u202f–\u202f3:30\u202fPM: **sprint planning**  \n- 3:30\u202fPM\u202f–\u202f4:00\u202fPM: **plan allocation**\n\nThere are no conflicts in today's calendar."
+2026-06-08 14:34:24  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-08 14:34:25  DEBUG     [workday_graph]  [model-request] prompt: The user sent a conversational message: "Hey"
+Respond naturally and warmly. Briefly mention you can help with emails and calendar.
+2026-06-08 14:34:25  DEBUG     [workday_graph]  [model-response] text: Hello. It's nice to connect with you. I'm here to help you stay on top of your workday, whether that's catching up on important emails in your inbox or checking your calendar for upcoming events. How can I assist you today?
+2026-06-08 14:34:25  DEBUG     [workday_graph]  [model-request] prompt: User query: "Plan a day for me"
+Intent: "day planning"
+
+[EMAILS]
+Processed: 10 | Actionable: 1 | Pending drafts: 1
+  - [FYI] 'Welcome to Logfire: Get Started Quickly' from hello@pydantic.dev
+  - [FYI] 'Resurgence of weakness expected below 23,300 while US-markets saw deep cuts overnight' from updates@info.kotakneo.com
+  - [FYI] 'CVLKRA KYC Alert ReferenceId - 387092992' from gogreen@cvlindia.in
+  - [FYI] 'Your Weekend Spend Could Build Wealth 👀' from kotakneo@info.kotaksecurities.co.in
+  - [FYI] 'New privacy settings for Search services' from google-noreply@google.com
+  - [FYI] 'Persistent sandboxes and Docker support, now in Vercel Sandbox' from ship@info.vercel.com
+  - [FYI] 'ones.trade, see mr_vijayy_95, sudhanshutrivediofficial and more in your feed' from follow-suggestions@mail.instagram.com
+  - [FYI] "Ritesh, Marathwada Mitra Mandal's College of Engineering, Pune has a new post for you" from updates-noreply@linkedin.com
+  - [FYI] 'RITESH , Got 60 seconds? We have 2 questions!' from kotakneo@info.kotaksecurities.co.in
+  - [ACTIONABLE] 'Meet request' from ritesh.sonawane@coditas.com (draft reply ready)
+
+[CALENDAR ACTION]
+Today's schedule:
+
+- 12:00 PM – 12:30 PM: **client call**  
+- 1:00 PM – 1:30 PM: **internal discussion**  
+- 3:00 PM – 3:30 PM: **sprint planning**  
+- 3:30 PM – 4:00 PM: **plan allocation**
+
+No conflicts were found.
+Status: No change made
+
+2026-06-08 14:34:25  DEBUG     [workday_graph]  [model-response] text: I'd be happy to help plan your day. You have a busy schedule ahead with a client call, internal discussion, sprint planning, and plan allocation. On the email front, you have one actionable item - a meet request from ritesh.sonawane@coditas.com, for which a draft reply is ready. You also have several FYI emails that you may want to glance over when you have a moment. Let me know if there's anything specific you'd like to focus on or if you need help with anything else.
+2026-06-08 14:34:25  DEBUG     [workday_graph]  [model-request] prompt: User query: "give me a In detailed plan with timing"
+Intent: "day planning with timing"
+
+[EMAILS]
+Processed: 10 | Actionable: 0 | Pending drafts: 0
+  - [FYI] 'Resurgence of weakness expected below 23,300 while US-markets saw deep cuts overnight' from updates@info.kotakneo.com
+  - [FYI] 'CVLKRA KYC Alert ReferenceId - 387092992' from gogreen@cvlindia.in
+  - [FYI] 'Your Weekend Spend Could Build Wealth 👀' from kotakneo@info.kotaksecurities.co.in
+  - [FYI] 'New privacy settings for Search services' from google-noreply@google.com
+  - [FYI] 'Persistent sandboxes and Docker support, now in Vercel Sandbox' from ship@info.vercel.com
+  - [FYI] 'ones.trade, see mr_vijayy_95, sudhanshutrivediofficial and more in your feed' from follow-suggestions@mail.instagram.com
+  - [FYI] "Ritesh, Marathwada Mitra Mandal's College of Engineering, Pune has a new post for you" from updates-noreply@linkedin.com
+  - [FYI] 'RITESH , Got 60 seconds? We have 2 questions!' from kotakneo@info.kotaksecurities.co.in
+
+[CALENDAR ACTION]
+Today's schedule:
+
+- 12:00 PM – 12:30 PM: **client call**  
+- 1:00 PM – 1:30 PM: **internal discussion**  
+- 3:00 PM – 3:30 PM: **sprint planning**  
+- 3:30 PM – 4:00 PM: **plan allocation**
+
+There are no conflicts in today's calendar.
+Status: No change made
+
+2026-06-08 14:34:25  DEBUG     [workday_graph]  [model-response] text: Here's a detailed plan for your day with timing. You have a few FYI emails that you can quickly review at your convenience, but there are no actionable emails that require your immediate attention. As for your calendar, you have the following scheduled events: a client call from 12:00 PM to 12:30 PM, an internal discussion from 1:00 PM to 1:30 PM, sprint planning from 3:00 PM to 3:30 PM, and plan allocation from 3:30 PM to 4:00 PM. You can use the time slots outside of these scheduled events to catch up on your FYI emails or focus on other tasks.
+2026-06-08 14:34:25  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-08 14:34:25  INFO      [workday_graph]  === Workday pipeline END  planner_h=9  cal_action_h=6  synth_h=6  cal_open=False ===

@@ -8,23 +8,23 @@ router = APIRouter(prefix="/pending", tags=["pending"])
 
 @router.get("", response_model=list[PendingItem])
 async def list_pending():
-    return pending_store.list_all()
+    return await pending_store.list_all()
 
 
 @router.post("/{item_id}/approve")
 async def approve_pending(item_id: str):
-    item = pending_store.get(item_id)
+    item = await pending_store.get(item_id)
     if item is None:
         raise HTTPException(status_code=404, detail="Pending item not found")
 
     await send_approved_email(item)
 
-    pending_store.remove(item_id)
+    await pending_store.remove(item_id)
     return {"status": "sent", "id": item_id}
 
 
 @router.post("/{item_id}/reject")
 async def reject_pending(item_id: str):
-    if not pending_store.remove(item_id):
+    if not await pending_store.remove(item_id):
         raise HTTPException(status_code=404, detail="Pending item not found")
     return {"status": "rejected", "id": item_id}

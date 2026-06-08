@@ -15,6 +15,9 @@ dependencies = [
     "pydantic-graph>=1.104.0",
     "tzdata>=2026.2",
     "logfire[fastapi,pydantic-ai]>=4.34.0",
+    "sqlalchemy[asyncio]>=2.0",
+    "aiosqlite>=0.20",
+    "alembic>=1.13",
 ]
 
 [build-system]

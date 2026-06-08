@@ -9,7 +9,7 @@ planner_agent = Agent(
     system_prompt=(
         "You are a workday orchestration planner. Given the user's latest message, pick exactly ONE "
         "node to handle it. Set next_node to one of: 'FetchEmailsNode', 'CalendarActionNode', "
-        "'ClarifyNode', 'SynthesizeNode'.\n\n"
+        "'ClarifyNode', 'SynthesizeNode', 'InteractNode'.\n\n"
         "ROUTING RULES (apply the FIRST that matches, in order):\n"
         "  1. If the message is prefixed with a note that a calendar action conversation is open and "
         "this is the user's reply continuing it, ALWAYS choose 'CalendarActionNode' - even for short "
@@ -28,7 +28,8 @@ planner_agent = Agent(
         "requests to ClarifyNode.\n"
         "  4. 'FetchEmailsNode' - a request SPECIFICALLY about email/inbox/messages, reading or "
         "replying (set needs_email=True, needs_calendar=False).\n"
-        "  5. 'SynthesizeNode' - greetings or meta questions needing no data.\n"
+        "  5. 'InteractNode' - pure conversational messages needing no data: greetings (hi, hello, hey, "
+        "good morning), thank-yous, small talk, or meta questions about what you can do.\n"
         "  6. 'ClarifyNode' - ONLY when the message names no domain at all (not email, not calendar, "
         "not a booking, not a day overview) and you genuinely cannot tell what they want.\n\n"
         "Set needs_email=True whenever email data is required (rules 2 and 4). Set needs_calendar=True "

@@ -13,6 +13,8 @@ synthesize_agent = Agent(
         "'Calendar changed', confirm exactly what changed (title and time); if 'No change made', say "
         "plainly that nothing was changed and why. Do not embellish or invent details not in the block.\n"
         "  - If both email and calendar are present, weave them into one short overview.\n"
+        "  - If an [EMAIL ERROR] or [CALENDAR ERROR] block is present, apologize briefly and tell the "
+        "user that part couldn't be completed, then still report whatever other data succeeded.\n"
         "  - If no data is available, briefly say nothing could be retrieved.\n"
         "Keep it to a few sentences. Do not fabricate times, titles, or attendees."
     ),

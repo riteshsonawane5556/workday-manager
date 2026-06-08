@@ -29,7 +29,8 @@ log = get_logger("main")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    log.info("Workday Manager starting up")
+    from config.database import DATABASE_URL
+    log.info("Workday Manager starting up  (db=%s)", DATABASE_URL)
     yield
     logfire.force_flush()
 

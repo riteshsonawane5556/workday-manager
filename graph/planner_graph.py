@@ -30,7 +30,7 @@ def _clean_body(raw: str) -> str:
 class PlannerNode(BaseNode[OrchestratorState]):
     async def run(
         self, ctx: GraphRunContext[OrchestratorState]
-    ) -> "ClarifyNode | FetchEmailsNode | CalendarActionNode | SynthesizeNode":
+    ) -> "ClarifyNode | FetchEmailsNode | CalendarActionNode | SynthesizeNode | InteractNode":
         log.info("PlannerNode  ->  running planner_agent on query: %r", ctx.state.query)
         if ctx.state.calendar_action_open:
             planner_prompt = (
@@ -59,6 +59,7 @@ class PlannerNode(BaseNode[OrchestratorState]):
             "CalendarActionNode": CalendarActionNode,
             "ClarifyNode": ClarifyNode,
             "SynthesizeNode": SynthesizeNode,
+            "InteractNode": InteractNode,
         }
         node_cls = _node_map.get(decision.next_node)
         if node_cls is None:
@@ -80,13 +81,33 @@ class ClarifyNode(BaseNode[OrchestratorState]):
 
 
 @dataclass
+class InteractNode(BaseNode[OrchestratorState]):
+    async def run(self, ctx: GraphRunContext[OrchestratorState]) -> End[OrchestratorResult]:
+        log.info("InteractNode  ->  conversational message, responding directly")
+        from agents.synthesize_agent import synthesize_agent as _synth
+        reply = await _synth.run(
+            f'The user sent a conversational message: "{ctx.state.query}"\n'
+            "Respond naturally and warmly. Briefly mention you can help with emails and calendar.",
+            message_history=ctx.state.synthesize_history,
+        )
+        log_agent_run(log, reply)
+        ctx.state.synthesize_history += reply.new_messages()
+        return End(OrchestratorResult(summary=reply.output))
+
+
+@dataclass
 class FetchEmailsNode(BaseNode[OrchestratorState]):
     n: int = 10
 
     async def run(self, ctx: GraphRunContext[OrchestratorState]) -> "ClassifyNode":
         log.info("FetchEmailsNode  ->  fetching up to %d emails", self.n)
         from tools.email_tools import list_emails
-        ctx.state.emails = await list_emails(self.n)
+        try:
+            ctx.state.emails = await list_emails(self.n)
+        except Exception as exc:
+            log.error("FetchEmailsNode  ->  failed to fetch emails: %s", exc, exc_info=True)
+            ctx.state.emails = []
+            ctx.state.email_error = f"Couldn't reach the inbox ({exc})."
         ctx.state.current_index = 0
         log.info("FetchEmailsNode  ->  fetched %d emails", len(ctx.state.emails))
         return ClassifyNode()
@@ -110,19 +131,24 @@ class ClassifyNode(BaseNode[OrchestratorState]):
         email = ctx.state.emails[idx]
         log.info("ClassifyNode  ->  [%d/%d] subject=%r  from=%r", idx + 1, total, email.subject, email.sender)
 
-        if pending_store.has_email(email.id):
+        if await pending_store.has_email(email.id):
             log.debug("ClassifyNode  ->  email %r already in pending store, skipping", email.id)
             ctx.state.current_index += 1
             return ClassifyNode()
 
         from tools.email_tools import fetch_email_body
         log.debug("ClassifyNode  ->  fetching body for email %r", email.id)
-        body = _clean_body(await fetch_email_body(email.id))
-        log.debug("ClassifyNode  ->  running email_node_agent")
-        result = await email_node_agent.run(
-            f"Email ID: {email.id}\nFrom: {email.sender}\n"
-            f"Subject: {email.subject}\nDate: {email.date}\nBody:\n{body}"
-        )
+        try:
+            body = _clean_body(await fetch_email_body(email.id))
+            log.debug("ClassifyNode  ->  running email_node_agent")
+            result = await email_node_agent.run(
+                f"Email ID: {email.id}\nFrom: {email.sender}\n"
+                f"Subject: {email.subject}\nDate: {email.date}\nBody:\n{body}"
+            )
+        except Exception as exc:
+            log.error("ClassifyNode  ->  failed on email %r, skipping: %s", email.id, exc, exc_info=True)
+            ctx.state.current_index += 1
+            return ClassifyNode()
         log_agent_run(log, result)
         output = result.output
         output.email_id = email.id
@@ -154,7 +180,7 @@ class DraftNode(BaseNode[OrchestratorState]):
 class HumanGateNode(BaseNode[OrchestratorState]):
     async def run(self, ctx: GraphRunContext[OrchestratorState]) -> "ClassifyNode":
         output = ctx.state.email_outputs[-1]
-        pending_id = pending_store.add(output)
+        pending_id = await pending_store.add(output)
         ctx.state.pending_ids.append(pending_id)
         log.info("HumanGateNode  ->  stored pending draft  id=%r  subject=%r", pending_id, output.subject)
         ctx.state.current_index += 1
@@ -216,11 +242,21 @@ class CalendarActionNode(BaseNode[OrchestratorState]):
             "CalendarActionNode  ->  running agentic calendar_action_agent  now=%s  day_overview=%s",
             now_label, day_overview,
         )
-        result = await calendar_action_agent.run(
-            prompt,
-            deps=deps,
-            message_history=ctx.state.calendar_action_history,
-        )
+        try:
+            result = await calendar_action_agent.run(
+                prompt,
+                deps=deps,
+                message_history=ctx.state.calendar_action_history,
+            )
+        except Exception as exc:
+            log.error("CalendarActionNode  ->  agent failed: %s", exc, exc_info=True)
+            ctx.state.calendar_error = f"Couldn't complete the calendar request ({exc})."
+            ctx.state.calendar_action_result = CalendarActionResult(
+                description=ctx.state.calendar_error,
+                executed=False,
+                awaiting_user=False,
+            )
+            return SynthesizeNode()
         log_agent_run(log, result)
         ctx.state.calendar_action_history += result.new_messages()
         reply = result.output
@@ -279,6 +315,11 @@ class SynthesizeNode(BaseNode[OrchestratorState]):
                 "",
             ]
 
+        if ctx.state.email_error is not None:
+            lines += ["[EMAIL ERROR]", ctx.state.email_error, ""]
+        if ctx.state.calendar_error is not None:
+            lines += ["[CALENDAR ERROR]", ctx.state.calendar_error, ""]
+
         if ctx.state.email_result is None and ctx.state.calendar_action_result is None:
             log.warning("SynthesizeNode  ->  no pipeline results available, synthesizing from query alone")
             lines.append("No data was retrieved from any pipeline.")
@@ -305,6 +346,7 @@ with warnings.catch_warnings():
         nodes=(
             PlannerNode,
             ClarifyNode,
+            InteractNode,
             FetchEmailsNode,
             ClassifyNode,
             DraftNode,
@@ -316,12 +358,11 @@ with warnings.catch_warnings():
         state_type=OrchestratorState,
     )
 
-print("code->", workday_graph.mermaid_code())
 
 async def run_orchestrator_pipeline(query: str, session_id: str = "default") -> OrchestratorResult:
     from graph.session_store import session_store, SessionHistory
     log.info("=== Workday pipeline START  query=%r  session=%r ===", query, session_id)
-    h = session_store.get(session_id)
+    h = await session_store.get(session_id)
     state = OrchestratorState(
         query=query,
         planner_history=list(h.planner),
@@ -329,20 +370,28 @@ async def run_orchestrator_pipeline(query: str, session_id: str = "default") -> 
         synthesize_history=list(h.synthesize),
         calendar_action_open=h.calendar_action_open,
     )
-    result = await workday_graph.run(PlannerNode(), state=state)
-
-    car = state.calendar_action_result
-    calendar_action_open = bool(car is not None and car.awaiting_user)
-
-    session_store.set(session_id, SessionHistory(
-        planner=state.planner_history,
-        calendar_action=state.calendar_action_history if calendar_action_open else [],
-        synthesize=state.synthesize_history,
-        calendar_action_open=calendar_action_open,
-    ))
-    log.info(
-        "=== Workday pipeline END  planner_h=%d  cal_action_h=%d  synth_h=%d  cal_open=%s ===",
-        len(state.planner_history), len(state.calendar_action_history),
-        len(state.synthesize_history), calendar_action_open,
-    )
-    return result.output
+    try:
+        result = await workday_graph.run(PlannerNode(), state=state)
+        output = result.output
+    except Exception as exc:
+        log.error("=== Workday pipeline FAILED  query=%r: %s ===", query, exc, exc_info=True)
+        output = OrchestratorResult(
+            summary="Something went wrong while handling that. Please try again in a moment.",
+            email_result=state.email_result,
+            calendar_action_result=state.calendar_action_result,
+        )
+    finally:
+        car = state.calendar_action_result
+        calendar_action_open = bool(car is not None and car.awaiting_user)
+        await session_store.set(session_id, SessionHistory(
+            planner=state.planner_history,
+            calendar_action=state.calendar_action_history if calendar_action_open else [],
+            synthesize=state.synthesize_history,
+            calendar_action_open=calendar_action_open,
+        ))
+        log.info(
+            "=== Workday pipeline END  planner_h=%d  cal_action_h=%d  synth_h=%d  cal_open=%s ===",
+            len(state.planner_history), len(state.calendar_action_history),
+            len(state.synthesize_history), calendar_action_open,
+        )
+    return output

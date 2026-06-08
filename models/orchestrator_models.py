@@ -43,3 +43,6 @@ class OrchestratorState:
 
     email_result: ProcessingResult | None = field(default=None)
     calendar_action_result: CalendarActionResult | None = field(default=None)
+
+    email_error: str | None = field(default=None)
+    calendar_error: str | None = field(default=None)
