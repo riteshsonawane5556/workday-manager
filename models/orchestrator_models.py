@@ -17,11 +17,12 @@ class AgentDecision(BaseModel):
 
 class OrchestratorRequest(BaseModel):
     message: str
-    session_id: str = "default"
+    session_id: str | None = None
 
 
 class OrchestratorResult(BaseModel):
     summary: str
+    session_id: str = ""
     email_result: ProcessingResult | None = None
     calendar_action_result: CalendarActionResult | None = None
     clarification_question: str | None = None

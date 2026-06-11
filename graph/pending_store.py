@@ -1,62 +1,28 @@
-import uuid
-
-from sqlalchemy import delete, exists, select
-
-from config.database import get_session
-from models.db_models import PendingItemRow
-from models.email_models import DraftReply, EmailNodeOutput, PendingItem
-
-
-def _to_item(row: PendingItemRow) -> PendingItem:
-    return PendingItem(
-        id=row.id,
-        email_id=row.email_id,
-        subject=row.subject,
-        sender=row.sender,
-        draft=DraftReply.model_validate_json(row.draft),
-    )
+from models.email_models import EmailNodeOutput, PendingItem
+from services.pending_service import (
+    add_pending_item,
+    list_pending_items,
+    get_pending_item,
+    email_already_pending,
+    remove_pending_item,
+)
 
 
 class PendingStore:
     async def add(self, output: EmailNodeOutput) -> str:
-        item_id = str(uuid.uuid4())
-        async with get_session() as session:
-            session.add(
-                PendingItemRow(
-                    id=item_id,
-                    email_id=output.email_id,
-                    subject=output.subject,
-                    sender=output.sender,
-                    draft=output.draft.model_dump_json(),
-                )
-            )
-            await session.commit()
-        return item_id
+        return await add_pending_item(output)
 
     async def list_all(self) -> list[PendingItem]:
-        async with get_session() as session:
-            rows = (await session.execute(select(PendingItemRow))).scalars().all()
-            return [_to_item(row) for row in rows]
+        return await list_pending_items()
 
     async def get(self, item_id: str) -> PendingItem | None:
-        async with get_session() as session:
-            row = await session.get(PendingItemRow, item_id)
-            return _to_item(row) if row is not None else None
+        return await get_pending_item(item_id)
 
     async def has_email(self, email_id: str) -> bool:
-        async with get_session() as session:
-            result = await session.execute(
-                select(exists().where(PendingItemRow.email_id == email_id))
-            )
-            return bool(result.scalar())
+        return await email_already_pending(email_id)
 
     async def remove(self, item_id: str) -> bool:
-        async with get_session() as session:
-            result = await session.execute(
-                delete(PendingItemRow).where(PendingItemRow.id == item_id)
-            )
-            await session.commit()
-            return result.rowcount > 0
+        return await remove_pending_item(item_id)
 
 
 pending_store = PendingStore()

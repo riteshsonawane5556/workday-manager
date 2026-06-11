@@ -79,6 +79,7 @@ calendar_action_agent = Agent(
 
 @calendar_action_agent.tool
 async def get_events(ctx: RunContext[CalendarDeps]) -> str:
+    """Return all calendar events scheduled for today with times and attendees."""
     tz = ZoneInfo(ctx.deps.user_tz)
     events = await fetch_today_events()
     if not events:
@@ -98,6 +99,7 @@ async def get_events(ctx: RunContext[CalendarDeps]) -> str:
 
 @calendar_action_agent.tool
 async def check_conflicts(ctx: RunContext[CalendarDeps]) -> str:
+    """Detect and report all overlapping event pairs on today's calendar."""
     tz = ZoneInfo(ctx.deps.user_tz)
     events = await fetch_today_events()
     ordered = sorted(events, key=lambda e: e.start_time)
@@ -135,6 +137,7 @@ async def create_event(
     duration_minutes: int = 30,
     participants: list[str] | None = None,
 ) -> str:
+    """Create a new calendar event at the specified day/time offset with optional participants."""
     if not (0 <= hour <= 23) or not (0 <= minute <= 59):
         return f"Refused: hour must be 0-23 and minute 0-59 (got hour={hour}, minute={minute})."
     if duration_minutes <= 0:
@@ -164,6 +167,7 @@ async def update_event(
     duration_minutes: int = 30,
     participants: list[str] | None = None,
 ) -> str:
+    """Update title, time, duration, or participants of an existing event by its id."""
     if not event_id:
         return "Refused: event_id is required. Call get_events to find the correct id first."
     start_time: int | None = None
@@ -191,6 +195,7 @@ async def update_event(
 
 @calendar_action_agent.tool
 async def delete_event(ctx: RunContext[CalendarDeps], event_id: str) -> str:
+    """Permanently delete a calendar event by its id."""
     if not event_id:
         return "Refused: event_id is required. Call get_events to find the correct id first."
     try:

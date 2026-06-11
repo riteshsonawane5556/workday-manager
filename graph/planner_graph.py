@@ -1,4 +1,4 @@
-import re
+import uuid
 import warnings
 from dataclasses import dataclass
 
@@ -14,16 +14,9 @@ from graph.pending_store import pending_store
 from models.orchestrator_models import AgentDecision, OrchestratorResult, OrchestratorState
 from models.email_models import ProcessingResult
 from config.logger import get_logger, log_agent_run
+from utils.graph_utils import get_session_lock, clean_email_body
 
 log = get_logger("workday_graph")
-
-_BODY_CHAR_LIMIT = 2000
-
-
-def _clean_body(raw: str) -> str:
-    text = re.sub(r"<[^>]+>", " ", raw)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text[:_BODY_CHAR_LIMIT]
 
 
 @dataclass
@@ -139,7 +132,7 @@ class ClassifyNode(BaseNode[OrchestratorState]):
         from tools.email_tools import fetch_email_body
         log.debug("ClassifyNode  ->  fetching body for email %r", email.id)
         try:
-            body = _clean_body(await fetch_email_body(email.id))
+            body = clean_email_body(await fetch_email_body(email.id))
             log.debug("ClassifyNode  ->  running email_node_agent")
             result = await email_node_agent.run(
                 f"Email ID: {email.id}\nFrom: {email.sender}\n"
@@ -359,39 +352,44 @@ with warnings.catch_warnings():
     )
 
 
-async def run_orchestrator_pipeline(query: str, session_id: str = "default") -> OrchestratorResult:
+async def run_orchestrator_pipeline(query: str, session_id: str | None = None) -> OrchestratorResult:
     from graph.session_store import session_store, SessionHistory
-    log.info("=== Workday pipeline START  query=%r  session=%r ===", query, session_id)
-    h = await session_store.get(session_id)
-    state = OrchestratorState(
-        query=query,
-        planner_history=list(h.planner),
-        calendar_action_history=list(h.calendar_action),
-        synthesize_history=list(h.synthesize),
-        calendar_action_open=h.calendar_action_open,
-    )
-    try:
-        result = await workday_graph.run(PlannerNode(), state=state)
-        output = result.output
-    except Exception as exc:
-        log.error("=== Workday pipeline FAILED  query=%r: %s ===", query, exc, exc_info=True)
-        output = OrchestratorResult(
-            summary="Something went wrong while handling that. Please try again in a moment.",
-            email_result=state.email_result,
-            calendar_action_result=state.calendar_action_result,
+    session_id = session_id or str(uuid.uuid4())
+    lock = await get_session_lock(session_id)
+    async with lock:
+        log.info("=== Workday pipeline START  query=%r  session=%r ===", query, session_id)
+        h = await session_store.get(session_id)
+        state = OrchestratorState(
+            query=query,
+            planner_history=list(h.planner),
+            calendar_action_history=list(h.calendar_action),
+            synthesize_history=list(h.synthesize),
+            calendar_action_open=h.calendar_action_open,
         )
-    finally:
-        car = state.calendar_action_result
-        calendar_action_open = bool(car is not None and car.awaiting_user)
-        await session_store.set(session_id, SessionHistory(
-            planner=state.planner_history,
-            calendar_action=state.calendar_action_history if calendar_action_open else [],
-            synthesize=state.synthesize_history,
-            calendar_action_open=calendar_action_open,
-        ))
-        log.info(
-            "=== Workday pipeline END  planner_h=%d  cal_action_h=%d  synth_h=%d  cal_open=%s ===",
-            len(state.planner_history), len(state.calendar_action_history),
-            len(state.synthesize_history), calendar_action_open,
-        )
+        try:
+            result = await workday_graph.run(PlannerNode(), state=state)
+            output = result.output
+        except Exception as exc:
+            log.error("=== Workday pipeline FAILED  query=%r: %s ===", query, exc, exc_info=True)
+            output = OrchestratorResult(
+                summary="Something went wrong while handling that. Please try again in a moment.",
+                email_result=state.email_result,
+                calendar_action_result=state.calendar_action_result,
+            )
+        finally:
+            car = state.calendar_action_result
+            calendar_action_open = bool(car is not None and car.awaiting_user)
+            cal_executed = bool(car is not None and car.executed)
+            await session_store.set(session_id, SessionHistory(
+                planner=state.planner_history,
+                calendar_action=[] if cal_executed else state.calendar_action_history,
+                synthesize=state.synthesize_history,
+                calendar_action_open=calendar_action_open,
+            ))
+            log.info(
+                "=== Workday pipeline END  session=%r  planner_h=%d  cal_action_h=%d  synth_h=%d  cal_open=%s ===",
+                session_id, len(state.planner_history), len(state.calendar_action_history),
+                len(state.synthesize_history), calendar_action_open,
+            )
+    output.session_id = session_id
     return output

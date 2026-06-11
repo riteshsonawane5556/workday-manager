@@ -38,12 +38,17 @@ Read pydantic-ai docs at https://pydantic.dev/docs/ai/llms.txt before building o
 ### Request Flow
 
 ```
-POST /orchestrate  { "message": "...", "session_id": "..." }
+POST /orchestrate  { "message": "...", "session_id": "..." (optional) }
+  → session_id resolved: if omitted, the server generates a UUID; the resolved id is
+    returned in OrchestratorResult.session_id so the client echoes it on follow-ups
+  → per-session asyncio.Lock acquired (same session_id runs one-at-a-time;
+    different sessions run in parallel)
   → OrchestratorState initialized (session history loaded from SessionStore)
   → PlannerNode (planner_agent decides intent)
     → FetchEmailsNode → ClassifyNode × N → DraftNode → HumanGateNode → BuildEmailResultNode
     → CalendarActionNode (agentic: reads, books, reschedules, cancels, flags conflicts)
     → ClarifyNode (ambiguous query)
+    → InteractNode (conversational replies: greetings, small talk, meta questions)
   → SynthesizeNode → returns OrchestratorResult
 
 POST /pending/{id}/approve
@@ -59,8 +64,8 @@ POST /pending/{id}/approve
 | `email_node_agent` | `agents/email_node.py` | llama-3.3-70b-versatile | Classifies email + drafts reply (tool: `get_email_body`) | `EmailNodeOutput` |
 | `calendar_action_agent` | `agents/calendar_action_agent.py` | `groq:openai/gpt-oss-120b` | Agentic calendar assistant — reads, books, reschedules, cancels, and flags conflicts via tools (`get_events`, `check_conflicts`, `create_event`, `update_event`, `delete_event`) | `str` |
 | `synthesize_agent` | `agents/synthesize_agent.py` | llama-3.3-70b-versatile | Produces final natural-language briefing | `str` |
-| `email_agent` | `agents/email_agent.py` | llama-3.3-70b-versatile | Generic email assistant (tool: `get_unread_emails`) | `str` |
-| `send_agent` | `agents/send_agent.py` | llama-3.3-70b-versatile | Sends approved drafts (tool: `send_email`) | `str` |
+| `email_agent` | `agents/email_agent.py` | llama-3.3-70b-versatile | Standalone email assistant — not wired into the main graph (Phase 1 remnant) | `str` |
+| `send_agent` | `agents/send_agent.py` | llama-3.3-70b-versatile | Standalone send assistant — not wired into the main graph (Phase 1 remnant) | `str` |
 
 `calendar_action_agent` uses `gpt-oss-120b` (not the default llama) because it requires reliable multi-step tool reasoning for stop-and-confirm workflows.
 
@@ -81,17 +86,38 @@ PlannerNode
   │                              ├─(needs_calendar)→ CalendarActionNode → SynthesizeNode
   │                              └─────────────────────────────────────→ SynthesizeNode
   ├─(calendar request)→ CalendarActionNode → SynthesizeNode
-  └─(unclear)→ ClarifyNode (returns clarification_question, no pipeline run)
+  ├─(unclear)→ ClarifyNode (returns clarification_question, no pipeline run)
+  └─(conversational)→ InteractNode (synthesize_agent responds directly, End)
 ```
 
 `CalendarActionNode` runs the agentic `calendar_action_agent` for ALL calendar requests — read-only (show schedule, check conflicts, am I free) and changes (book/reschedule/cancel). The agent reasons over its own tool results; there is no separate conflict-detection node. Multi-turn confirmations are tracked via `calendar_action_open` in the `SessionStore`.
 
+`InteractNode` handles pure conversational messages (greetings, small talk, meta questions) using `synthesize_agent` and returns immediately without running any email/calendar pipeline.
+
 ### Session & State Storage
 
-Both stores are SQLite-backed (SQLAlchemy 2.0 async) and **persist across restarts**. Their async methods (`get`/`set`, `add`/`list_all`/`get`/`has_email`/`remove`) acquire a session via `config/database.py`'s `get_session()`. ORM tables live in `models/db_models.py`.
+Both stores are SQLite-backed (SQLAlchemy 2.0 async) and **persist across restarts**. ORM tables live in `models/db_models.py`. The layered architecture is:
 
-- `graph/session_store.py` (`SessionStore`) — per-session conversation histories (planner, calendar_action, synthesize) plus the `calendar_action_open` flag, keyed by `session_id`. Message lists are serialized to JSON columns via pydantic-ai's `ModelMessagesTypeAdapter` (`session_history` table).
-- `graph/pending_store.py` (`PendingStore`) — actionable emails awaiting human approval, keyed by UUID, with the `DraftReply` stored as JSON (`pending_item` table).
+```
+graph/session_store.py (SessionStore)      graph/pending_store.py (PendingStore)
+        ↓ delegates to                              ↓ delegates to
+services/session_service.py                services/pending_service.py
+        ↓ calls                                     ↓ calls
+repository/session_repository.py           repository/pending_repository.py
+        ↓ SQL via                                   ↓ SQL via
+config/database.py get_session()           config/database.py get_session()
+```
+
+- `SessionStore` — per-session conversation histories (planner, calendar_action, synthesize) plus `calendar_action_open` flag. Messages stored as individual rows in `session_message`, fetched with cap of `_FETCH_LIMIT = 20` most-recent per agent type. `session_name` auto-derived from first user prompt (first 80 chars).
+- `PendingStore` — actionable emails awaiting human approval, keyed by UUID, with `DraftReply` stored as JSON (`pending_item` table). `send_approved_email` lives in `services/pending_service.py`.
+
+**Concurrency:** Per-session `asyncio.Lock` registry moved to `utils/graph_utils.py` (`get_session_lock`). Same-session requests serialize; different sessions run in parallel. Single-process only — multi-worker needs DB-level locking.
+
+`utils/graph_utils.py` also owns `clean_email_body` (strips HTML, truncates to 2000 chars).
+
+### Logging
+
+`config/logger.py` provides `get_logger(name)` and `log_agent_run(logger, result)`. Every logger writes `DEBUG`+ to `server.log` (project root) and `WARNING`+ to stdout. `log_agent_run` walks all messages in an `AgentRunResult` and emits prompt text, tool calls, tool returns, and model text at `DEBUG` level.
 
 ### Key Models
 
@@ -117,7 +143,7 @@ Both stores are SQLite-backed (SQLAlchemy 2.0 async) and **persist across restar
 
 ### Nylas Integration (`config/nylas_client.py`, `tools/`)
 
-Nylas SDK is synchronous; all calls are wrapped in `asyncio.to_thread()`. HTML is stripped and email bodies truncated to 2000 chars before passing to the LLM. Calendar tools use the first calendar on the account and filter by today's UTC date range. The `clock_to_unix` helper in `tools/calendar_tools.py` converts wall-clock times to Unix timestamps using `USER_TIMEZONE`.
+Nylas SDK is synchronous; all calls are wrapped in `asyncio.to_thread()`. HTML stripping and 2000-char truncation handled by `utils/graph_utils.py`'s `clean_email_body`. Calendar tools use the first calendar on the account and filter by today's UTC date range. The `clock_to_unix` helper in `tools/calendar_tools.py` converts wall-clock times to Unix timestamps using `USER_TIMEZONE`.
 
 ### Routes
 
@@ -131,5 +157,6 @@ Nylas SDK is synchronous; all calls are wrapped in `asyncio.to_thread()`. HTML i
 ## Notes
 
 - Do not add comments
-- `controllers/` and `repository/` directories are reserved and currently empty
-- Both in-memory stores (`pending_store`, `session_store`) are cleared on server restart
+- `controllers/` directory is reserved and currently empty
+- `repository/` now contains `pending_repository.py` and `session_repository.py` — raw SQL layer, no business logic
+- `email_agent` and `send_agent` are Phase 1 remnants not connected to the main graph; do not remove until Phase 3 direction is clear
