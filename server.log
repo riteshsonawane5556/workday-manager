@@ -3797,3 +3797,980 @@ Respond naturally and warmly. Briefly mention you can help with emails and calen
 Respond naturally and warmly. Briefly mention you can help with emails and calendar.
 2026-06-11 17:51:16  DEBUG     [workday_graph]  [model-response] text: You started to say "I don't have", but it looks like you didn't finish your thought. That's okay, feel free to continue whenever you're ready. In the meantime, I can help with checking your emails or looking at your calendar if you need anything.
 2026-06-11 17:51:16  INFO      [workday_graph]  === Workday pipeline END  session='4b36d4fc-e54a-44b8-94ed-27ec401d390d'  planner_h=15  cal_action_h=0  synth_h=6  cal_open=False ===
+2026-06-12 11:03:16  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-06-12 11:04:13  INFO      [workday_graph]  === Workday pipeline START  query='Hey'  session='1058baa4-d252-40ff-9247-edb5fe49aadc' ===
+2026-06-12 11:04:13  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'Hey'
+2026-06-12 11:04:18  DEBUG     [workday_graph]  [model-request] prompt: Hey
+2026-06-12 11:04:18  DEBUG     [workday_graph]  [model-response] text: <function=final_result{"clarification_question": null, "intent": "greeting", "needs_calendar": false, "needs_clarification": false, "needs_email": false, "next_node": "InteractNode"}</function>
+2026-06-12 11:04:18  DEBUG     [workday_graph]  [model-response] text: <function=final_result{"intent": "greeting", "needs_calendar": false, "needs_clarification": false, "needs_email": false, "next_node": "InteractNode"}</function>
+2026-06-12 11:04:18  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"InteractNode"}
+2026-06-12 11:04:18  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:04:18  INFO      [workday_graph]  PlannerNode  ->  decision: intent='greeting'  next_node='InteractNode'  needs_email=False  needs_calendar=False
+2026-06-12 11:04:18  INFO      [workday_graph]  PlannerNode  ->  routing to InteractNode
+2026-06-12 11:04:18  INFO      [workday_graph]  InteractNode  ->  conversational message, responding directly
+2026-06-12 11:04:18  DEBUG     [workday_graph]  [model-request] prompt: The user sent a conversational message: "Hey"
+Respond naturally and warmly. Briefly mention you can help with emails and calendar.
+2026-06-12 11:04:18  DEBUG     [workday_graph]  [model-response] text: Hello. It's nice to connect with you. I'm here to help you manage your day - whether it's checking your emails or going over your calendar schedule. What's on your mind, or is there something specific I can assist you with today?
+2026-06-12 11:04:18  INFO      [workday_graph]  === Workday pipeline END  session='1058baa4-d252-40ff-9247-edb5fe49aadc'  planner_h=7  cal_action_h=0  synth_h=2  cal_open=False ===
+2026-06-12 11:07:58  INFO      [workday_graph]  === Workday pipeline START  query='I have to schedule 3 meets today'  session='d35f0606-34db-4285-846d-442de2233997' ===
+2026-06-12 11:07:58  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'I have to schedule 3 meets today'
+2026-06-12 11:08:01  DEBUG     [workday_graph]  [model-request] prompt: I have to schedule 3 meets today
+2026-06-12 11:08:01  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule meetings","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 11:08:01  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:08:01  INFO      [workday_graph]  PlannerNode  ->  decision: intent='schedule meetings'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-12 11:08:01  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-12 11:08:01  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 11:08 AM  day_overview=False
+2026-06-12 11:08:11  INFO      [calendar_action_agent]  get_events tool -> returned 1 events
+2026-06-12 11:08:12  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 11:08 AM (Asia/Kolkata). Today is day_offset=0.
+User request: I have to schedule 3 meets today
+2026-06-12 11:08:12  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 11:08:12  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=qn8fjm92hllkoudt8arf1hvjks | title='c360 client meet' | 03:00 PM-03:30 PM | start_unix=1781256600 | end_unix=1781258400 | attendees=none
+2026-06-12 11:08:12  DEBUG     [workday_graph]  [model-response] text: What’s the title and the start time you’d like for the first meeting?
+2026-06-12 11:08:12  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=True  reply='What’s the title and the start time you’d like for the first meeting?'
+2026-06-12 11:08:12  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 11:08:12  INFO      [workday_graph]  SynthesizeNode  ->  calendar agent awaiting user, returning its reply directly
+2026-06-12 11:08:12  INFO      [workday_graph]  === Workday pipeline END  session='d35f0606-34db-4285-846d-442de2233997'  planner_h=3  cal_action_h=4  synth_h=0  cal_open=True ===
+2026-06-12 11:09:18  INFO      [workday_graph]  === Workday pipeline START  query="it's a stolt client call at 12 pm"  session='edcdbc73-d487-4cbb-84c1-ac977f930b01' ===
+2026-06-12 11:09:18  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: "it's a stolt client call at 12 pm"
+2026-06-12 11:09:19  DEBUG     [workday_graph]  [model-request] prompt: it's a stolt client call at 12 pm
+2026-06-12 11:09:19  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"calendar event","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 11:09:19  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:09:19  INFO      [workday_graph]  PlannerNode  ->  decision: intent='calendar event'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-12 11:09:19  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-12 11:09:19  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 11:09 AM  day_overview=False
+2026-06-12 11:09:25  INFO      [calendar_action_agent]  get_events tool -> returned 1 events
+2026-06-12 11:09:27  INFO      [calendar_action_agent]  check_conflicts tool -> no conflicts among 1 events
+2026-06-12 11:09:31  INFO      [calendar_action_agent]  create_event tool -> created id='sc4glme8he74b04uo3g6oedv5c' title='stolt client call' at Fri Jun 12, 12:00 PM
+2026-06-12 11:09:31  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 11:09 AM (Asia/Kolkata). Today is day_offset=0.
+User request: it's a stolt client call at 12 pm
+2026-06-12 11:09:31  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 11:09:31  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=qn8fjm92hllkoudt8arf1hvjks | title='c360 client meet' | 03:00 PM-03:30 PM | start_unix=1781256600 | end_unix=1781258400 | attendees=none
+2026-06-12 11:09:31  DEBUG     [workday_graph]  [model-response] tool-call: check_conflicts  args: {"num_days":1,"start_offset":0}
+2026-06-12 11:09:31  DEBUG     [workday_graph]  [tool-return] check_conflicts -> No conflicts in the requested range.
+2026-06-12 11:09:31  DEBUG     [workday_graph]  [model-response] tool-call: create_event  args: {"day_offset":0,"duration_minutes":30,"hour":12,"participants":[],"title":"stolt client call"}
+2026-06-12 11:09:31  DEBUG     [workday_graph]  [tool-return] create_event -> Created event 'stolt client call' on Fri Jun 12, 12:00 PM (id=sc4glme8he74b04uo3g6oedv5c).
+2026-06-12 11:09:31  DEBUG     [workday_graph]  [model-response] text: Created the “stolt client call” event for today at 12:00 PM. Let me know if you need anything else.
+2026-06-12 11:09:31  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=True  awaiting_user=False  reply='Created the “stolt client call” event for today at 12:00\u202fPM. Let me know if you need anything else.'
+2026-06-12 11:09:31  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 11:09:32  DEBUG     [workday_graph]  [model-request] prompt: User query: "it's a stolt client call at 12 pm"
+Intent: "calendar event"
+
+[CALENDAR ACTION]
+Created the “stolt client call” event for today at 12:00 PM. Let me know if you need anything else.
+Status: Calendar changed
+
+2026-06-12 11:09:32  DEBUG     [workday_graph]  [model-response] text: I've added the "stolt client call" event to your calendar for today at 12:00 PM.
+2026-06-12 11:09:32  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-12 11:09:32  INFO      [workday_graph]  === Workday pipeline END  session='edcdbc73-d487-4cbb-84c1-ac977f930b01'  planner_h=3  cal_action_h=8  synth_h=2  cal_open=False ===
+2026-06-12 11:17:47  INFO      [workday_graph]  === Workday pipeline START  query='I have to schedule 3 meets today'  session='ceb24873-eb92-4eea-8710-b4a489dd4548' ===
+2026-06-12 11:17:47  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'I have to schedule 3 meets today'
+2026-06-12 11:17:51  DEBUG     [workday_graph]  [model-request] prompt: I have to schedule 3 meets today
+2026-06-12 11:17:51  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule meetings","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 11:17:51  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:17:51  INFO      [workday_graph]  PlannerNode  ->  decision: intent='schedule meetings'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-12 11:17:51  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-12 11:17:51  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 11:17 AM  day_overview=False
+2026-06-12 11:18:00  INFO      [calendar_action_agent]  get_events tool -> returned 2 events
+2026-06-12 11:18:01  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 11:17 AM (Asia/Kolkata). Today is day_offset=0.
+User request: I have to schedule 3 meets today
+2026-06-12 11:18:01  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 11:18:01  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=sc4glme8he74b04uo3g6oedv5c | title='stolt client call' | 12:00 PM-12:30 PM | start_unix=1781245800 | end_unix=1781247600 | attendees=none
+id=qn8fjm92hllkoudt8arf1hvjks | title='c360 client meet' | 03:00 PM-03:30 PM | start_unix=1781256600 | end_unix=1781258400 | attendees=none
+2026-06-12 11:18:01  DEBUG     [workday_graph]  [model-response] text: Sure! For the first meeting, what title and time (e.g., 2 pm) would you like?
+2026-06-12 11:18:01  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=True  reply='Sure! For the first meeting, what title and time (e.g.,\u202f2\u202fpm) would you like?'
+2026-06-12 11:18:01  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 11:18:01  INFO      [workday_graph]  SynthesizeNode  ->  calendar agent awaiting user, returning its reply directly
+2026-06-12 11:18:01  INFO      [workday_graph]  === Workday pipeline END  session='ceb24873-eb92-4eea-8710-b4a489dd4548'  planner_h=3  cal_action_h=4  synth_h=0  cal_open=True ===
+2026-06-12 11:19:17  INFO      [workday_graph]  === Workday pipeline START  query="It's matrix call at 1pm"  session='ceb24873-eb92-4eea-8710-b4a489dd4548' ===
+2026-06-12 11:19:17  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: "It's matrix call at 1pm"
+2026-06-12 11:19:18  DEBUG     [workday_graph]  [model-request] prompt: I have to schedule 3 meets today
+2026-06-12 11:19:18  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule meetings","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 11:19:18  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:19:18  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: It's matrix call at 1pm
+2026-06-12 11:19:18  DEBUG     [workday_graph]  [model-response] text: <function=final_result {"clarification_question":null,"intent":"respond with meeting details","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}</function>
+2026-06-12 11:19:18  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"respond with meeting details","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 11:19:18  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:19:18  INFO      [workday_graph]  PlannerNode  ->  decision: intent='respond with meeting details'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-12 11:19:18  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-12 11:19:18  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 11:19 AM  day_overview=False
+2026-06-12 11:19:25  INFO      [calendar_action_agent]  create_event tool -> created id='kcvvrmacmfsc2g0ubt2aomj5l8' title='matrix call' at Fri Jun 12, 01:00 PM
+2026-06-12 11:19:25  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 11:17 AM (Asia/Kolkata). Today is day_offset=0.
+User request: I have to schedule 3 meets today
+2026-06-12 11:19:25  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 11:19:25  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=sc4glme8he74b04uo3g6oedv5c | title='stolt client call' | 12:00 PM-12:30 PM | start_unix=1781245800 | end_unix=1781247600 | attendees=none
+id=qn8fjm92hllkoudt8arf1hvjks | title='c360 client meet' | 03:00 PM-03:30 PM | start_unix=1781256600 | end_unix=1781258400 | attendees=none
+2026-06-12 11:19:25  DEBUG     [workday_graph]  [model-response] text: Sure! For the first meeting, what title and time (e.g., 2 pm) would you like?
+2026-06-12 11:19:25  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 11:19 AM (Asia/Kolkata). Today is day_offset=0.
+User request: It's matrix call at 1pm
+2026-06-12 11:19:25  DEBUG     [workday_graph]  [model-response] tool-call: create_event  args: {"day_offset":0,"duration_minutes":30,"hour":13,"minute":0,"participants":[],"title":"matrix call"}
+2026-06-12 11:19:25  DEBUG     [workday_graph]  [tool-return] create_event -> Created event 'matrix call' on Fri Jun 12, 01:00 PM (id=kcvvrmacmfsc2g0ubt2aomj5l8).
+2026-06-12 11:19:25  DEBUG     [workday_graph]  [model-response] text: Your “matrix call” has been scheduled for today at 1 PM. Would you like to add the second meeting now?
+2026-06-12 11:19:25  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=True  awaiting_user=False  reply='Your “matrix call” has been scheduled for today at\u202f1\u202fPM. Would you like to add the second meeting now?'
+2026-06-12 11:19:25  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 11:19:26  DEBUG     [workday_graph]  [model-request] prompt: User query: "It's matrix call at 1pm"
+Intent: "respond with meeting details"
+
+[CALENDAR ACTION]
+Your “matrix call” has been scheduled for today at 1 PM. Would you like to add the second meeting now?
+Status: Calendar changed
+
+2026-06-12 11:19:26  DEBUG     [workday_graph]  [model-response] text: Your "matrix call" has been scheduled for today at 1 PM, and the calendar has been updated to reflect this change.
+2026-06-12 11:19:26  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-12 11:19:26  INFO      [workday_graph]  === Workday pipeline END  session='ceb24873-eb92-4eea-8710-b4a489dd4548'  planner_h=8  cal_action_h=8  synth_h=2  cal_open=False ===
+2026-06-12 11:24:23  INFO      [workday_graph]  === Workday pipeline START  query='second is gen ai call at 1:30'  session='ceb24873-eb92-4eea-8710-b4a489dd4548' ===
+2026-06-12 11:24:23  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'second is gen ai call at 1:30'
+2026-06-12 11:24:27  DEBUG     [workday_graph]  [model-request] prompt: I have to schedule 3 meets today
+2026-06-12 11:24:27  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule meetings","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 11:24:27  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:24:27  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: It's matrix call at 1pm
+2026-06-12 11:24:27  DEBUG     [workday_graph]  [model-response] text: <function=final_result {"clarification_question":null,"intent":"respond with meeting details","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}</function>
+2026-06-12 11:24:27  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"respond with meeting details","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 11:24:27  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:24:27  DEBUG     [workday_graph]  [model-request] prompt: second is gen ai call at 1:30
+2026-06-12 11:24:27  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"add second meeting","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 11:24:27  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:24:27  INFO      [workday_graph]  PlannerNode  ->  decision: intent='add second meeting'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-12 11:24:27  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-12 11:24:27  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 11:24 AM  day_overview=False
+2026-06-12 11:24:36  INFO      [calendar_action_agent]  get_events tool -> returned 3 events
+2026-06-12 11:24:39  INFO      [calendar_action_agent]  check_conflicts tool -> no conflicts among 3 events
+2026-06-12 11:24:42  INFO      [calendar_action_agent]  create_event tool -> created id='6mpf5bnmgm1a1f4aihjda9ubgs' title='gen ai call' at Fri Jun 12, 01:30 PM
+2026-06-12 11:24:42  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 11:24 AM (Asia/Kolkata). Today is day_offset=0.
+User request: second is gen ai call at 1:30
+2026-06-12 11:24:42  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 11:24:42  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=sc4glme8he74b04uo3g6oedv5c | title='stolt client call' | 12:00 PM-12:30 PM | start_unix=1781245800 | end_unix=1781247600 | attendees=none
+id=kcvvrmacmfsc2g0ubt2aomj5l8 | title='matrix call' | 01:00 PM-01:30 PM | start_unix=1781249400 | end_unix=1781251200 | attendees=none
+id=qn8fjm92hllkoudt8arf1hvjks | title='c360 client meet' | 03:00 PM-03:30 PM | start_unix=1781256600 | end_unix=1781258400 | attendees=none
+2026-06-12 11:24:42  DEBUG     [workday_graph]  [model-response] tool-call: check_conflicts  args: {"num_days":1,"start_offset":0}
+2026-06-12 11:24:42  DEBUG     [workday_graph]  [tool-return] check_conflicts -> No conflicts in the requested range.
+2026-06-12 11:24:42  DEBUG     [workday_graph]  [model-response] tool-call: create_event  args: {"day_offset":0,"hour":13,"minute":30,"title":"gen ai call"}
+2026-06-12 11:24:42  DEBUG     [workday_graph]  [tool-return] create_event -> Created event 'gen ai call' on Fri Jun 12, 01:30 PM (id=6mpf5bnmgm1a1f4aihjda9ubgs).
+2026-06-12 11:24:42  DEBUG     [workday_graph]  [model-response] text: gen ai call has been scheduled for today at 1:30 PM.
+2026-06-12 11:24:42  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=True  awaiting_user=False  reply='gen ai call has been scheduled for today at 1:30\u202fPM.'
+2026-06-12 11:24:43  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 11:24:43  DEBUG     [workday_graph]  [model-request] prompt: User query: "It's matrix call at 1pm"
+Intent: "respond with meeting details"
+
+[CALENDAR ACTION]
+Your “matrix call” has been scheduled for today at 1 PM. Would you like to add the second meeting now?
+Status: Calendar changed
+
+2026-06-12 11:24:43  DEBUG     [workday_graph]  [model-response] text: Your "matrix call" has been scheduled for today at 1 PM, and the calendar has been updated to reflect this change.
+2026-06-12 11:24:43  DEBUG     [workday_graph]  [model-request] prompt: User query: "second is gen ai call at 1:30"
+Intent: "add second meeting"
+
+[CALENDAR ACTION]
+gen ai call has been scheduled for today at 1:30 PM.
+Status: Calendar changed
+
+2026-06-12 11:24:43  DEBUG     [workday_graph]  [model-response] text: The "gen ai call" has been scheduled for today at 1:30 PM, updating your calendar with this new meeting.
+2026-06-12 11:24:43  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-12 11:24:43  INFO      [workday_graph]  === Workday pipeline END  session='ceb24873-eb92-4eea-8710-b4a489dd4548'  planner_h=11  cal_action_h=8  synth_h=4  cal_open=False ===
+2026-06-12 11:27:19  INFO      [workday_graph]  === Workday pipeline START  query='Plan a day for me'  session='a82df838-cc93-44c1-9b0e-402c15dd31d2' ===
+2026-06-12 11:27:19  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'Plan a day for me'
+2026-06-12 11:27:19  DEBUG     [workday_graph]  [model-request] prompt: Plan a day for me
+2026-06-12 11:27:19  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"day overview","needs_calendar":true,"needs_clarification":false,"needs_email":true,"next_node":"FetchEmailsNode"}
+2026-06-12 11:27:19  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:27:19  INFO      [workday_graph]  PlannerNode  ->  decision: intent='day overview'  next_node='FetchEmailsNode'  needs_email=True  needs_calendar=True
+2026-06-12 11:27:19  INFO      [workday_graph]  PlannerNode  ->  routing to FetchEmailsNode
+2026-06-12 11:27:19  INFO      [workday_graph]  FetchEmailsNode  ->  fetching up to 10 emails
+2026-06-12 11:27:23  INFO      [workday_graph]  FetchEmailsNode  ->  fetched 10 emails
+2026-06-12 11:27:23  INFO      [workday_graph]  ClassifyNode  ->  [1/10] subject='Nifty closes ~53 points lower on Thursday, after reversing from 23,300. Strength expected above 23,425'  from='updates@info.kotakneo.com'
+2026-06-12 11:27:23  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb9fd3a94f1bf5'
+2026-06-12 11:27:24  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 11:27:25  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb9fd3a94f1bf5
+From: updates@info.kotakneo.com
+Subject: Nifty closes ~53 points lower on Thursday, after reversing from 23,300. Strength expected above 23,425
+Date: 2026-06-12 09:30
+Body:
+:root { supported-color-schemes: light dark; color-scheme: light dark; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 400; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 500; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 700; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmWUlfBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* Base styles (for desktop and default) */ #outlook a, body { padding: 0; } .ReadMsgBody { width: 100%; } .ExternalClass { width: 100%; } .ExternalClass, img, .ExternalClass font, .ExternalClass td, .ExternalClass div, .ExternalClass span, .ExternalClass p { line-height: 100%; } .mobileFourCol a { text-decoration: underline !important; } table, td { mso-table-lspace: 0; mso-table-rspace: 0; } table, td, tr { border-collapse: collapse; } td, body, span, p, div, li, a, th { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-line-height-rule: exactly; } body { margin: 0; width: 100% !important; -webkit-font-smoothing: antialiased; } img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; } a[x-apple-data-detectors] { color: inherit 
+2026-06-12 11:27:25  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an automated update about the stock market and does not require any immediate action or response."},"draft":null,"email_id":"19eb9fd3a94f1bf5","sender":"updates@info.kotakneo.com","subject":"Nifty closes ~53 points lower on Thursday, after reversing from 23,300. Strength expected above 23,425"}
+2026-06-12 11:27:25  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:27:25  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 11:27:25  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 11:27:25  INFO      [workday_graph]  ClassifyNode  ->  [2/10] subject='Google Cloud Developers Newsletter - June 2026'  from='googledev-noreply@google.com'
+2026-06-12 11:27:25  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb98a71154aa52'
+2026-06-12 11:27:26  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 11:27:27  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb98a71154aa52
+From: googledev-noreply@google.com
+Subject: Google Cloud Developers Newsletter - June 2026
+Date: 2026-06-12 07:25
+Body:
+Google Developer Program - Cloud Developers Newsletter @media only screen and (max-width: 700px) { .header-mobile-padding { padding-left: 50px !important; padding-right: 50px !important; } .header-mobile-padding img { width: 100% !important; max-width: 392px !important; height: auto !important; } } @media only screen and (max-width: 700px) { .hide-sm { display: none !important; } .hide-xs { display: block !important; } .content { padding: 0 20px !important; } header h1 { font-size: 14px !important; padding: 15px 0 12px 0 !important; } header img { height: 22px; width: auto; } #hero { margin: 0 10px !important; box-sizing: border-box; } #hero-container { padding: 0 25px !important; padding-top: 45% !important; } #hero-container__content__title { font-size: 22px !important; padding: 10px 20px !important; line-height: 33px !important; background: none !important; } #hero-container__list, #hero-container__content__title, .container-default--1 ul, .container-default--2 ul, .container-default--1__footer { padding: 10 20px !important; } #hero-container__list1{ padding: 0 20px !important;} #one-more-thing__footer, #hero-container__content__emphasys, .container-default--emphasys { padding: 20px !important; } #hero-container__content__emphasys h3 { font-size: 18px !important; } #hero-container__content__emphasys p { font-size: 16px !important; } #hero-container__content__emphasys strong { font-size: 16px !important; } #hero-container__content__emphasys1, .container-default--emphasys { padding: 20px !important; } #hero-container__content__emphasys1 h3 { font-size: 18px !important; } #hero-container__content__emphasys1 p { font-size: 16px !important; } #hero-container__content__emphasys1 strong { font-size: 16px !important; } .container-default { margin-top: 25px !important; } .container-default__box { padding: 0 35px !important; } .container-default__title { font-size: 18px !important; padding: 10px 0 !important; } .container-default__title img { display: none; } .container-de
+2026-06-12 11:27:27  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is a newsletter, which is informational in nature and does not require a reply or immediate attention."},"draft":null,"email_id":"19eb98a71154aa52","sender":"googledev-noreply@google.com","subject":"Google Cloud Developers Newsletter - June 2026"}
+2026-06-12 11:27:27  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:27:27  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 11:27:27  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 11:27:27  INFO      [workday_graph]  ClassifyNode  ->  [3/10] subject="ones.trade, catch up on moments you've missed"  from='notification@priority.instagram.com'
+2026-06-12 11:27:27  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb7c40c465c997'
+2026-06-12 11:27:28  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 11:27:28  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb7c40c465c997
+From: notification@priority.instagram.com
+Subject: ones.trade, catch up on moments you've missed
+Date: 2026-06-11 23:08
+Body:
+Facebook @media all and (max-width: 480px){*[class].ib_t{min-width:100%!important}*[class].ib_row{display:block!important}*[class].ib_ext{display:block!important;padding:10px 0 5px;vertical-align:top!important;width:100%!important}*[class].ib_img,*[class].ib_mid{vertical-align:top!important}*[class].mb_blk{display:block!important;padding-bottom:10px;width:100%!important}*[class].mb_hide{display:none!important}*[class].mb_inl{display:inline!important}*[class].d_mb_flex{display:block!important}}.d_mb_show{display:none}.d_mb_flex{display:flex}@media only screen and (max-device-width: 480px){.d_mb_hide{display:none!important}.d_mb_show,.d_mb_flex{display:block!important}}.mb_text h1,.mb_text h2,.mb_text h3,.mb_text h4,.mb_text h5,.mb_text h6{line-height:normal}.mb_work_text h1{font-size:18px;line-height:normal;margin-top:4px}.mb_work_text h2,.mb_work_text h3{font-size:16px;line-height:normal;margin-top:4px}.mb_work_text h4,.mb_work_text h5,.mb_work_text h6{font-size:14px;line-height:normal}.mb_work_text a{color:#1270e9}.mb_work_text p{margin-top:4px} &nbsp; aaryankelvin , sudhanshutrivediofficial and others posted something new. &nbsp;&nbsp;&nbsp; Catch up on Instagram aaryankelvin , sudhanshutrivediofficial and others posted something new. Open&nbsp;Instagram &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; 1 You have 1 notification you may not have seen. &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; This message was sent to riteshsonawane280&#064;gmail.com . If you don&#039;t want to receive these emails from Instagram in the future, please unsubscribe. Meta Platforms, Inc., Attention: Community Support, 1 Meta Way, Menlo Park, CA 94025 To help keep your profile secure, please don’t forward this email. Learn more &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+2026-06-12 11:27:28  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an informational notification from Instagram about new posts from other users, and it does not require a reply or immediate attention."},"draft":null,"email_id":"19eb7c40c465c997","sender":"notification@priority.instagram.com","subject":"ones.trade, catch up on moments you've missed"}
+2026-06-12 11:27:28  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:27:28  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 11:27:28  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 11:27:28  INFO      [workday_graph]  ClassifyNode  ->  [4/10] subject='Funds/Securities Balance'  from='nse_alerts@nse.co.in'
+2026-06-12 11:27:28  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb70cd910a3722'
+2026-06-12 11:27:29  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 11:27:30  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb70cd910a3722
+From: nse_alerts@nse.co.in
+Subject: Funds/Securities Balance
+Date: 2026-06-11 19:48
+Body:
+Dear Investor, With reference to NSE circulars NSE/INSP/46704 dated December 17, 2020, and NSE/INSP/55039 dated December 28, 2022, Trading members are required to upload clients&#39; securities balance on a daily basis. Further, with reference to NCL circular NCL/CMPL/49348 dated Aug 20, 2021, and NSE circular NSE/INSP/49691 dated September 22, 2021, Members are required to upload disaggregated collateral information (segment-wise and asset type wise) at the client level to their Clearing corporations on a daily basis. Information pertaining to your fund and securities balance as on 06-06-2026 provided by KOTAK SECURITIES LTD. along with the details of securities ISIN wise is attached. Please follow the procedure given below for opening the attachment: Click on the attachment provided with this mail. You will be prompted for your password. The password is your PAN number in upper case. Please note that negative number in the file represents debit balance/balance payable by you. Also, the funds and securities balances provided are what is maintained with your broker and does not include balance in your personal bank account and demat account. You are advised to compare the funds, securities and commodities balances received from Exchange on a weekly basis with the balances in the weekly statement of accounts for funds, securities and commodities sent by the stockbroker for the respective date. In case you find any discrepancy in the balances, we advise you to take up the matter immediately with your Broker.You may contact customer service of the trading member. In case of non-resolution of discrepancy by the broker, you may intimate the same to the Exchange at ignse@nse.co.in or 18002660050 or register an online complaint at https://smartodr.in/login. The data is being provided to the clients on an &#34;as is&#34; and &#34;what-is&#34; basis as provided by the trading member. The Exchange shall not be liable for any delays, errors, omissions, commissions, inaccuracie
+2026-06-12 11:27:30  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is informational and provides the client with their funds and securities balance. It does not require any immediate action or reply from the client."},"draft":null,"email_id":"19eb70cd910a3722","sender":"nse_alerts@nse.co.in","subject":"Funds/Securities Balance"}
+2026-06-12 11:27:30  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:27:30  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 11:27:30  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 11:27:30  INFO      [workday_graph]  ClassifyNode  ->  [5/10] subject='Spans and Traces in Logfire'  from='hello@pydantic.dev'
+2026-06-12 11:27:30  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb5416897c308e'
+2026-06-12 11:27:30  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 11:27:31  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb5416897c308e
+From: hello@pydantic.dev
+Subject: Spans and Traces in Logfire
+Date: 2026-06-11 11:27
+Body:
+Discover Logfire's powerful spans and traces for deep system insights Hello! If you've ever wanted an easy way to see the request flows, performance, and bottlenecks in your production system, Logfire has you covered. Let me introduce you to one of Logfire's most powerful features: traces as logs. Think of spans as &#34;logging++&#34; they do everything regular logs do, but with extras. Here's what makes them powerful: They measure execution time automatically They capture relationships between operations Capture exceptions that occur within a span Let me show you a real-world example. Imagine you need to analyze file sizes in a directory: from pathlib import Path import logfire logfire.configure() cwd = Path.cwd() total_size = 0 with logfire.span('counting size of {cwd=}', cwd=cwd): for path in cwd.iterdir(): if path.is_file(): with logfire.span('reading {path}', path=path.relative_to(cwd)): total_size += len(path.read_bytes()) logfire.info('total size of {cwd} is {size} bytes', cwd=cwd, size=total_size) What's happening here? The outer span tracks the total operation time Each file gets its own span, showing individual processing times All spans are connected into a trace, showing the full picture Context (like file paths) is automatically captured This means you can: Identify slow files instantly Track total processing time See exactly where your code spends time Debug issues with specific files Here's how the above example looks in the Logfire UI: This is also extremely useful when dealing with multiple microservices, async pipeline jobs, LLM calls and many more. For more details, check out our docs . Still have questions? Feel free to get in touch or just hit reply to this email. Best, The Pydantic Team Pydantic Services, Inc. ・ pydantic.dev ・ github/pydantic Unsubscribe
+2026-06-12 11:27:31  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is informational and does not require a reply or immediate attention. It is a promotional email introducing a feature of Logfire and providing an example of its use."},"draft":null,"email_id":"19eb5416897c308e","sender":"hello@pydantic.dev","subject":"Spans and Traces in Logfire"}
+2026-06-12 11:27:31  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:27:31  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 11:27:31  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 11:27:31  INFO      [workday_graph]  ClassifyNode  ->  [6/10] subject='Dr. Sachin S. recently posted'  from='updates-noreply@linkedin.com'
+2026-06-12 11:27:31  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb23f2cfb2ff4a'
+2026-06-12 11:27:31  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 11:27:32  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb23f2cfb2ff4a
+From: updates-noreply@linkedin.com
+Subject: Dr. Sachin S. recently posted
+Date: 2026-06-10 21:25
+Body:
+@media (max-width: 512px) { .mercado-container { width: 100% !important; } } @media (max-width: 480px) { .inline-button, .inline-button table { display: none !important; } .full-width-button, .full-width-button table { display: table !important; } } @media (max-width: 320px) { .games-notification-badge { display: none !important; } } body {font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Fira Sans', Ubuntu, Oxygen, 'Oxygen Sans', Cantarell, 'Droid Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Lucida Grande', Helvetica, Arial, sans-serif;} It was a privilege to visit the 156-year-old Stevens Institute of Technology… ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Suggested for you Dr. Sachin S. Principal, Marathwada Mitra Mandal’s College Of… Follow It was a privilege to visit the 156-year-old Stevens Institute of Technology in Hoboken, New Jersey, USA. The… see more 327 · 7 Comments Read more See more on LinkedIn Get the new LinkedIn desktop app Also available on mobile This email was intended for Ritesh Sonawane (Student at Marathwada Mitra Mandal&#39;s College of Engineering, Pune) Learn why we included this. You are receiving Network Conversations emails. Some content may be automatically translated based on your settings . Unsubscribe · Help © 2026 LinkedIn Corporation, 1&zwnj;000 West Maude Avenue, Sunnyvale, CA 94085. LinkedIn and the LinkedIn logo are registered trademarks of LinkedIn.
+2026-06-12 11:27:32  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an update from LinkedIn about a post from Dr. Sachin S. and does not require any action or response."},"draft":null,"email_id":"19eb23f2cfb2ff4a","sender":"updates-noreply@linkedin.com","subject":"Dr. Sachin S. recently posted"}
+2026-06-12 11:27:32  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:27:32  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 11:27:32  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 11:27:32  INFO      [workday_graph]  ClassifyNode  ->  [7/10] subject='Hi RITESH, You Might Want to See This.'  from='kotakneo@info.kotaksecurities.co.in'
+2026-06-12 11:27:32  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb0420cd2ebef7'
+2026-06-12 11:27:33  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 11:27:34  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb0420cd2ebef7
+From: kotakneo@info.kotaksecurities.co.in
+Subject: Hi RITESH, You Might Want to See This.
+Date: 2026-06-10 12:09
+Body:
+:root { color-scheme: light dark; supported-color-schemes: light dark; } .reactmarkdown p { margin: 0; } .reactmarkdown a { color: rgba(109, 109, 109, 1); font-weight: 500; } @media (max-width: 640px) { .sm-my-17 { margin-top: 17px !important; margin-bottom: 17px !important; } .sm-mx-0 { margin-left: 0 !important; margin-right: 0 !important; } .sm-ml-116 { margin-left: 116px !important; } .sm-ml-0 { margin-left: 0 !important; } .sm-block { display: block !important; } .sm-inline-block { display: inline-block !important; } .sm-table-cell { display: table-cell !important; } .sm-table-row { display: table-row !important; } .sm-hidden { display: none !important; } .sm-h-145 { height: 145px !important; } .sm-h-32 { height: 32px !important; } .sm-h-280 { height: 280px !important; } .sm-h-8 { height: 8px !important; } .sm-h-68 { height: 68px !important; } .sm-h-79 { height: 79px !important; } .sm-w-full { width: 100% !important; } .sm-w-60 { width: 60px !important; } .sm-w-278 { width: 278px !important; } .sm-w-295 { width: 295px !important; } .sm-w-294 { width: 294px !important; } .sm-w-6 { width: 6px !important; } .sm-bg-cover { background-size: cover !important; } .sm-bg-voucher { background-size: 294px 93px !important; } .sm-px-0 { padding-left: 0 !important; padding-right: 0 !important; } .sm-px-20 { padding-left: 20px !important; padding-right: 20px !important; } .sm-px-22 { padding-left: 22px !important; padding-right: 22px !important; } .sm-px-27 { padding-left: 27px !important; padding-right: 27px !important; } .sm-px-35 { padding-left: 35px !important; padding-right: 35px !important; } .sm-px-10 { padding-left: 10px !important; padding-right: 10px !important; } .sm-px-15 { padding-left: 15px !important; padding-right: 15px !important; } .sm-py-20 { padding-top: 20px !important; padding-bottom: 20px !important; } .sm-px-4 { padding-left: 4px !important; padding-right: 4px !important; } .sm-py-8 { padding-top: 8px !important; padding-bottom: 8px !important; } .sm-p
+2026-06-12 11:27:34  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"actionable","reasoning":"The email contains a personalized greeting and appears to be a promotional or informative message from a financial institution, likely requiring a response or follow-up action."},"draft":{"body":"Dear Kotak Securities Team, \n\nI appreciate your message. Could you please provide more information about the topic you would like to discuss? I will review it and respond accordingly. \n\nBest regards, Ritesh","subject":"Re: Hi RITESH, You Might Want to See This.","to":"kotakneo@info.kotaksecurities.co.in"},"email_id":"19eb0420cd2ebef7","sender":"kotakneo@info.kotaksecurities.co.in","subject":"Hi RITESH, You Might Want to See This."}
+2026-06-12 11:27:34  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:27:34  INFO      [workday_graph]  ClassifyNode  ->  classified as 'actionable'  (draft=True)
+2026-06-12 11:27:34  INFO      [workday_graph]  DraftNode  ->  email is actionable with draft -> routing to HumanGateNode
+2026-06-12 11:27:34  INFO      [workday_graph]  HumanGateNode  ->  stored pending draft  id='d5edb681-7724-4e12-b2b8-9345c1843e35'  subject='Hi RITESH, You Might Want to See This.'
+2026-06-12 11:27:34  INFO      [workday_graph]  ClassifyNode  ->  [8/10] subject='Nifty closes ~119 points Up on Tuesday, however, Technical structure remains vulnerable below 23,300.'  from='updates@info.kotakneo.com'
+2026-06-12 11:27:34  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eafc91bd4b5c90'
+2026-06-12 11:27:35  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 11:27:35  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eafc91bd4b5c90
+From: updates@info.kotakneo.com
+Subject: Nifty closes ~119 points Up on Tuesday, however, Technical structure remains vulnerable below 23,300.
+Date: 2026-06-10 09:57
+Body:
+:root { supported-color-schemes: light dark; color-scheme: light dark; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 400; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 500; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 700; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmWUlfBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* Base styles (for desktop and default) */ #outlook a, body { padding: 0; } .ReadMsgBody { width: 100%; } .ExternalClass { width: 100%; } .ExternalClass, img, .ExternalClass font, .ExternalClass td, .ExternalClass div, .ExternalClass span, .ExternalClass p { line-height: 100%; } .mobileFourCol a { text-decoration: underline !important; } table, td { mso-table-lspace: 0; mso-table-rspace: 0; } table, td, tr { border-collapse: collapse; } td, body, span, p, div, li, a, th { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-line-height-rule: exactly; } body { margin: 0; width: 100% !important; -webkit-font-smoothing: antialiased; } img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; } a[x-apple-data-detectors] { color: inherit 
+2026-06-12 11:27:35  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an informational update about the stock market and does not require any immediate action or response."},"draft":null,"email_id":"19eafc91bd4b5c90","sender":"updates@info.kotakneo.com","subject":"Nifty closes ~119 points Up on Tuesday, however, Technical structure remains vulnerable below 23,300."}
+2026-06-12 11:27:35  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:27:35  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 11:27:35  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 11:27:35  INFO      [workday_graph]  ClassifyNode  ->  [9/10] subject='Birthday Wishes'  from='ks.noreply@kotak.com'
+2026-06-12 11:27:35  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eaf88368a14d85'
+2026-06-12 11:27:36  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 11:27:38  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eaf88368a14d85
+From: ks.noreply@kotak.com
+Subject: Birthday Wishes
+Date: 2026-06-10 08:46
+Body:
+
+2026-06-12 11:27:38  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email contains birthday wishes, which is an informational message and does not require a reply."},"draft":null,"email_id":"19eaf88368a14d85","sender":"ks.noreply@kotak.com","subject":"Birthday Wishes"}
+2026-06-12 11:27:38  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:27:38  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 11:27:38  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 11:27:38  INFO      [workday_graph]  ClassifyNode  ->  [10/10] subject='From rashi13122006 and others: 4 unread messages'  from='unread-messages@mail.instagram.com'
+2026-06-12 11:27:38  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19ead4b32db1e360'
+2026-06-12 11:27:38  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 11:27:40  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19ead4b32db1e360
+From: unread-messages@mail.instagram.com
+Subject: From rashi13122006 and others: 4 unread messages
+Date: 2026-06-09 22:20
+Body:
+Facebook @media all and (max-width: 480px){*[class].ib_t{min-width:100%!important}*[class].ib_row{display:block!important}*[class].ib_ext{display:block!important;padding:10px 0 5px;vertical-align:top!important;width:100%!important}*[class].ib_img,*[class].ib_mid{vertical-align:top!important}*[class].mb_blk{display:block!important;padding-bottom:10px;width:100%!important}*[class].mb_hide{display:none!important}*[class].mb_inl{display:inline!important}*[class].d_mb_flex{display:block!important}}.d_mb_show{display:none}.d_mb_flex{display:flex}@media only screen and (max-device-width: 480px){.d_mb_hide{display:none!important}.d_mb_show,.d_mb_flex{display:block!important}}.mb_text h1,.mb_text h2,.mb_text h3,.mb_text h4,.mb_text h5,.mb_text h6{line-height:normal}.mb_work_text h1{font-size:18px;line-height:normal;margin-top:4px}.mb_work_text h2,.mb_work_text h3{font-size:16px;line-height:normal;margin-top:4px}.mb_work_text h4,.mb_work_text h5,.mb_work_text h6{font-size:14px;line-height:normal}.mb_work_text a{color:#1270e9}.mb_work_text p{margin-top:4px} &nbsp; Check your DMs to stay connected with your friends. &nbsp;&nbsp;&nbsp; Catch up on your messages See your unread messages you may have missed. Open&nbsp;Instagram &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 4 unread messages &nbsp; Anil Kumar Sent a message See&nbsp;message Anmol Kol Sent a message See&nbsp;message M. kasihf Sent a message See&nbsp;message 𝐑𝐈𝐓𝐄𝐒𝐇 𝐒𝐎𝐍𝐀𝐖𝐀𝐍𝐄 🍁 Sent a message See&nbsp;message See&nbsp;all&nbsp;messages &nbsp; 1 You have 1 notification you may not have seen. &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; This message was sent to riteshsonawane280&#064;gmail.com . If you don&#039;t want to receive these emails from Instagram in the future, please unsubscribe. Meta Platforms, Inc., Attention: Community Support, 1 Meta Way, Menlo Park, CA 94025 To help keep your profile secure, please don’t forward this email. Learn more &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+2026-06-12 11:27:40  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an automated notification from Instagram about unread messages and does not require a reply or immediate attention."},"draft":null,"email_id":"19ead4b32db1e360","sender":"unread-messages@mail.instagram.com","subject":"From rashi13122006 and others: 4 unread messages"}
+2026-06-12 11:27:40  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:27:40  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 11:27:40  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 11:27:40  INFO      [workday_graph]  ClassifyNode  ->  all 10 emails processed -> BuildEmailResultNode  (actionable=1)
+2026-06-12 11:27:40  INFO      [workday_graph]  BuildEmailResultNode  ->  email result built: processed=10  actionable=1  pending=1
+2026-06-12 11:27:40  INFO      [workday_graph]  BuildEmailResultNode  ->  calendar needed, routing to CalendarActionNode
+2026-06-12 11:27:40  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 11:27 AM  day_overview=True
+2026-06-12 11:27:42  INFO      [calendar_action_agent]  get_events tool -> returned 4 events
+2026-06-12 11:27:44  INFO      [calendar_action_agent]  check_conflicts tool -> no conflicts among 4 events
+2026-06-12 11:27:45  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 11:27 AM (Asia/Kolkata). Today is day_offset=0.
+User request: Give a read-only summary of today's calendar as part of a full day briefing: call get_events and check_conflicts, then describe today's schedule and flag any conflicts. Do NOT create, change, or cancel anything and do NOT ask a follow-up question.
+2026-06-12 11:27:45  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 11:27:45  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=sc4glme8he74b04uo3g6oedv5c | title='stolt client call' | 12:00 PM-12:30 PM | start_unix=1781245800 | end_unix=1781247600 | attendees=none
+id=kcvvrmacmfsc2g0ubt2aomj5l8 | title='matrix call' | 01:00 PM-01:30 PM | start_unix=1781249400 | end_unix=1781251200 | attendees=none
+id=6mpf5bnmgm1a1f4aihjda9ubgs | title='gen ai call' | 01:30 PM-02:00 PM | start_unix=1781251200 | end_unix=1781253000 | attendees=none
+id=qn8fjm92hllkoudt8arf1hvjks | title='c360 client meet' | 03:00 PM-03:30 PM | start_unix=1781256600 | end_unix=1781258400 | attendees=none
+2026-06-12 11:27:45  DEBUG     [workday_graph]  [model-response] tool-call: check_conflicts  args: {"num_days":1,"start_offset":0}
+2026-06-12 11:27:45  DEBUG     [workday_graph]  [tool-return] check_conflicts -> No conflicts in the requested range.
+2026-06-12 11:27:45  DEBUG     [workday_graph]  [model-response] text: Today's schedule:
+
+- 12:00 PM – 12:30 PM: **stolt client call**  
+- 1:00 PM – 1:30 PM: **matrix call**  
+- 1:30 PM – 2:00 PM: **gen ai call**  
+- 3:00 PM – 3:30 PM: **c360 client meet**  
+
+There are no conflicts.
+2026-06-12 11:27:45  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=False  reply="Today's schedule:\n\n- 12:00\u202fPM\u202f–\u202f12:30\u202fPM: **stolt client call**  \n- 1:00\u202fPM\u202f–\u202f1:30\u202fPM: **matrix call**  \n- 1:30\u202fPM\u202f–\u202f2:00\u202fPM: **gen ai call**  \n- 3:00\u202fPM\u202f–\u202f3:30\u202fPM: **c360 client meet**  \n\nThere are no conflicts."
+2026-06-12 11:27:45  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 11:27:46  DEBUG     [workday_graph]  [model-request] prompt: User query: "Plan a day for me"
+Intent: "day overview"
+
+[EMAILS]
+Processed: 10 | Actionable: 1 | Pending drafts: 1
+  - [FYI] 'Nifty closes ~53 points lower on Thursday, after reversing from 23,300. Strength expected above 23,425' from updates@info.kotakneo.com
+  - [FYI] 'Google Cloud Developers Newsletter - June 2026' from googledev-noreply@google.com
+  - [FYI] "ones.trade, catch up on moments you've missed" from notification@priority.instagram.com
+  - [FYI] 'Funds/Securities Balance' from nse_alerts@nse.co.in
+  - [FYI] 'Spans and Traces in Logfire' from hello@pydantic.dev
+  - [FYI] 'Dr. Sachin S. recently posted' from updates-noreply@linkedin.com
+  - [ACTIONABLE] 'Hi RITESH, You Might Want to See This.' from kotakneo@info.kotaksecurities.co.in (draft reply ready)
+  - [FYI] 'Nifty closes ~119 points Up on Tuesday, however, Technical structure remains vulnerable below 23,300.' from updates@info.kotakneo.com
+  - [FYI] 'Birthday Wishes' from ks.noreply@kotak.com
+  - [FYI] 'From rashi13122006 and others: 4 unread messages' from unread-messages@mail.instagram.com
+
+[CALENDAR ACTION]
+Today's schedule:
+
+- 12:00 PM – 12:30 PM: **stolt client call**  
+- 1:00 PM – 1:30 PM: **matrix call**  
+- 1:30 PM – 2:00 PM: **gen ai call**  
+- 3:00 PM – 3:30 PM: **c360 client meet**  
+
+There are no conflicts.
+Status: No change made
+
+2026-06-12 11:27:46  DEBUG     [workday_graph]  [model-response] text: You have a relatively light email inbox with 1 actionable item and 9 non-urgent updates. Your calendar is set with four appointments today, including a Stolt client call, Matrix call, Gen AI call, and a C360 client meet, with no conflicts. Nothing was changed in your calendar.
+2026-06-12 11:27:46  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-12 11:27:46  INFO      [workday_graph]  === Workday pipeline END  session='a82df838-cc93-44c1-9b0e-402c15dd31d2'  planner_h=3  cal_action_h=6  synth_h=2  cal_open=False ===
+2026-06-12 11:28:45  INFO      [workday_graph]  === Workday pipeline START  query='remove last 2 meets of doday'  session='a82df838-cc93-44c1-9b0e-402c15dd31d2' ===
+2026-06-12 11:28:45  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'remove last 2 meets of doday'
+2026-06-12 11:28:46  DEBUG     [workday_graph]  [model-request] prompt: Plan a day for me
+2026-06-12 11:28:46  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"day overview","needs_calendar":true,"needs_clarification":false,"needs_email":true,"next_node":"FetchEmailsNode"}
+2026-06-12 11:28:46  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:28:46  DEBUG     [workday_graph]  [model-request] prompt: remove last 2 meets of doday
+2026-06-12 11:28:46  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"remove meetings","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 11:28:46  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:28:46  INFO      [workday_graph]  PlannerNode  ->  decision: intent='remove meetings'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-12 11:28:46  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-12 11:28:46  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 11:28 AM  day_overview=False
+2026-06-12 11:28:47  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 11:27 AM (Asia/Kolkata). Today is day_offset=0.
+User request: Give a read-only summary of today's calendar as part of a full day briefing: call get_events and check_conflicts, then describe today's schedule and flag any conflicts. Do NOT create, change, or cancel anything and do NOT ask a follow-up question.
+2026-06-12 11:28:47  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 11:28:47  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=sc4glme8he74b04uo3g6oedv5c | title='stolt client call' | 12:00 PM-12:30 PM | start_unix=1781245800 | end_unix=1781247600 | attendees=none
+id=kcvvrmacmfsc2g0ubt2aomj5l8 | title='matrix call' | 01:00 PM-01:30 PM | start_unix=1781249400 | end_unix=1781251200 | attendees=none
+id=6mpf5bnmgm1a1f4aihjda9ubgs | title='gen ai call' | 01:30 PM-02:00 PM | start_unix=1781251200 | end_unix=1781253000 | attendees=none
+id=qn8fjm92hllkoudt8arf1hvjks | title='c360 client meet' | 03:00 PM-03:30 PM | start_unix=1781256600 | end_unix=1781258400 | attendees=none
+2026-06-12 11:28:47  DEBUG     [workday_graph]  [model-response] tool-call: check_conflicts  args: {"num_days":1,"start_offset":0}
+2026-06-12 11:28:47  DEBUG     [workday_graph]  [tool-return] check_conflicts -> No conflicts in the requested range.
+2026-06-12 11:28:47  DEBUG     [workday_graph]  [model-response] text: Today's schedule:
+
+- 12:00 PM – 12:30 PM: **stolt client call**  
+- 1:00 PM – 1:30 PM: **matrix call**  
+- 1:30 PM – 2:00 PM: **gen ai call**  
+- 3:00 PM – 3:30 PM: **c360 client meet**  
+
+There are no conflicts.
+2026-06-12 11:28:47  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 11:28 AM (Asia/Kolkata). Today is day_offset=0.
+User request: remove last 2 meets of doday
+2026-06-12 11:28:47  DEBUG     [workday_graph]  [model-response] text: Do you want me to delete the two latest events today: **gen ai call** (1:30 PM – 2:00 PM) and **c360 client meet** (3:00 PM – 3:30 PM)?
+2026-06-12 11:28:47  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=True  reply='Do you want me to delete the two latest events today: **gen ai call** (1:30\u202fPM\u202f–\u202f2:00\u202fPM) and **c360 client meet** (3:00\u202fPM\u202f–\u202f3:30\u202fPM)?'
+2026-06-12 11:28:47  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 11:28:47  INFO      [workday_graph]  SynthesizeNode  ->  calendar agent awaiting user, returning its reply directly
+2026-06-12 11:28:47  INFO      [workday_graph]  === Workday pipeline END  session='a82df838-cc93-44c1-9b0e-402c15dd31d2'  planner_h=6  cal_action_h=8  synth_h=2  cal_open=True ===
+2026-06-12 11:29:36  INFO      [workday_graph]  === Workday pipeline START  query='Yes'  session='a82df838-cc93-44c1-9b0e-402c15dd31d2' ===
+2026-06-12 11:29:36  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'Yes'
+2026-06-12 11:29:39  DEBUG     [workday_graph]  [model-request] prompt: Plan a day for me
+2026-06-12 11:29:39  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"day overview","needs_calendar":true,"needs_clarification":false,"needs_email":true,"next_node":"FetchEmailsNode"}
+2026-06-12 11:29:39  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:29:39  DEBUG     [workday_graph]  [model-request] prompt: remove last 2 meets of doday
+2026-06-12 11:29:39  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"remove meetings","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 11:29:39  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:29:39  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: Yes
+2026-06-12 11:29:39  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"continue calendar action","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 11:29:39  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 11:29:39  INFO      [workday_graph]  PlannerNode  ->  decision: intent='continue calendar action'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-12 11:29:39  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-12 11:29:39  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 11:29 AM  day_overview=False
+2026-06-12 11:29:48  INFO      [calendar_action_agent]  delete_event tool -> deleted id='6mpf5bnmgm1a1f4aihjda9ubgs'
+2026-06-12 11:29:51  INFO      [calendar_action_agent]  delete_event tool -> deleted id='qn8fjm92hllkoudt8arf1hvjks'
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 11:27 AM (Asia/Kolkata). Today is day_offset=0.
+User request: Give a read-only summary of today's calendar as part of a full day briefing: call get_events and check_conflicts, then describe today's schedule and flag any conflicts. Do NOT create, change, or cancel anything and do NOT ask a follow-up question.
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=sc4glme8he74b04uo3g6oedv5c | title='stolt client call' | 12:00 PM-12:30 PM | start_unix=1781245800 | end_unix=1781247600 | attendees=none
+id=kcvvrmacmfsc2g0ubt2aomj5l8 | title='matrix call' | 01:00 PM-01:30 PM | start_unix=1781249400 | end_unix=1781251200 | attendees=none
+id=6mpf5bnmgm1a1f4aihjda9ubgs | title='gen ai call' | 01:30 PM-02:00 PM | start_unix=1781251200 | end_unix=1781253000 | attendees=none
+id=qn8fjm92hllkoudt8arf1hvjks | title='c360 client meet' | 03:00 PM-03:30 PM | start_unix=1781256600 | end_unix=1781258400 | attendees=none
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [model-response] tool-call: check_conflicts  args: {"num_days":1,"start_offset":0}
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [tool-return] check_conflicts -> No conflicts in the requested range.
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [model-response] text: Today's schedule:
+
+- 12:00 PM – 12:30 PM: **stolt client call**  
+- 1:00 PM – 1:30 PM: **matrix call**  
+- 1:30 PM – 2:00 PM: **gen ai call**  
+- 3:00 PM – 3:30 PM: **c360 client meet**  
+
+There are no conflicts.
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 11:28 AM (Asia/Kolkata). Today is day_offset=0.
+User request: remove last 2 meets of doday
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [model-response] text: Do you want me to delete the two latest events today: **gen ai call** (1:30 PM – 2:00 PM) and **c360 client meet** (3:00 PM – 3:30 PM)?
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 11:29 AM (Asia/Kolkata). Today is day_offset=0.
+User request: Yes
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [model-response] tool-call: delete_event  args: {"event_id":"6mpf5bnmgm1a1f4aihjda9ubgs"}
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [tool-return] delete_event -> Deleted event id=6mpf5bnmgm1a1f4aihjda9ubgs.
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [model-response] tool-call: delete_event  args: {"event_id":"qn8fjm92hllkoudt8arf1hvjks"}
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [tool-return] delete_event -> Deleted event id=qn8fjm92hllkoudt8arf1hvjks.
+2026-06-12 11:29:52  DEBUG     [workday_graph]  [model-response] text: Both events have been removed: **gen ai call** (1:30 PM – 2:00 PM) and **c360 client meet** (3:00 PM – 3:30 PM).
+2026-06-12 11:29:52  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=True  awaiting_user=False  reply='Both events have been removed: **gen ai call** (1:30\u202fPM\u202f–\u202f2:00\u202fPM) and **c360 client meet** (3:00\u202fPM\u202f–\u202f3:30\u202fPM).'
+2026-06-12 11:29:52  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 11:29:53  DEBUG     [workday_graph]  [model-request] prompt: User query: "Plan a day for me"
+Intent: "day overview"
+
+[EMAILS]
+Processed: 10 | Actionable: 1 | Pending drafts: 1
+  - [FYI] 'Nifty closes ~53 points lower on Thursday, after reversing from 23,300. Strength expected above 23,425' from updates@info.kotakneo.com
+  - [FYI] 'Google Cloud Developers Newsletter - June 2026' from googledev-noreply@google.com
+  - [FYI] "ones.trade, catch up on moments you've missed" from notification@priority.instagram.com
+  - [FYI] 'Funds/Securities Balance' from nse_alerts@nse.co.in
+  - [FYI] 'Spans and Traces in Logfire' from hello@pydantic.dev
+  - [FYI] 'Dr. Sachin S. recently posted' from updates-noreply@linkedin.com
+  - [ACTIONABLE] 'Hi RITESH, You Might Want to See This.' from kotakneo@info.kotaksecurities.co.in (draft reply ready)
+  - [FYI] 'Nifty closes ~119 points Up on Tuesday, however, Technical structure remains vulnerable below 23,300.' from updates@info.kotakneo.com
+  - [FYI] 'Birthday Wishes' from ks.noreply@kotak.com
+  - [FYI] 'From rashi13122006 and others: 4 unread messages' from unread-messages@mail.instagram.com
+
+[CALENDAR ACTION]
+Today's schedule:
+
+- 12:00 PM – 12:30 PM: **stolt client call**  
+- 1:00 PM – 1:30 PM: **matrix call**  
+- 1:30 PM – 2:00 PM: **gen ai call**  
+- 3:00 PM – 3:30 PM: **c360 client meet**  
+
+There are no conflicts.
+Status: No change made
+
+2026-06-12 11:29:53  DEBUG     [workday_graph]  [model-response] text: You have a relatively light email inbox with 1 actionable item and 9 non-urgent updates. Your calendar is set with four appointments today, including a Stolt client call, Matrix call, Gen AI call, and a C360 client meet, with no conflicts. Nothing was changed in your calendar.
+2026-06-12 11:29:53  DEBUG     [workday_graph]  [model-request] prompt: User query: "Yes"
+Intent: "continue calendar action"
+
+[CALENDAR ACTION]
+Both events have been removed: **gen ai call** (1:30 PM – 2:00 PM) and **c360 client meet** (3:00 PM – 3:30 PM).
+Status: Calendar changed
+
+2026-06-12 11:29:53  DEBUG     [workday_graph]  [model-response] text: Your calendar has been updated: the "Gen AI call" from 1:30 PM - 2:00 PM and the "C360 client meet" from 3:00 PM - 3:30 PM have been removed.
+2026-06-12 11:29:53  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-12 11:29:53  INFO      [workday_graph]  === Workday pipeline END  session='a82df838-cc93-44c1-9b0e-402c15dd31d2'  planner_h=9  cal_action_h=14  synth_h=4  cal_open=False ===
+2026-06-12 11:57:56  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-06-12 11:59:54  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-06-12 12:20:09  INFO      [workday_graph]  === Workday pipeline START  query='hey'  session='47bc4446-cd5f-4c71-ad71-c7070db203f6' ===
+2026-06-12 12:20:09  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'hey'
+2026-06-12 12:20:13  DEBUG     [workday_graph]  [model-request] prompt: hey
+2026-06-12 12:20:13  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"InteractNode"}
+2026-06-12 12:20:13  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:20:13  INFO      [workday_graph]  PlannerNode  ->  decision: intent='greeting'  next_node='InteractNode'  needs_email=False  needs_calendar=False
+2026-06-12 12:20:13  INFO      [workday_graph]  PlannerNode  ->  routing to InteractNode
+2026-06-12 12:20:13  INFO      [workday_graph]  InteractNode  ->  conversational message, responding directly
+2026-06-12 12:20:13  DEBUG     [workday_graph]  [model-request] prompt: The user sent a conversational message: "hey"
+Respond naturally and warmly. Briefly mention you can help with emails and calendar.
+2026-06-12 12:20:13  DEBUG     [workday_graph]  [model-response] text: Hello, it's great to chat with you. I'm here to help with anything you need, whether it's checking your emails or managing your calendar - just let me know how I can assist you today.
+2026-06-12 12:20:13  INFO      [workday_graph]  === Workday pipeline END  session='47bc4446-cd5f-4c71-ad71-c7070db203f6'  planner_h=3  cal_action_h=0  synth_h=2  cal_open=False ===
+2026-06-12 12:26:50  INFO      [workday_graph]  === Workday pipeline START  query='I want to schedule a c360 client call meet'  session='47bc4446-cd5f-4c71-ad71-c7070db203f6' ===
+2026-06-12 12:26:50  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'I want to schedule a c360 client call meet'
+2026-06-12 12:26:54  DEBUG     [workday_graph]  [model-request] prompt: hey
+2026-06-12 12:26:54  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"InteractNode"}
+2026-06-12 12:26:54  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:26:54  DEBUG     [workday_graph]  [model-request] prompt: I want to schedule a c360 client call meet
+2026-06-12 12:26:54  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule client call meeting","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:26:54  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:26:54  INFO      [workday_graph]  PlannerNode  ->  decision: intent='schedule client call meeting'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-12 12:26:54  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-12 12:26:54  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 12:26 PM  day_overview=False
+2026-06-12 12:27:03  INFO      [calendar_action_agent]  get_events tool -> returned 2 events
+2026-06-12 12:27:03  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 12:26 PM (Asia/Kolkata). Today is day_offset=0.
+User request: I want to schedule a c360 client call meet
+2026-06-12 12:27:03  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 12:27:03  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=sc4glme8he74b04uo3g6oedv5c | title='stolt client call' | 12:00 PM-12:30 PM | start_unix=1781245800 | end_unix=1781247600 | attendees=none
+id=kcvvrmacmfsc2g0ubt2aomj5l8 | title='matrix call' | 01:00 PM-01:30 PM | start_unix=1781249400 | end_unix=1781251200 | attendees=none
+2026-06-12 12:27:03  DEBUG     [workday_graph]  [model-response] text: Sure! What time would you like to schedule the **c360 client call meet**?
+2026-06-12 12:27:03  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=True  reply='Sure! What time would you like to schedule the **c360 client call meet**?'
+2026-06-12 12:27:03  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 12:27:03  INFO      [workday_graph]  SynthesizeNode  ->  calendar agent awaiting user, returning its reply directly
+2026-06-12 12:27:03  INFO      [workday_graph]  === Workday pipeline END  session='47bc4446-cd5f-4c71-ad71-c7070db203f6'  planner_h=6  cal_action_h=4  synth_h=2  cal_open=True ===
+2026-06-12 12:27:30  INFO      [workday_graph]  === Workday pipeline START  query='at 2pm'  session='47bc4446-cd5f-4c71-ad71-c7070db203f6' ===
+2026-06-12 12:27:30  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'at 2pm'
+2026-06-12 12:27:31  DEBUG     [workday_graph]  [model-request] prompt: hey
+2026-06-12 12:27:31  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"InteractNode"}
+2026-06-12 12:27:31  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:27:31  DEBUG     [workday_graph]  [model-request] prompt: I want to schedule a c360 client call meet
+2026-06-12 12:27:31  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule client call meeting","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:27:31  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:27:31  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: at 2pm
+2026-06-12 12:27:31  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"specify meeting time","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:27:31  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:27:31  INFO      [workday_graph]  PlannerNode  ->  decision: intent='specify meeting time'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-12 12:27:31  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-12 12:27:31  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 12:27 PM  day_overview=False
+2026-06-12 12:27:37  INFO      [calendar_action_agent]  create_event tool -> created id='366ug2udsvmgeigubusi4q8pmc' title='c360 client call meet' at Fri Jun 12, 02:00 PM
+2026-06-12 12:27:41  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 12:26 PM (Asia/Kolkata). Today is day_offset=0.
+User request: I want to schedule a c360 client call meet
+2026-06-12 12:27:41  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 12:27:41  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=sc4glme8he74b04uo3g6oedv5c | title='stolt client call' | 12:00 PM-12:30 PM | start_unix=1781245800 | end_unix=1781247600 | attendees=none
+id=kcvvrmacmfsc2g0ubt2aomj5l8 | title='matrix call' | 01:00 PM-01:30 PM | start_unix=1781249400 | end_unix=1781251200 | attendees=none
+2026-06-12 12:27:41  DEBUG     [workday_graph]  [model-response] text: Sure! What time would you like to schedule the **c360 client call meet**?
+2026-06-12 12:27:41  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 12:27 PM (Asia/Kolkata). Today is day_offset=0.
+User request: at 2pm
+2026-06-12 12:27:41  DEBUG     [workday_graph]  [model-response] tool-call: create_event  args: {"day_offset":0,"duration_minutes":30,"hour":14,"minute":0,"participants":[],"title":"c360 client call meet"}
+2026-06-12 12:27:41  DEBUG     [workday_graph]  [tool-return] create_event -> Created event 'c360 client call meet' on Fri Jun 12, 02:00 PM (id=366ug2udsvmgeigubusi4q8pmc).
+2026-06-12 12:27:41  DEBUG     [workday_graph]  [model-response] text: Your **c360 client call meet** has been scheduled for today at **2:00 PM**.
+2026-06-12 12:27:41  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=True  awaiting_user=False  reply='Your **c360 client call meet** has been scheduled for today at **2:00\u202fPM**.'
+2026-06-12 12:27:41  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 12:27:42  DEBUG     [workday_graph]  [model-request] prompt: The user sent a conversational message: "hey"
+Respond naturally and warmly. Briefly mention you can help with emails and calendar.
+2026-06-12 12:27:42  DEBUG     [workday_graph]  [model-response] text: Hello, it's great to chat with you. I'm here to help with anything you need, whether it's checking your emails or managing your calendar - just let me know how I can assist you today.
+2026-06-12 12:27:42  DEBUG     [workday_graph]  [model-request] prompt: User query: "at 2pm"
+Intent: "specify meeting time"
+
+[CALENDAR ACTION]
+Your **c360 client call meet** has been scheduled for today at **2:00 PM**.
+Status: Calendar changed
+
+2026-06-12 12:27:42  DEBUG     [workday_graph]  [model-response] text: I've updated your calendar: the "c360 client call meet" is now scheduled for today at 2:00 PM.
+2026-06-12 12:27:42  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-12 12:27:42  INFO      [workday_graph]  === Workday pipeline END  session='47bc4446-cd5f-4c71-ad71-c7070db203f6'  planner_h=9  cal_action_h=8  synth_h=4  cal_open=False ===
+2026-06-12 12:27:54  INFO      [workday_graph]  === Workday pipeline START  query='can you please plan my day'  session='47bc4446-cd5f-4c71-ad71-c7070db203f6' ===
+2026-06-12 12:27:54  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'can you please plan my day'
+2026-06-12 12:27:54  DEBUG     [workday_graph]  [model-request] prompt: hey
+2026-06-12 12:27:54  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"InteractNode"}
+2026-06-12 12:27:54  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:27:54  DEBUG     [workday_graph]  [model-request] prompt: I want to schedule a c360 client call meet
+2026-06-12 12:27:54  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule client call meeting","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:27:54  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:27:54  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: at 2pm
+2026-06-12 12:27:54  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"specify meeting time","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:27:54  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:27:54  DEBUG     [workday_graph]  [model-request] prompt: can you please plan my day
+2026-06-12 12:27:54  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"plan my day","needs_calendar":true,"needs_clarification":false,"needs_email":true,"next_node":"FetchEmailsNode"}
+2026-06-12 12:27:54  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:27:54  INFO      [workday_graph]  PlannerNode  ->  decision: intent='plan my day'  next_node='FetchEmailsNode'  needs_email=True  needs_calendar=True
+2026-06-12 12:27:54  INFO      [workday_graph]  PlannerNode  ->  routing to FetchEmailsNode
+2026-06-12 12:27:54  INFO      [workday_graph]  FetchEmailsNode  ->  fetching up to 10 emails
+2026-06-12 12:27:59  INFO      [workday_graph]  FetchEmailsNode  ->  fetched 10 emails
+2026-06-12 12:27:59  INFO      [workday_graph]  ClassifyNode  ->  [1/10] subject='Nifty closes ~53 points lower on Thursday, after reversing from 23,300. Strength expected above 23,425'  from='updates@info.kotakneo.com'
+2026-06-12 12:27:59  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb9fd3a94f1bf5'
+2026-06-12 12:28:00  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 12:28:00  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb9fd3a94f1bf5
+From: updates@info.kotakneo.com
+Subject: Nifty closes ~53 points lower on Thursday, after reversing from 23,300. Strength expected above 23,425
+Date: 2026-06-12 09:30
+Body:
+:root { supported-color-schemes: light dark; color-scheme: light dark; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 400; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 500; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 700; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmWUlfBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* Base styles (for desktop and default) */ #outlook a, body { padding: 0; } .ReadMsgBody { width: 100%; } .ExternalClass { width: 100%; } .ExternalClass, img, .ExternalClass font, .ExternalClass td, .ExternalClass div, .ExternalClass span, .ExternalClass p { line-height: 100%; } .mobileFourCol a { text-decoration: underline !important; } table, td { mso-table-lspace: 0; mso-table-rspace: 0; } table, td, tr { border-collapse: collapse; } td, body, span, p, div, li, a, th { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-line-height-rule: exactly; } body { margin: 0; width: 100% !important; -webkit-font-smoothing: antialiased; } img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; } a[x-apple-data-detectors] { color: inherit 
+2026-06-12 12:28:00  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an informative market update and does not require any reply or immediate attention."},"draft":null,"email_id":"19eb9fd3a94f1bf5","sender":"updates@info.kotakneo.com","subject":"Nifty closes ~53 points lower on Thursday, after reversing from 23,300. Strength expected above 23,425"}
+2026-06-12 12:28:00  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:28:00  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 12:28:00  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 12:28:00  INFO      [workday_graph]  ClassifyNode  ->  [2/10] subject='Google Cloud Developers Newsletter - June 2026'  from='googledev-noreply@google.com'
+2026-06-12 12:28:00  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb98a71154aa52'
+2026-06-12 12:28:01  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 12:28:01  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb98a71154aa52
+From: googledev-noreply@google.com
+Subject: Google Cloud Developers Newsletter - June 2026
+Date: 2026-06-12 07:25
+Body:
+Google Developer Program - Cloud Developers Newsletter @media only screen and (max-width: 700px) { .header-mobile-padding { padding-left: 50px !important; padding-right: 50px !important; } .header-mobile-padding img { width: 100% !important; max-width: 392px !important; height: auto !important; } } @media only screen and (max-width: 700px) { .hide-sm { display: none !important; } .hide-xs { display: block !important; } .content { padding: 0 20px !important; } header h1 { font-size: 14px !important; padding: 15px 0 12px 0 !important; } header img { height: 22px; width: auto; } #hero { margin: 0 10px !important; box-sizing: border-box; } #hero-container { padding: 0 25px !important; padding-top: 45% !important; } #hero-container__content__title { font-size: 22px !important; padding: 10px 20px !important; line-height: 33px !important; background: none !important; } #hero-container__list, #hero-container__content__title, .container-default--1 ul, .container-default--2 ul, .container-default--1__footer { padding: 10 20px !important; } #hero-container__list1{ padding: 0 20px !important;} #one-more-thing__footer, #hero-container__content__emphasys, .container-default--emphasys { padding: 20px !important; } #hero-container__content__emphasys h3 { font-size: 18px !important; } #hero-container__content__emphasys p { font-size: 16px !important; } #hero-container__content__emphasys strong { font-size: 16px !important; } #hero-container__content__emphasys1, .container-default--emphasys { padding: 20px !important; } #hero-container__content__emphasys1 h3 { font-size: 18px !important; } #hero-container__content__emphasys1 p { font-size: 16px !important; } #hero-container__content__emphasys1 strong { font-size: 16px !important; } .container-default { margin-top: 25px !important; } .container-default__box { padding: 0 35px !important; } .container-default__title { font-size: 18px !important; padding: 10px 0 !important; } .container-default__title img { display: none; } .container-de
+2026-06-12 12:28:01  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is a newsletter and does not require a reply or immediate attention."},"draft":null,"email_id":"19eb98a71154aa52","sender":"googledev-noreply@google.com","subject":"Google Cloud Developers Newsletter - June 2026"}
+2026-06-12 12:28:01  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:28:01  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 12:28:01  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 12:28:01  INFO      [workday_graph]  ClassifyNode  ->  [3/10] subject="ones.trade, catch up on moments you've missed"  from='notification@priority.instagram.com'
+2026-06-12 12:28:01  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb7c40c465c997'
+2026-06-12 12:28:02  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 12:28:03  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb7c40c465c997
+From: notification@priority.instagram.com
+Subject: ones.trade, catch up on moments you've missed
+Date: 2026-06-11 23:08
+Body:
+Facebook @media all and (max-width: 480px){*[class].ib_t{min-width:100%!important}*[class].ib_row{display:block!important}*[class].ib_ext{display:block!important;padding:10px 0 5px;vertical-align:top!important;width:100%!important}*[class].ib_img,*[class].ib_mid{vertical-align:top!important}*[class].mb_blk{display:block!important;padding-bottom:10px;width:100%!important}*[class].mb_hide{display:none!important}*[class].mb_inl{display:inline!important}*[class].d_mb_flex{display:block!important}}.d_mb_show{display:none}.d_mb_flex{display:flex}@media only screen and (max-device-width: 480px){.d_mb_hide{display:none!important}.d_mb_show,.d_mb_flex{display:block!important}}.mb_text h1,.mb_text h2,.mb_text h3,.mb_text h4,.mb_text h5,.mb_text h6{line-height:normal}.mb_work_text h1{font-size:18px;line-height:normal;margin-top:4px}.mb_work_text h2,.mb_work_text h3{font-size:16px;line-height:normal;margin-top:4px}.mb_work_text h4,.mb_work_text h5,.mb_work_text h6{font-size:14px;line-height:normal}.mb_work_text a{color:#1270e9}.mb_work_text p{margin-top:4px} &nbsp; aaryankelvin , sudhanshutrivediofficial and others posted something new. &nbsp;&nbsp;&nbsp; Catch up on Instagram aaryankelvin , sudhanshutrivediofficial and others posted something new. Open&nbsp;Instagram &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; 1 You have 1 notification you may not have seen. &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; This message was sent to riteshsonawane280&#064;gmail.com . If you don&#039;t want to receive these emails from Instagram in the future, please unsubscribe. Meta Platforms, Inc., Attention: Community Support, 1 Meta Way, Menlo Park, CA 94025 To help keep your profile secure, please don’t forward this email. Learn more &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+2026-06-12 12:28:03  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an automated notification from Instagram and does not require a reply or immediate attention. It is for informational purposes only."},"draft":null,"email_id":"19eb7c40c465c997","sender":"notification@priority.instagram.com","subject":"ones.trade, catch up on moments you've missed"}
+2026-06-12 12:28:03  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:28:03  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 12:28:03  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 12:28:03  INFO      [workday_graph]  ClassifyNode  ->  [4/10] subject='Funds/Securities Balance'  from='nse_alerts@nse.co.in'
+2026-06-12 12:28:03  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb70cd910a3722'
+2026-06-12 12:28:04  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 12:28:05  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb70cd910a3722
+From: nse_alerts@nse.co.in
+Subject: Funds/Securities Balance
+Date: 2026-06-11 19:48
+Body:
+Dear Investor, With reference to NSE circulars NSE/INSP/46704 dated December 17, 2020, and NSE/INSP/55039 dated December 28, 2022, Trading members are required to upload clients&#39; securities balance on a daily basis. Further, with reference to NCL circular NCL/CMPL/49348 dated Aug 20, 2021, and NSE circular NSE/INSP/49691 dated September 22, 2021, Members are required to upload disaggregated collateral information (segment-wise and asset type wise) at the client level to their Clearing corporations on a daily basis. Information pertaining to your fund and securities balance as on 06-06-2026 provided by KOTAK SECURITIES LTD. along with the details of securities ISIN wise is attached. Please follow the procedure given below for opening the attachment: Click on the attachment provided with this mail. You will be prompted for your password. The password is your PAN number in upper case. Please note that negative number in the file represents debit balance/balance payable by you. Also, the funds and securities balances provided are what is maintained with your broker and does not include balance in your personal bank account and demat account. You are advised to compare the funds, securities and commodities balances received from Exchange on a weekly basis with the balances in the weekly statement of accounts for funds, securities and commodities sent by the stockbroker for the respective date. In case you find any discrepancy in the balances, we advise you to take up the matter immediately with your Broker.You may contact customer service of the trading member. In case of non-resolution of discrepancy by the broker, you may intimate the same to the Exchange at ignse@nse.co.in or 18002660050 or register an online complaint at https://smartodr.in/login. The data is being provided to the clients on an &#34;as is&#34; and &#34;what-is&#34; basis as provided by the trading member. The Exchange shall not be liable for any delays, errors, omissions, commissions, inaccuracie
+2026-06-12 12:28:05  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is informational, providing the investor with their funds and securities balance. It does not require a reply or immediate attention, and the user is only advised to compare the balances and contact their broker in case of discrepancies."},"draft":null,"email_id":"19eb70cd910a3722","sender":"nse_alerts@nse.co.in","subject":"Funds/Securities Balance"}
+2026-06-12 12:28:05  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:28:05  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 12:28:05  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 12:28:05  INFO      [workday_graph]  ClassifyNode  ->  [5/10] subject='Spans and Traces in Logfire'  from='hello@pydantic.dev'
+2026-06-12 12:28:05  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb5416897c308e'
+2026-06-12 12:28:06  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 12:28:06  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb5416897c308e
+From: hello@pydantic.dev
+Subject: Spans and Traces in Logfire
+Date: 2026-06-11 11:27
+Body:
+Discover Logfire's powerful spans and traces for deep system insights Hello! If you've ever wanted an easy way to see the request flows, performance, and bottlenecks in your production system, Logfire has you covered. Let me introduce you to one of Logfire's most powerful features: traces as logs. Think of spans as &#34;logging++&#34; they do everything regular logs do, but with extras. Here's what makes them powerful: They measure execution time automatically They capture relationships between operations Capture exceptions that occur within a span Let me show you a real-world example. Imagine you need to analyze file sizes in a directory: from pathlib import Path import logfire logfire.configure() cwd = Path.cwd() total_size = 0 with logfire.span('counting size of {cwd=}', cwd=cwd): for path in cwd.iterdir(): if path.is_file(): with logfire.span('reading {path}', path=path.relative_to(cwd)): total_size += len(path.read_bytes()) logfire.info('total size of {cwd} is {size} bytes', cwd=cwd, size=total_size) What's happening here? The outer span tracks the total operation time Each file gets its own span, showing individual processing times All spans are connected into a trace, showing the full picture Context (like file paths) is automatically captured This means you can: Identify slow files instantly Track total processing time See exactly where your code spends time Debug issues with specific files Here's how the above example looks in the Logfire UI: This is also extremely useful when dealing with multiple microservices, async pipeline jobs, LLM calls and many more. For more details, check out our docs . Still have questions? Feel free to get in touch or just hit reply to this email. Best, The Pydantic Team Pydantic Services, Inc. ・ pydantic.dev ・ github/pydantic Unsubscribe
+2026-06-12 12:28:06  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is informational, showcasing the features of Logfire and providing an example of its usage. It does not require immediate attention or a reply, but rather serves as a notification or update."},"draft":null,"email_id":"19eb5416897c308e","sender":"hello@pydantic.dev","subject":"Spans and Traces in Logfire"}
+2026-06-12 12:28:06  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:28:06  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 12:28:06  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 12:28:06  INFO      [workday_graph]  ClassifyNode  ->  [6/10] subject='Dr. Sachin S. recently posted'  from='updates-noreply@linkedin.com'
+2026-06-12 12:28:06  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb23f2cfb2ff4a'
+2026-06-12 12:28:07  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 12:28:07  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb23f2cfb2ff4a
+From: updates-noreply@linkedin.com
+Subject: Dr. Sachin S. recently posted
+Date: 2026-06-10 21:25
+Body:
+@media (max-width: 512px) { .mercado-container { width: 100% !important; } } @media (max-width: 480px) { .inline-button, .inline-button table { display: none !important; } .full-width-button, .full-width-button table { display: table !important; } } @media (max-width: 320px) { .games-notification-badge { display: none !important; } } body {font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Fira Sans', Ubuntu, Oxygen, 'Oxygen Sans', Cantarell, 'Droid Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Lucida Grande', Helvetica, Arial, sans-serif;} It was a privilege to visit the 156-year-old Stevens Institute of Technology… ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Suggested for you Dr. Sachin S. Principal, Marathwada Mitra Mandal’s College Of… Follow It was a privilege to visit the 156-year-old Stevens Institute of Technology in Hoboken, New Jersey, USA. The… see more 327 · 7 Comments Read more See more on LinkedIn Get the new LinkedIn desktop app Also available on mobile This email was intended for Ritesh Sonawane (Student at Marathwada Mitra Mandal&#39;s College of Engineering, Pune) Learn why we included this. You are receiving Network Conversations emails. Some content may be automatically translated based on your settings . Unsubscribe · Help © 2026 LinkedIn Corporation, 1&zwnj;000 West Maude Avenue, Sunnyvale, CA 94085. LinkedIn and the LinkedIn logo are registered trademarks of LinkedIn.
+2026-06-12 12:28:07  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an update from LinkedIn about a post from Dr. Sachin S. and does not require any immediate attention or response."},"draft":null,"email_id":"19eb23f2cfb2ff4a","sender":"updates-noreply@linkedin.com","subject":"Dr. Sachin S. recently posted"}
+2026-06-12 12:28:07  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:28:07  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 12:28:07  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 12:28:07  INFO      [workday_graph]  ClassifyNode  ->  [7/10] subject='Hi RITESH, You Might Want to See This.'  from='kotakneo@info.kotaksecurities.co.in'
+2026-06-12 12:28:07  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eb0420cd2ebef7'
+2026-06-12 12:28:08  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 12:28:09  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eb0420cd2ebef7
+From: kotakneo@info.kotaksecurities.co.in
+Subject: Hi RITESH, You Might Want to See This.
+Date: 2026-06-10 12:09
+Body:
+:root { color-scheme: light dark; supported-color-schemes: light dark; } .reactmarkdown p { margin: 0; } .reactmarkdown a { color: rgba(109, 109, 109, 1); font-weight: 500; } @media (max-width: 640px) { .sm-my-17 { margin-top: 17px !important; margin-bottom: 17px !important; } .sm-mx-0 { margin-left: 0 !important; margin-right: 0 !important; } .sm-ml-116 { margin-left: 116px !important; } .sm-ml-0 { margin-left: 0 !important; } .sm-block { display: block !important; } .sm-inline-block { display: inline-block !important; } .sm-table-cell { display: table-cell !important; } .sm-table-row { display: table-row !important; } .sm-hidden { display: none !important; } .sm-h-145 { height: 145px !important; } .sm-h-32 { height: 32px !important; } .sm-h-280 { height: 280px !important; } .sm-h-8 { height: 8px !important; } .sm-h-68 { height: 68px !important; } .sm-h-79 { height: 79px !important; } .sm-w-full { width: 100% !important; } .sm-w-60 { width: 60px !important; } .sm-w-278 { width: 278px !important; } .sm-w-295 { width: 295px !important; } .sm-w-294 { width: 294px !important; } .sm-w-6 { width: 6px !important; } .sm-bg-cover { background-size: cover !important; } .sm-bg-voucher { background-size: 294px 93px !important; } .sm-px-0 { padding-left: 0 !important; padding-right: 0 !important; } .sm-px-20 { padding-left: 20px !important; padding-right: 20px !important; } .sm-px-22 { padding-left: 22px !important; padding-right: 22px !important; } .sm-px-27 { padding-left: 27px !important; padding-right: 27px !important; } .sm-px-35 { padding-left: 35px !important; padding-right: 35px !important; } .sm-px-10 { padding-left: 10px !important; padding-right: 10px !important; } .sm-px-15 { padding-left: 15px !important; padding-right: 15px !important; } .sm-py-20 { padding-top: 20px !important; padding-bottom: 20px !important; } .sm-px-4 { padding-left: 4px !important; padding-right: 4px !important; } .sm-py-8 { padding-top: 8px !important; padding-bottom: 8px !important; } .sm-p
+2026-06-12 12:28:09  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email appears to be a promotional or informational email with no clear request for action or response. The content is primarily CSS styles and does not contain any urgent or actionable information."},"draft":null,"email_id":"19eb0420cd2ebef7","sender":"kotakneo@info.kotaksecurities.co.in","subject":"Hi RITESH, You Might Want to See This."}
+2026-06-12 12:28:09  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:28:09  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 12:28:09  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 12:28:09  INFO      [workday_graph]  ClassifyNode  ->  [8/10] subject='Nifty closes ~119 points Up on Tuesday, however, Technical structure remains vulnerable below 23,300.'  from='updates@info.kotakneo.com'
+2026-06-12 12:28:09  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eafc91bd4b5c90'
+2026-06-12 12:28:09  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 12:28:10  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eafc91bd4b5c90
+From: updates@info.kotakneo.com
+Subject: Nifty closes ~119 points Up on Tuesday, however, Technical structure remains vulnerable below 23,300.
+Date: 2026-06-10 09:57
+Body:
+:root { supported-color-schemes: light dark; color-scheme: light dark; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 400; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 500; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* latin */ @font-face { font-family: "Roboto"; font-style: normal; font-weight: 700; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmWUlfBBc4AMP6lQ.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; } /* Base styles (for desktop and default) */ #outlook a, body { padding: 0; } .ReadMsgBody { width: 100%; } .ExternalClass { width: 100%; } .ExternalClass, img, .ExternalClass font, .ExternalClass td, .ExternalClass div, .ExternalClass span, .ExternalClass p { line-height: 100%; } .mobileFourCol a { text-decoration: underline !important; } table, td { mso-table-lspace: 0; mso-table-rspace: 0; } table, td, tr { border-collapse: collapse; } td, body, span, p, div, li, a, th { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-line-height-rule: exactly; } body { margin: 0; width: 100% !important; -webkit-font-smoothing: antialiased; } img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; } a[x-apple-data-detectors] { color: inherit 
+2026-06-12 12:28:10  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email appears to be a market update and does not require any action or response from the recipient."},"draft":null,"email_id":"19eafc91bd4b5c90","sender":"updates@info.kotakneo.com","subject":"Nifty closes ~119 points Up on Tuesday, however, Technical structure remains vulnerable below 23,300."}
+2026-06-12 12:28:10  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:28:10  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 12:28:10  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 12:28:10  INFO      [workday_graph]  ClassifyNode  ->  [9/10] subject='Birthday Wishes'  from='ks.noreply@kotak.com'
+2026-06-12 12:28:10  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19eaf88368a14d85'
+2026-06-12 12:28:11  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 12:28:11  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19eaf88368a14d85
+From: ks.noreply@kotak.com
+Subject: Birthday Wishes
+Date: 2026-06-10 08:46
+Body:
+
+2026-06-12 12:28:11  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is a birthday wish, which is informational and does not require a reply."},"draft":null,"email_id":"19eaf88368a14d85","sender":"ks.noreply@kotak.com","subject":"Birthday Wishes"}
+2026-06-12 12:28:11  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:28:11  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 12:28:11  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 12:28:11  INFO      [workday_graph]  ClassifyNode  ->  [10/10] subject='From rashi13122006 and others: 4 unread messages'  from='unread-messages@mail.instagram.com'
+2026-06-12 12:28:11  DEBUG     [workday_graph]  ClassifyNode  ->  fetching body for email '19ead4b32db1e360'
+2026-06-12 12:28:12  DEBUG     [workday_graph]  ClassifyNode  ->  running email_node_agent
+2026-06-12 12:28:12  DEBUG     [workday_graph]  [model-request] prompt: Email ID: 19ead4b32db1e360
+From: unread-messages@mail.instagram.com
+Subject: From rashi13122006 and others: 4 unread messages
+Date: 2026-06-09 22:20
+Body:
+Facebook @media all and (max-width: 480px){*[class].ib_t{min-width:100%!important}*[class].ib_row{display:block!important}*[class].ib_ext{display:block!important;padding:10px 0 5px;vertical-align:top!important;width:100%!important}*[class].ib_img,*[class].ib_mid{vertical-align:top!important}*[class].mb_blk{display:block!important;padding-bottom:10px;width:100%!important}*[class].mb_hide{display:none!important}*[class].mb_inl{display:inline!important}*[class].d_mb_flex{display:block!important}}.d_mb_show{display:none}.d_mb_flex{display:flex}@media only screen and (max-device-width: 480px){.d_mb_hide{display:none!important}.d_mb_show,.d_mb_flex{display:block!important}}.mb_text h1,.mb_text h2,.mb_text h3,.mb_text h4,.mb_text h5,.mb_text h6{line-height:normal}.mb_work_text h1{font-size:18px;line-height:normal;margin-top:4px}.mb_work_text h2,.mb_work_text h3{font-size:16px;line-height:normal;margin-top:4px}.mb_work_text h4,.mb_work_text h5,.mb_work_text h6{font-size:14px;line-height:normal}.mb_work_text a{color:#1270e9}.mb_work_text p{margin-top:4px} &nbsp; Check your DMs to stay connected with your friends. &nbsp;&nbsp;&nbsp; Catch up on your messages See your unread messages you may have missed. Open&nbsp;Instagram &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 4 unread messages &nbsp; Anil Kumar Sent a message See&nbsp;message Anmol Kol Sent a message See&nbsp;message M. kasihf Sent a message See&nbsp;message 𝐑𝐈𝐓𝐄𝐒𝐇 𝐒𝐎𝐍𝐀𝐖𝐀𝐍𝐄 🍁 Sent a message See&nbsp;message See&nbsp;all&nbsp;messages &nbsp; 1 You have 1 notification you may not have seen. &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; This message was sent to riteshsonawane280&#064;gmail.com . If you don&#039;t want to receive these emails from Instagram in the future, please unsubscribe. Meta Platforms, Inc., Attention: Community Support, 1 Meta Way, Menlo Park, CA 94025 To help keep your profile secure, please don’t forward this email. Learn more &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+2026-06-12 12:28:12  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"classification":{"label":"fyi","reasoning":"The email is an automated notification about unread messages on Instagram, and it does not require any immediate action or response. It is informational in nature, and the recipient can choose to ignore it or take action on the messages at their convenience."},"draft":null,"email_id":"19ead4b32db1e360","sender":"unread-messages@mail.instagram.com","subject":"From rashi13122006 and others: 4 unread messages"}
+2026-06-12 12:28:12  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:28:12  INFO      [workday_graph]  ClassifyNode  ->  classified as 'fyi'  (draft=False)
+2026-06-12 12:28:12  DEBUG     [workday_graph]  DraftNode  ->  not actionable or no draft, moving to next email
+2026-06-12 12:28:12  INFO      [workday_graph]  ClassifyNode  ->  all 10 emails processed -> BuildEmailResultNode  (actionable=0)
+2026-06-12 12:28:12  INFO      [workday_graph]  BuildEmailResultNode  ->  email result built: processed=10  actionable=0  pending=0
+2026-06-12 12:28:12  INFO      [workday_graph]  BuildEmailResultNode  ->  calendar needed, routing to CalendarActionNode
+2026-06-12 12:28:12  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 12:28 PM  day_overview=True
+2026-06-12 12:28:18  INFO      [calendar_action_agent]  get_events tool -> returned 3 events
+2026-06-12 12:28:21  INFO      [calendar_action_agent]  check_conflicts tool -> no conflicts among 3 events
+2026-06-12 12:28:22  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 12:28 PM (Asia/Kolkata). Today is day_offset=0.
+User request: Give a read-only summary of today's calendar as part of a full day briefing: call get_events and check_conflicts, then describe today's schedule and flag any conflicts. Do NOT create, change, or cancel anything and do NOT ask a follow-up question.
+2026-06-12 12:28:22  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 12:28:22  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=sc4glme8he74b04uo3g6oedv5c | title='stolt client call' | 12:00 PM-12:30 PM | start_unix=1781245800 | end_unix=1781247600 | attendees=none
+id=kcvvrmacmfsc2g0ubt2aomj5l8 | title='matrix call' | 01:00 PM-01:30 PM | start_unix=1781249400 | end_unix=1781251200 | attendees=none
+id=366ug2udsvmgeigubusi4q8pmc | title='c360 client call meet' | 02:00 PM-02:30 PM | start_unix=1781253000 | end_unix=1781254800 | attendees=none
+2026-06-12 12:28:22  DEBUG     [workday_graph]  [model-response] tool-call: check_conflicts  args: {"num_days":1,"start_offset":0}
+2026-06-12 12:28:22  DEBUG     [workday_graph]  [tool-return] check_conflicts -> No conflicts in the requested range.
+2026-06-12 12:28:22  DEBUG     [workday_graph]  [model-response] text: Today's schedule:
+
+- 12:00 PM – 12:30 PM: **stolt client call**
+- 1:00 PM – 1:30 PM: **matrix call**
+- 2:00 PM – 2:30 PM: **c360 client call meet**
+
+There are no conflicts in today's calendar.
+2026-06-12 12:28:22  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=False  reply="Today's schedule:\n\n- 12:00\u202fPM – 12:30\u202fPM: **stolt client call**\n- 1:00\u202fPM – 1:30\u202fPM: **matrix call**\n- 2:00\u202fPM – 2:30\u202fPM: **c360 client call meet**\n\nThere are no conflicts in today's calendar."
+2026-06-12 12:28:22  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 12:28:23  DEBUG     [workday_graph]  [model-request] prompt: The user sent a conversational message: "hey"
+Respond naturally and warmly. Briefly mention you can help with emails and calendar.
+2026-06-12 12:28:23  DEBUG     [workday_graph]  [model-response] text: Hello, it's great to chat with you. I'm here to help with anything you need, whether it's checking your emails or managing your calendar - just let me know how I can assist you today.
+2026-06-12 12:28:23  DEBUG     [workday_graph]  [model-request] prompt: User query: "at 2pm"
+Intent: "specify meeting time"
+
+[CALENDAR ACTION]
+Your **c360 client call meet** has been scheduled for today at **2:00 PM**.
+Status: Calendar changed
+
+2026-06-12 12:28:23  DEBUG     [workday_graph]  [model-response] text: I've updated your calendar: the "c360 client call meet" is now scheduled for today at 2:00 PM.
+2026-06-12 12:28:23  DEBUG     [workday_graph]  [model-request] prompt: User query: "can you please plan my day"
+Intent: "plan my day"
+
+[EMAILS]
+Processed: 10 | Actionable: 0 | Pending drafts: 0
+  - [FYI] 'Nifty closes ~53 points lower on Thursday, after reversing from 23,300. Strength expected above 23,425' from updates@info.kotakneo.com
+  - [FYI] 'Google Cloud Developers Newsletter - June 2026' from googledev-noreply@google.com
+  - [FYI] "ones.trade, catch up on moments you've missed" from notification@priority.instagram.com
+  - [FYI] 'Funds/Securities Balance' from nse_alerts@nse.co.in
+  - [FYI] 'Spans and Traces in Logfire' from hello@pydantic.dev
+  - [FYI] 'Dr. Sachin S. recently posted' from updates-noreply@linkedin.com
+  - [FYI] 'Hi RITESH, You Might Want to See This.' from kotakneo@info.kotaksecurities.co.in
+  - [FYI] 'Nifty closes ~119 points Up on Tuesday, however, Technical structure remains vulnerable below 23,300.' from updates@info.kotakneo.com
+  - [FYI] 'Birthday Wishes' from ks.noreply@kotak.com
+  - [FYI] 'From rashi13122006 and others: 4 unread messages' from unread-messages@mail.instagram.com
+
+[CALENDAR ACTION]
+Today's schedule:
+
+- 12:00 PM – 12:30 PM: **stolt client call**
+- 1:00 PM – 1:30 PM: **matrix call**
+- 2:00 PM – 2:30 PM: **c360 client call meet**
+
+There are no conflicts in today's calendar.
+Status: No change made
+
+2026-06-12 12:28:23  DEBUG     [workday_graph]  [model-response] text: Here's an overview of your day: you have three meetings scheduled - a "stolt client call" at 12:00 PM, a "matrix call" at 1:00 PM, and the "c360 client call meet" at 2:00 PM. On the email front, you have 10 new messages, mostly updates and newsletters, but none require immediate action.
+2026-06-12 12:28:23  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-12 12:28:23  INFO      [workday_graph]  === Workday pipeline END  session='47bc4446-cd5f-4c71-ad71-c7070db203f6'  planner_h=12  cal_action_h=6  synth_h=6  cal_open=False ===
+2026-06-12 12:29:48  INFO      [workday_graph]  === Workday pipeline START  query="please update c360 call's time to 1 hour"  session='47bc4446-cd5f-4c71-ad71-c7070db203f6' ===
+2026-06-12 12:29:48  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: "please update c360 call's time to 1 hour"
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [model-request] prompt: hey
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"InteractNode"}
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [model-request] prompt: I want to schedule a c360 client call meet
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule client call meeting","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: at 2pm
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"specify meeting time","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [model-request] prompt: can you please plan my day
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"plan my day","needs_calendar":true,"needs_clarification":false,"needs_email":true,"next_node":"FetchEmailsNode"}
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [model-request] prompt: please update c360 call's time to 1 hour
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"update meeting duration","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:29:49  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:29:49  INFO      [workday_graph]  PlannerNode  ->  decision: intent='update meeting duration'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-12 12:29:49  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-12 12:29:49  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 12:29 PM  day_overview=False
+2026-06-12 12:29:50  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 12:28 PM (Asia/Kolkata). Today is day_offset=0.
+User request: Give a read-only summary of today's calendar as part of a full day briefing: call get_events and check_conflicts, then describe today's schedule and flag any conflicts. Do NOT create, change, or cancel anything and do NOT ask a follow-up question.
+2026-06-12 12:29:50  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 12:29:50  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=sc4glme8he74b04uo3g6oedv5c | title='stolt client call' | 12:00 PM-12:30 PM | start_unix=1781245800 | end_unix=1781247600 | attendees=none
+id=kcvvrmacmfsc2g0ubt2aomj5l8 | title='matrix call' | 01:00 PM-01:30 PM | start_unix=1781249400 | end_unix=1781251200 | attendees=none
+id=366ug2udsvmgeigubusi4q8pmc | title='c360 client call meet' | 02:00 PM-02:30 PM | start_unix=1781253000 | end_unix=1781254800 | attendees=none
+2026-06-12 12:29:50  DEBUG     [workday_graph]  [model-response] tool-call: check_conflicts  args: {"num_days":1,"start_offset":0}
+2026-06-12 12:29:50  DEBUG     [workday_graph]  [tool-return] check_conflicts -> No conflicts in the requested range.
+2026-06-12 12:29:50  DEBUG     [workday_graph]  [model-response] text: Today's schedule:
+
+- 12:00 PM – 12:30 PM: **stolt client call**
+- 1:00 PM – 1:30 PM: **matrix call**
+- 2:00 PM – 2:30 PM: **c360 client call meet**
+
+There are no conflicts in today's calendar.
+2026-06-12 12:29:50  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 12:29 PM (Asia/Kolkata). Today is day_offset=0.
+User request: please update c360 call's time to 1 hour
+2026-06-12 12:29:50  DEBUG     [workday_graph]  [model-response] text: Do you want to change the “c360 client call meet” event to a 60‑minute duration (2:00 PM – 3:00 PM)?
+2026-06-12 12:29:50  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=True  reply='Do you want to change the “c360 client call meet” event to a 60‑minute duration (2:00\u202fPM\u202f–\u202f3:00\u202fPM)?'
+2026-06-12 12:29:50  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 12:29:50  INFO      [workday_graph]  SynthesizeNode  ->  calendar agent awaiting user, returning its reply directly
+2026-06-12 12:29:50  INFO      [workday_graph]  === Workday pipeline END  session='47bc4446-cd5f-4c71-ad71-c7070db203f6'  planner_h=15  cal_action_h=8  synth_h=6  cal_open=True ===
+2026-06-12 12:30:03  INFO      [workday_graph]  === Workday pipeline START  query='Yes'  session='47bc4446-cd5f-4c71-ad71-c7070db203f6' ===
+2026-06-12 12:30:03  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'Yes'
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [model-request] prompt: hey
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"InteractNode"}
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [model-request] prompt: I want to schedule a c360 client call meet
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule client call meeting","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: at 2pm
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"specify meeting time","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [model-request] prompt: can you please plan my day
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"plan my day","needs_calendar":true,"needs_clarification":false,"needs_email":true,"next_node":"FetchEmailsNode"}
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [model-request] prompt: please update c360 call's time to 1 hour
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"update meeting duration","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: Yes
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"confirm meeting update","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:30:04  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:30:04  INFO      [workday_graph]  PlannerNode  ->  decision: intent='confirm meeting update'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-12 12:30:04  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-12 12:30:04  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 12:30 PM  day_overview=False
+2026-06-12 12:30:14  INFO      [calendar_action_agent]  update_event tool -> updated id='366ug2udsvmgeigubusi4q8pmc'
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 12:28 PM (Asia/Kolkata). Today is day_offset=0.
+User request: Give a read-only summary of today's calendar as part of a full day briefing: call get_events and check_conflicts, then describe today's schedule and flag any conflicts. Do NOT create, change, or cancel anything and do NOT ask a follow-up question.
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=sc4glme8he74b04uo3g6oedv5c | title='stolt client call' | 12:00 PM-12:30 PM | start_unix=1781245800 | end_unix=1781247600 | attendees=none
+id=kcvvrmacmfsc2g0ubt2aomj5l8 | title='matrix call' | 01:00 PM-01:30 PM | start_unix=1781249400 | end_unix=1781251200 | attendees=none
+id=366ug2udsvmgeigubusi4q8pmc | title='c360 client call meet' | 02:00 PM-02:30 PM | start_unix=1781253000 | end_unix=1781254800 | attendees=none
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [model-response] tool-call: check_conflicts  args: {"num_days":1,"start_offset":0}
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [tool-return] check_conflicts -> No conflicts in the requested range.
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [model-response] text: Today's schedule:
+
+- 12:00 PM – 12:30 PM: **stolt client call**
+- 1:00 PM – 1:30 PM: **matrix call**
+- 2:00 PM – 2:30 PM: **c360 client call meet**
+
+There are no conflicts in today's calendar.
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 12:29 PM (Asia/Kolkata). Today is day_offset=0.
+User request: please update c360 call's time to 1 hour
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [model-response] text: Do you want to change the “c360 client call meet” event to a 60‑minute duration (2:00 PM – 3:00 PM)?
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 12:30 PM (Asia/Kolkata). Today is day_offset=0.
+User request: Yes
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [model-response] tool-call: update_event  args: {"duration_minutes":60,"event_id":"366ug2udsvmgeigubusi4q8pmc"}
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [tool-return] update_event -> Refused: nothing to update - provide a new title and/or a new time.
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [model-response] tool-call: update_event  args: {"day_offset":0,"duration_minutes":60,"event_id":"366ug2udsvmgeigubusi4q8pmc","hour":14,"minute":0}
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [tool-return] update_event -> Updated event id=366ug2udsvmgeigubusi4q8pmc.
+2026-06-12 12:30:17  DEBUG     [workday_graph]  [model-response] text: The “c360 client call meet” has been updated to run from 2:00 PM to 3:00 PM (60 minutes).
+2026-06-12 12:30:17  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=True  awaiting_user=False  reply='The “c360 client call meet” has been updated to run from\u202f2:00\u202fPM to\u202f3:00\u202fPM (60\u202fminutes).'
+2026-06-12 12:30:17  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 12:30:18  DEBUG     [workday_graph]  [model-request] prompt: The user sent a conversational message: "hey"
+Respond naturally and warmly. Briefly mention you can help with emails and calendar.
+2026-06-12 12:30:18  DEBUG     [workday_graph]  [model-response] text: Hello, it's great to chat with you. I'm here to help with anything you need, whether it's checking your emails or managing your calendar - just let me know how I can assist you today.
+2026-06-12 12:30:18  DEBUG     [workday_graph]  [model-request] prompt: User query: "at 2pm"
+Intent: "specify meeting time"
+
+[CALENDAR ACTION]
+Your **c360 client call meet** has been scheduled for today at **2:00 PM**.
+Status: Calendar changed
+
+2026-06-12 12:30:18  DEBUG     [workday_graph]  [model-response] text: I've updated your calendar: the "c360 client call meet" is now scheduled for today at 2:00 PM.
+2026-06-12 12:30:18  DEBUG     [workday_graph]  [model-request] prompt: User query: "can you please plan my day"
+Intent: "plan my day"
+
+[EMAILS]
+Processed: 10 | Actionable: 0 | Pending drafts: 0
+  - [FYI] 'Nifty closes ~53 points lower on Thursday, after reversing from 23,300. Strength expected above 23,425' from updates@info.kotakneo.com
+  - [FYI] 'Google Cloud Developers Newsletter - June 2026' from googledev-noreply@google.com
+  - [FYI] "ones.trade, catch up on moments you've missed" from notification@priority.instagram.com
+  - [FYI] 'Funds/Securities Balance' from nse_alerts@nse.co.in
+  - [FYI] 'Spans and Traces in Logfire' from hello@pydantic.dev
+  - [FYI] 'Dr. Sachin S. recently posted' from updates-noreply@linkedin.com
+  - [FYI] 'Hi RITESH, You Might Want to See This.' from kotakneo@info.kotaksecurities.co.in
+  - [FYI] 'Nifty closes ~119 points Up on Tuesday, however, Technical structure remains vulnerable below 23,300.' from updates@info.kotakneo.com
+  - [FYI] 'Birthday Wishes' from ks.noreply@kotak.com
+  - [FYI] 'From rashi13122006 and others: 4 unread messages' from unread-messages@mail.instagram.com
+
+[CALENDAR ACTION]
+Today's schedule:
+
+- 12:00 PM – 12:30 PM: **stolt client call**
+- 1:00 PM – 1:30 PM: **matrix call**
+- 2:00 PM – 2:30 PM: **c360 client call meet**
+
+There are no conflicts in today's calendar.
+Status: No change made
+
+2026-06-12 12:30:18  DEBUG     [workday_graph]  [model-response] text: Here's an overview of your day: you have three meetings scheduled - a "stolt client call" at 12:00 PM, a "matrix call" at 1:00 PM, and the "c360 client call meet" at 2:00 PM. On the email front, you have 10 new messages, mostly updates and newsletters, but none require immediate action.
+2026-06-12 12:30:18  DEBUG     [workday_graph]  [model-request] prompt: User query: "Yes"
+Intent: "confirm meeting update"
+
+[CALENDAR ACTION]
+The “c360 client call meet” has been updated to run from 2:00 PM to 3:00 PM (60 minutes).
+Status: Calendar changed
+
+2026-06-12 12:30:18  DEBUG     [workday_graph]  [model-response] text: The "c360 client call meet" has been updated to run from 2:00 PM to 3:00 PM, making it a 60-minute meeting.
+2026-06-12 12:30:18  INFO      [workday_graph]  SynthesizeNode  ->  synthesis complete
+2026-06-12 12:30:18  INFO      [workday_graph]  === Workday pipeline END  session='47bc4446-cd5f-4c71-ad71-c7070db203f6'  planner_h=18  cal_action_h=14  synth_h=8  cal_open=False ===
+2026-06-12 12:31:06  INFO      [workday_graph]  === Workday pipeline START  query='fron 9 am till 5pm how may slots are free so I can plan accordinly'  session='47bc4446-cd5f-4c71-ad71-c7070db203f6' ===
+2026-06-12 12:31:06  INFO      [workday_graph]  PlannerNode  ->  running planner_agent on query: 'fron 9 am till 5pm how may slots are free so I can plan accordinly'
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-request] prompt: hey
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"greeting","needs_calendar":false,"needs_clarification":false,"needs_email":false,"next_node":"InteractNode"}
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-request] prompt: I want to schedule a c360 client call meet
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"schedule client call meeting","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: at 2pm
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"specify meeting time","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-request] prompt: can you please plan my day
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"plan my day","needs_calendar":true,"needs_clarification":false,"needs_email":true,"next_node":"FetchEmailsNode"}
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-request] prompt: please update c360 call's time to 1 hour
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"update meeting duration","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-request] prompt: [A calendar action conversation is currently open and waiting for the user's reply. This message is the user's reply continuing it - route to 'CalendarActionNode'.]
+User: Yes
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"confirm meeting update","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-request] prompt: fron 9 am till 5pm how may slots are free so I can plan accordinly
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [model-response] tool-call: final_result  args: {"clarification_question":null,"intent":"check available time slots","needs_calendar":true,"needs_clarification":false,"needs_email":false,"next_node":"CalendarActionNode"}
+2026-06-12 12:31:07  DEBUG     [workday_graph]  [tool-return] final_result -> Final result processed.
+2026-06-12 12:31:07  INFO      [workday_graph]  PlannerNode  ->  decision: intent='check available time slots'  next_node='CalendarActionNode'  needs_email=False  needs_calendar=True
+2026-06-12 12:31:07  INFO      [workday_graph]  PlannerNode  ->  routing to CalendarActionNode
+2026-06-12 12:31:07  INFO      [workday_graph]  CalendarActionNode  ->  running agentic calendar_action_agent  now=Friday 2026-06-12 12:31 PM  day_overview=False
+2026-06-12 12:31:13  INFO      [calendar_action_agent]  get_events tool -> returned 3 events
+2026-06-12 12:31:15  DEBUG     [workday_graph]  [model-request] prompt: Current local date and time: Friday 2026-06-12 12:31 PM (Asia/Kolkata). Today is day_offset=0.
+User request: fron 9 am till 5pm how may slots are free so I can plan accordinly
+2026-06-12 12:31:15  DEBUG     [workday_graph]  [model-response] tool-call: get_events  args: {"num_days":1,"start_offset":0}
+2026-06-12 12:31:15  DEBUG     [workday_graph]  [tool-return] get_events -> Events:
+id=sc4glme8he74b04uo3g6oedv5c | title='stolt client call' | 12:00 PM-12:30 PM | start_unix=1781245800 | end_unix=1781247600 | attendees=none
+id=kcvvrmacmfsc2g0ubt2aomj5l8 | title='matrix call' | 01:00 PM-01:30 PM | start_unix=1781249400 | end_unix=1781251200 | attendees=none
+id=366ug2udsvmgeigubusi4q8pmc | title='c360 client call meet' | 02:00 PM-03:00 PM | start_unix=1781253000 | end_unix=1781256600 | attendees=none
+2026-06-12 12:31:15  DEBUG     [workday_graph]  [model-response] text: Between 12:30 PM and 5:00 PM there are **6 free 30‑minute slots** (12:30‑1:00, 1:30‑2:00, 3:00‑3:30, 3:30‑4:00, 4:00‑4:30, 4:30‑5:00).
+2026-06-12 12:31:15  INFO      [workday_graph]  CalendarActionNode  ->  changed_calendar=False  awaiting_user=True  reply='Between\u202f12:30\u202fPM\u202fand\u202f5:00\u202fPM there are **6 free\u202f30‑minute slots** (12:30‑1:00,\u202f1:30‑2:00,\u202f3:00‑3:30,\u202f3:30‑4:00,\u202f4:00‑4:30,\u202f4:30‑5:00).'
+2026-06-12 12:31:15  INFO      [workday_graph]  SynthesizeNode  ->  running synthesize_agent
+2026-06-12 12:31:15  INFO      [workday_graph]  SynthesizeNode  ->  calendar agent awaiting user, returning its reply directly
+2026-06-12 12:31:15  INFO      [workday_graph]  === Workday pipeline END  session='47bc4446-cd5f-4c71-ad71-c7070db203f6'  planner_h=21  cal_action_h=4  synth_h=8  cal_open=True ===
+2026-06-12 12:34:59  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-06-12 12:35:21  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-06-12 12:35:36  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-06-12 12:35:44  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
