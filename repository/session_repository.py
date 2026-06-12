@@ -3,6 +3,13 @@ from sqlalchemy import delete, select
 from config.database import get_session
 from models.db_models import SessionMessageRow, SessionRow
 
+
+async def list_sessions() -> list[SessionRow]:
+    async with get_session() as db:
+        stmt = select(SessionRow).order_by(SessionRow.updated_at.desc())
+        rows = (await db.execute(stmt)).scalars().all()
+        return list(rows)
+
 _FETCH_LIMIT = 20
 
 
