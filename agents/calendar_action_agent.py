@@ -9,7 +9,7 @@ from tools.calendar_tools import (
     clock_to_unix,
     create_event as create_event_tool,
     delete_event as delete_event_tool,
-    fetch_today_events,
+    fetch_events_range,
     update_event as update_event_tool,
 )
 
@@ -38,6 +38,11 @@ calendar_action_agent = Agent(
         "day. Convert 12-hour to 24-hour: 12am -> 0, 12pm -> 12, 1pm -> 13, ... 11pm -> 23.\n"
         "  - If a requested time today has already passed (compare against the current time you were "
         "given), ask whether to book it for tomorrow instead rather than silently shifting it.\n"
+        "  - get_events and check_conflicts default to TODAY. To inspect another day or a range, pass "
+        "start_offset (0 = today, 1 = tomorrow, -1 = yesterday, ...) and num_days (1 = that single day, "
+        "7 = a week). Derive start_offset by comparing the day the user names to the current date you "
+        "were given (e.g. user asks about Thursday and today is Tuesday -> start_offset=2). Use these "
+        "when the user asks about a specific day or a span instead of assuming today.\n"
         "  - Default duration_minutes is 30 when unspecified.\n\n"
         "CONFLICTS:\n"
         "  - When the user asks about clashes, double-bookings, or 'what conflicts do I have', call "
@@ -78,15 +83,26 @@ calendar_action_agent = Agent(
 
 
 @calendar_action_agent.tool
-async def get_events(ctx: RunContext[CalendarDeps]) -> str:
-    """Return all calendar events scheduled for today with times and attendees."""
+async def get_events(
+    ctx: RunContext[CalendarDeps],
+    start_offset: int = 0,
+    num_days: int = 1,
+) -> str:
+    """Return calendar events for a day or span of days with times and attendees.
+
+    start_offset selects the first day (0 = today, 1 = tomorrow, -1 = yesterday, ...).
+    num_days is how many consecutive days to include (1 = just that day). Defaults read
+    today only.
+    """
     tz = ZoneInfo(ctx.deps.user_tz)
-    events = await fetch_today_events()
+    events = await fetch_events_range(start_offset, num_days)
     if not events:
-        return "No events scheduled today."
+        return "No events scheduled in the requested range."
+    multi = num_days > 1
     lines = []
     for e in events:
-        s = datetime.fromtimestamp(e.start_time, tz=tz).strftime("%I:%M %p")
+        fmt = "%a %b %d %I:%M %p" if multi else "%I:%M %p"
+        s = datetime.fromtimestamp(e.start_time, tz=tz).strftime(fmt)
         en = datetime.fromtimestamp(e.end_time, tz=tz).strftime("%I:%M %p")
         attendees = ", ".join(e.participants) if e.participants else "none"
         lines.append(
@@ -94,14 +110,21 @@ async def get_events(ctx: RunContext[CalendarDeps]) -> str:
             f"| start_unix={e.start_time} | end_unix={e.end_time} | attendees={attendees}"
         )
     log.info("get_events tool -> returned %d events", len(events))
-    return "Events today:\n" + "\n".join(lines)
+    return "Events:\n" + "\n".join(lines)
 
 
 @calendar_action_agent.tool
-async def check_conflicts(ctx: RunContext[CalendarDeps]) -> str:
-    """Detect and report all overlapping event pairs on today's calendar."""
+async def check_conflicts(
+    ctx: RunContext[CalendarDeps],
+    start_offset: int = 0,
+    num_days: int = 1,
+) -> str:
+    """Detect overlapping event pairs across a day or span of days.
+
+    start_offset and num_days have the same meaning as get_events; defaults to today only.
+    """
     tz = ZoneInfo(ctx.deps.user_tz)
-    events = await fetch_today_events()
+    events = await fetch_events_range(start_offset, num_days)
     ordered = sorted(events, key=lambda e: e.start_time)
     conflicts: list[ConflictPair] = []
     for i in range(len(ordered)):
@@ -111,20 +134,22 @@ async def check_conflicts(ctx: RunContext[CalendarDeps]) -> str:
                 conflicts.append(ConflictPair(event_a=a, event_b=b))
     if not conflicts:
         log.info("check_conflicts tool -> no conflicts among %d events", len(events))
-        return "No conflicts today."
+        return "No conflicts in the requested range."
+    multi = num_days > 1
+    fmt = "%a %b %d %I:%M %p" if multi else "%I:%M %p"
     lines = []
     for c in conflicts:
         a, b = c.event_a, c.event_b
-        a_s = datetime.fromtimestamp(a.start_time, tz=tz).strftime("%I:%M %p")
+        a_s = datetime.fromtimestamp(a.start_time, tz=tz).strftime(fmt)
         a_e = datetime.fromtimestamp(a.end_time, tz=tz).strftime("%I:%M %p")
-        b_s = datetime.fromtimestamp(b.start_time, tz=tz).strftime("%I:%M %p")
+        b_s = datetime.fromtimestamp(b.start_time, tz=tz).strftime(fmt)
         b_e = datetime.fromtimestamp(b.end_time, tz=tz).strftime("%I:%M %p")
         lines.append(
             f"{a.title!r} ({a_s}-{a_e}, id={a.id}) overlaps "
             f"{b.title!r} ({b_s}-{b_e}, id={b.id})"
         )
     log.info("check_conflicts tool -> found %d conflict(s)", len(conflicts))
-    return f"{len(conflicts)} conflict(s) today:\n" + "\n".join(lines)
+    return f"{len(conflicts)} conflict(s) in the requested range:\n" + "\n".join(lines)
 
 
 @calendar_action_agent.tool

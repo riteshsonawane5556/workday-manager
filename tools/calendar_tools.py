@@ -30,20 +30,28 @@ def _valid_emails(participants: list[str] | None) -> list[str]:
     return [e.strip() for e in participants if e and _EMAIL_RE.match(e.strip())]
 
 
-def _fetch_today_events() -> list[CalendarEvent]:
+def _day_range_unix(start_offset: int, num_days: int) -> tuple[int, int]:
+    tz = _user_tz()
+    now = datetime.now(tz)
+    start_day = (now + timedelta(days=start_offset)).date()
+    start = int(
+        datetime(start_day.year, start_day.month, start_day.day, tzinfo=tz).timestamp()
+    )
+    end = start + num_days * 86400
+    return start, end
+
+
+def _fetch_events_range(start_offset: int, num_days: int) -> list[CalendarEvent]:
     calendars = nylas.calendars.list(NYLAS_GRANT_ID)
     if not calendars.data:
         return []
     calendar_id = calendars.data[0].id
 
-    tz = _user_tz()
-    now = datetime.now(tz)
-    start_of_day = int(datetime(now.year, now.month, now.day, tzinfo=tz).timestamp())
-    end_of_day = start_of_day + 86400
+    start, end = _day_range_unix(start_offset, num_days)
 
     response = nylas.events.list(
         NYLAS_GRANT_ID,
-        query_params={"calendar_id": calendar_id, "start": start_of_day, "end": end_of_day},
+        query_params={"calendar_id": calendar_id, "start": start, "end": end},
     )
 
     events: list[CalendarEvent] = []
@@ -66,8 +74,14 @@ def _fetch_today_events() -> list[CalendarEvent]:
     return events
 
 
+async def fetch_events_range(start_offset: int = 0, num_days: int = 1) -> list[CalendarEvent]:
+    if num_days <= 0:
+        num_days = 1
+    return await asyncio.to_thread(_fetch_events_range, start_offset, num_days)
+
+
 async def fetch_today_events() -> list[CalendarEvent]:
-    return await asyncio.to_thread(_fetch_today_events)
+    return await fetch_events_range(0, 1)
 
 
 def _get_primary_calendar_id() -> str:

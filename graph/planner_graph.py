@@ -23,7 +23,7 @@ log = get_logger("workday_graph")
 class PlannerNode(BaseNode[OrchestratorState]):
     async def run(
         self, ctx: GraphRunContext[OrchestratorState]
-    ) -> "ClarifyNode | FetchEmailsNode | CalendarActionNode | SynthesizeNode | InteractNode":
+    ) -> "ClarifyNode | FetchEmailsNode | CalendarActionNode | ComposeNode | SynthesizeNode | InteractNode":
         log.info("PlannerNode  ->  running planner_agent on query: %r", ctx.state.query)
         if ctx.state.calendar_action_open:
             planner_prompt = (
@@ -50,6 +50,7 @@ class PlannerNode(BaseNode[OrchestratorState]):
         _node_map: dict[str, type] = {
             "FetchEmailsNode": FetchEmailsNode,
             "CalendarActionNode": CalendarActionNode,
+            "ComposeNode": ComposeNode,
             "ClarifyNode": ClarifyNode,
             "SynthesizeNode": SynthesizeNode,
             "InteractNode": InteractNode,
@@ -178,6 +179,49 @@ class HumanGateNode(BaseNode[OrchestratorState]):
         log.info("HumanGateNode  ->  stored pending draft  id=%r  subject=%r", pending_id, output.subject)
         ctx.state.current_index += 1
         return ClassifyNode()
+
+
+@dataclass
+class ComposeNode(BaseNode[OrchestratorState]):
+    async def run(self, ctx: GraphRunContext[OrchestratorState]) -> "SynthesizeNode | ClarifyNode":
+        from agents.compose_agent import compose_agent
+        from models.email_models import EmailClassification, EmailNodeOutput
+
+        log.info("ComposeNode  ->  composing new email for query: %r", ctx.state.query)
+        try:
+            result = await compose_agent.run(ctx.state.query)
+        except Exception as exc:
+            log.error("ComposeNode  ->  compose_agent failed: %s", exc, exc_info=True)
+            ctx.state.email_error = f"Couldn't draft that email ({exc})."
+            return SynthesizeNode()
+        log_agent_run(log, result)
+        draft = result.output
+
+        if not draft.to or "@" not in draft.to:
+            log.info("ComposeNode  ->  no recipient address, routing to ClarifyNode")
+            ctx.state.decision.clarification_question = (
+                "Who should I send this to? Please give me the recipient's email address."
+            )
+            return ClarifyNode()
+
+        output = EmailNodeOutput(
+            email_id="",
+            subject=draft.subject,
+            sender="",
+            classification=EmailClassification(
+                label="actionable",
+                reasoning="User-requested new outbound email.",
+            ),
+            draft=draft,
+        )
+        pending_id = await pending_store.add(output)
+        ctx.state.pending_ids.append(pending_id)
+        ctx.state.email_outputs.append(output)
+        ctx.state.email_result = ProcessingResult(
+            processed=0, actionable=1, pending_ids=[pending_id]
+        )
+        log.info("ComposeNode  ->  stored pending compose draft id=%r to=%r", pending_id, draft.to)
+        return SynthesizeNode()
 
 
 @dataclass
@@ -344,6 +388,7 @@ with warnings.catch_warnings():
             ClassifyNode,
             DraftNode,
             HumanGateNode,
+            ComposeNode,
             BuildEmailResultNode,
             CalendarActionNode,
             SynthesizeNode,

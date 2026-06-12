@@ -54,4 +54,5 @@ async def send_approved_email(item: PendingItem) -> None:
         NYLAS_GRANT_ID,
         {"subject": item.draft.subject, "body": item.draft.body, "to": [{"email": item.draft.to}]},
     )
-    await mark_email_read(item.email_id)
+    if item.email_id:
+        await mark_email_read(item.email_id)
