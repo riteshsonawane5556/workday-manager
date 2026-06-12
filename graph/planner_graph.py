@@ -130,6 +130,11 @@ class ClassifyNode(BaseNode[OrchestratorState]):
             ctx.state.current_index += 1
             return ClassifyNode()
 
+        if await pending_store.is_sent(email.id):
+            log.debug("ClassifyNode  ->  email %r already sent/approved, skipping", email.id)
+            ctx.state.current_index += 1
+            return ClassifyNode()
+
         from tools.email_tools import fetch_email_body
         log.debug("ClassifyNode  ->  fetching body for email %r", email.id)
         try:

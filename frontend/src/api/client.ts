@@ -40,6 +40,13 @@ export const api = {
       json<{ status: string; id: string }>(r)
     ),
 
+  editDraft: ({ id, draft }: { id: string; draft: DraftReply }) =>
+    fetch(`${BASE}/pending/${id}/draft`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(draft),
+    }).then((r) => json<{ status: string; id: string }>(r)),
+
   listSessions: () =>
     fetch(`${BASE}/sessions`).then((r) => json<SessionSummary[]>(r)),
 

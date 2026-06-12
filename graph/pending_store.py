@@ -4,6 +4,7 @@ from services.pending_service import (
     list_pending_items,
     get_pending_item,
     email_already_pending,
+    email_already_sent,
     remove_pending_item,
 )
 
@@ -20,6 +21,9 @@ class PendingStore:
 
     async def has_email(self, email_id: str) -> bool:
         return await email_already_pending(email_id)
+
+    async def is_sent(self, email_id: str) -> bool:
+        return await email_already_sent(email_id)
 
     async def remove(self, item_id: str) -> bool:
         return await remove_pending_item(item_id)

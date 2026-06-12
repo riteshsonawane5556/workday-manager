@@ -22,5 +22,11 @@ export function usePending() {
       void queryClient.invalidateQueries({ queryKey: ["pending"] }),
   });
 
-  return { query, approve, reject };
+  const editDraft = useMutation({
+    mutationFn: api.editDraft,
+    onSuccess: () =>
+      void queryClient.invalidateQueries({ queryKey: ["pending"] }),
+  });
+
+  return { query, approve, reject, editDraft };
 }

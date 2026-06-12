@@ -4,6 +4,7 @@ import uuid
 from models.email_models import DraftReply, EmailNodeOutput, PendingItem
 from models.db_models import PendingItemRow
 import repository.pending_repository as pending_repo
+import repository.sent_repository as sent_repo
 from config.nylas_client import nylas, NYLAS_GRANT_ID
 from tools.email_tools import mark_email_read
 
@@ -44,8 +45,16 @@ async def email_already_pending(email_id: str) -> bool:
     return await pending_repo.pending_email_exists(email_id)
 
 
+async def update_pending_draft(item_id: str, draft: DraftReply) -> bool:
+    return await pending_repo.update_pending_draft(item_id, draft.model_dump_json()) > 0
+
+
 async def remove_pending_item(item_id: str) -> bool:
     return await pending_repo.delete_pending_item(item_id) > 0
+
+
+async def email_already_sent(email_id: str) -> bool:
+    return await sent_repo.sent_email_exists(email_id)
 
 
 async def send_approved_email(item: PendingItem) -> None:
@@ -56,3 +65,4 @@ async def send_approved_email(item: PendingItem) -> None:
     )
     if item.email_id:
         await mark_email_read(item.email_id)
+        await sent_repo.insert_sent_email(item.email_id)

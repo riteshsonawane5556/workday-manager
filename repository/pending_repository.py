@@ -1,4 +1,4 @@
-from sqlalchemy import delete, exists, select
+from sqlalchemy import delete, exists, select, update
 
 from config.database import get_session
 from models.db_models import PendingItemRow
@@ -39,6 +39,17 @@ async def pending_email_exists(email_id: str) -> bool:
             select(exists().where(PendingItemRow.email_id == email_id))
         )
         return bool(result.scalar())
+
+
+async def update_pending_draft(item_id: str, draft_json: str) -> int:
+    async with get_session() as db:
+        result = await db.execute(
+            update(PendingItemRow)
+            .where(PendingItemRow.id == item_id)
+            .values(draft=draft_json)
+        )
+        await db.commit()
+        return result.rowcount
 
 
 async def delete_pending_item(item_id: str) -> int:

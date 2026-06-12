@@ -51,3 +51,10 @@ class PendingItemRow(Base):
     sender: Mapped[str] = mapped_column(String)
     draft: Mapped[str] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+
+
+class SentEmailRow(Base):
+    __tablename__ = "sent_email"
+
+    email_id: Mapped[str] = mapped_column(String, primary_key=True)
+    sent_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
