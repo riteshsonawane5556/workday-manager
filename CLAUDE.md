@@ -33,70 +33,62 @@ SQLite (via SQLAlchemy 2.0 async + `aiosqlite`) backs the session and pending st
 
 Read pydantic-ai docs at https://pydantic.dev/docs/ai/llms.txt before building or integrating anything AI-related.
 
+## Observability
+
+`logfire` is configured in `main.py` (service: `workday-manager`). It instruments both FastAPI and pydantic-ai with `include_content=True`. The custom `config/logger.py` layer also writes all agent run messages to `server.log` at DEBUG level via `log_agent_run`.
+
 ## Architecture
 
 ### Request Flow
 
 ```
 POST /orchestrate  { "message": "...", "session_id": "..." (optional) }
-  → session_id resolved: if omitted, the server generates a UUID; the resolved id is
-    returned in OrchestratorResult.session_id so the client echoes it on follow-ups
-  → per-session asyncio.Lock acquired (same session_id runs one-at-a-time;
-    different sessions run in parallel)
-  → OrchestratorState initialized (session history loaded from SessionStore)
-  → PlannerNode (planner_agent decides intent)
-    → FetchEmailsNode → ClassifyNode × N → DraftNode → HumanGateNode → BuildEmailResultNode
-    → CalendarActionNode (agentic: reads, books, reschedules, cancels, flags conflicts)
-    → ClarifyNode (ambiguous query)
-    → InteractNode (conversational replies: greetings, small talk, meta questions)
-  → SynthesizeNode → returns OrchestratorResult
+  → session_id resolved (UUID generated if omitted)
+  → per-session asyncio.Lock acquired (same session serialized; different sessions parallel)
+  → session history + recent_events loaded from SessionStore
+  → manager_agent.run(query, deps=WorkdayDeps, message_history=..., usage_limits=20 requests)
+      calls tools as needed → returns ManagerOutput
+  → save updated histories + recent_events back to SessionStore
+  → return OrchestratorResult
 
 POST /pending/{id}/approve
-  → send_approved_email(item) → Nylas send + mark read
-  → remove from pending_store
+  → send_approved_email(item) → Nylas send + mark read → remove from pending_store
 ```
 
 ### Agents
 
 | Agent | File | Model | Role | Output type |
 |-------|------|-------|------|-------------|
-| `planner_agent` | `agents/planner_agent.py` | llama-3.3-70b-versatile | Routes query to correct pipeline node | `AgentDecision` |
-| `email_node_agent` | `agents/email_node.py` | llama-3.3-70b-versatile | Classifies email + drafts reply (tool: `get_email_body`) | `EmailNodeOutput` |
-| `calendar_action_agent` | `agents/calendar_action_agent.py` | `groq:openai/gpt-oss-120b` | Agentic calendar assistant — reads, books, reschedules, cancels, and flags conflicts via tools (`get_events`, `check_conflicts`, `create_event`, `update_event`, `delete_event`) | `str` |
-| `synthesize_agent` | `agents/synthesize_agent.py` | llama-3.3-70b-versatile | Produces final natural-language briefing | `str` |
-| `email_agent` | `agents/email_agent.py` | llama-3.3-70b-versatile | Standalone email assistant — not wired into the main graph (Phase 1 remnant) | `str` |
-| `send_agent` | `agents/send_agent.py` | llama-3.3-70b-versatile | Standalone send assistant — not wired into the main graph (Phase 1 remnant) | `str` |
+| `manager_agent` | `agents/manager_agent.py` | llama-3.3-70b-versatile | Top-level orchestrator — routes via tools | `ManagerOutput` |
+| `calendar_action_agent` | `agents/calendar_action_agent.py` | `groq:openai/gpt-oss-120b` | Calendar specialist — reads, books, reschedules, cancels, conflict checks | `str` |
+| `email_node_agent` | `agents/email_node.py` | llama-3.3-70b-versatile | Classifies email + drafts reply | `EmailNodeOutput` |
+| `compose_agent` | `agents/compose_agent.py` | llama-3.3-70b-versatile | Drafts new outbound emails | `DraftReply` |
+| `synthesize_agent` | `agents/synthesize_agent.py` | llama-3.3-70b-versatile | Standalone briefing (not in main flow) | `str` |
+| `planner_agent` | `agents/planner_agent.py` | llama-3.3-70b-versatile | Phase 1/2 remnant — not in main flow | `AgentDecision` |
+| `email_agent` | `agents/email_agent.py` | llama-3.3-70b-versatile | Phase 1 remnant — not in main flow | `str` |
+| `send_agent` | `agents/send_agent.py` | llama-3.3-70b-versatile | Phase 1 remnant — not in main flow | `str` |
 
-`calendar_action_agent` uses `gpt-oss-120b` (not the default llama) because it requires reliable multi-step tool reasoning for stop-and-confirm workflows.
+`calendar_action_agent` uses `gpt-oss-120b` because it requires reliable multi-step tool reasoning for stop-and-confirm workflows.
 
-### Pydantic-Graph State Machine
+### manager_agent Tool Dispatch
 
-Single unified pipeline in `graph/planner_graph.py` — State: `OrchestratorState` (message, decision, emails, email_outputs, pending_ids, results, conversation histories).
+`manager_agent` is the single entry point — it picks tools based on intent:
 
-**Node flow:**
 ```
-PlannerNode
-  ├─(needs_email)→ FetchEmailsNode → ClassifyNode ─(loop)─┐
-  │                                     ↓(actionable+draft) │
-  │                                   DraftNode             │
-  │                                     ↓                   │
-  │                                HumanGateNode ──────────┘
-  │                                     ↓(all done)
-  │                            BuildEmailResultNode
-  │                              ├─(needs_calendar)→ CalendarActionNode → SynthesizeNode
-  │                              └─────────────────────────────────────→ SynthesizeNode
-  ├─(calendar request)→ CalendarActionNode → SynthesizeNode
-  ├─(unclear)→ ClarifyNode (returns clarification_question, no pipeline run)
-  └─(conversational)→ InteractNode (synthesize_agent responds directly, End)
+manage_calendar   → delegates to calendar_action_agent (all calendar ops)
+triage_inbox      → calls services/inbox_service.py run_inbox_triage()
+compose_email     → stages outbound DraftReply via stage_outbound_draft()
+send_meeting_invitation → add_participant() on Nylas + compose_agent + stage_outbound_draft()
+(conversational)  → responds directly without any tool call
 ```
 
-`CalendarActionNode` runs the agentic `calendar_action_agent` for ALL calendar requests — read-only (show schedule, check conflicts, am I free) and changes (book/reschedule/cancel). The agent reasons over its own tool results; there is no separate conflict-detection node. Multi-turn confirmations are tracked via `calendar_action_open` in the `SessionStore`.
+`manager_agent` carries `WorkdayDeps` which includes a `WorkdayMemory` sink. `calendar_action_agent` writes created/updated events to `WorkdayMemory.recent_events` via `CalendarDeps.sink`. This lets `send_meeting_invitation` reference the event from the same turn without extra DB roundtrips.
 
-`InteractNode` handles pure conversational messages (greetings, small talk, meta questions) using `synthesize_agent` and returns immediately without running any email/calendar pipeline.
+**Sequencing constraint:** `send_meeting_invitation` must be called AFTER `manage_calendar` when creating a meeting AND inviting someone. The agent's system prompt enforces this.
 
 ### Session & State Storage
 
-Both stores are SQLite-backed (SQLAlchemy 2.0 async) and **persist across restarts**. ORM tables live in `models/db_models.py`. The layered architecture is:
+SQLite-backed (SQLAlchemy 2.0 async), persists across restarts. ORM tables in `models/db_models.py`.
 
 ```
 graph/session_store.py (SessionStore)      graph/pending_store.py (PendingStore)
@@ -104,59 +96,63 @@ graph/session_store.py (SessionStore)      graph/pending_store.py (PendingStore)
 services/session_service.py                services/pending_service.py
         ↓ calls                                     ↓ calls
 repository/session_repository.py           repository/pending_repository.py
-        ↓ SQL via                                   ↓ SQL via
-config/database.py get_session()           config/database.py get_session()
+        ↓                                           ↓
+repository/session_event_repository.py     config/database.py get_session()
 ```
 
-- `SessionStore` — per-session conversation histories (planner, calendar_action, synthesize) plus `calendar_action_open` flag. Messages stored as individual rows in `session_message`, fetched with cap of `_FETCH_LIMIT = 20` most-recent per agent type. `session_name` auto-derived from first user prompt (first 80 chars).
-- `PendingStore` — actionable emails awaiting human approval, keyed by UUID, with `DraftReply` stored as JSON (`pending_item` table). `send_approved_email` lives in `services/pending_service.py`.
+- `SessionStore` — stores manager + calendar_action message histories plus `recent_events` (via `session_event_repository`). Fetched with cap of `_FETCH_LIMIT = 20` most-recent per agent type. `session_name` auto-derived from first 80 chars of user prompt.
+- `PendingStore` — actionable emails awaiting approval, keyed by UUID (`pending_item` table). `send_approved_email` in `services/pending_service.py`.
+- `session_event_repository` — upserts/fetches `SessionEventRow` rows (calendar events seen this session), enabling cross-turn event reference.
 
-**Concurrency:** Per-session `asyncio.Lock` registry moved to `utils/graph_utils.py` (`get_session_lock`). Same-session requests serialize; different sessions run in parallel. Single-process only — multi-worker needs DB-level locking.
+**Concurrency:** Per-session `asyncio.Lock` in `utils/graph_utils.py` (`get_session_lock`). Single-process only.
 
 `utils/graph_utils.py` also owns `clean_email_body` (strips HTML, truncates to 2000 chars).
 
-### Logging
+### inbox_service
 
-`config/logger.py` provides `get_logger(name)` and `log_agent_run(logger, result)`. Every logger writes `DEBUG`+ to `server.log` (project root) and `WARNING`+ to stdout. `log_agent_run` walks all messages in an `AgentRunResult` and emits prompt text, tool calls, tool returns, and model text at `DEBUG` level.
+`services/inbox_service.py` owns all email triage logic (previously spread across graph nodes):
+- `run_inbox_triage(limit)` — fetches emails, skips already-pending/sent, classifies + drafts via `email_node_agent`, stores actionable drafts in `pending_store`, returns `(summary_str, pending_ids)`.
+- `stage_outbound_draft(to, subject, body)` — wraps a user-composed email as an `EmailNodeOutput` and adds to `pending_store`.
 
 ### Key Models
 
 **`models/orchestrator_models.py`**
-- `AgentDecision` — planner output: intent, next_node, needs_email, needs_calendar, clarification_question
-- `OrchestratorRequest` — API request: message, optional session_id
-- `OrchestratorState` — full pipeline state (dataclass)
-- `OrchestratorResult` — API response: summary, email_result, calendar_action_result, clarification_question
+- `WorkdayMemory` — in-memory sink for the current pipeline turn: `recent_events`, `email_pending_ids`, `calendar_changed`
+- `WorkdayDeps` — agent deps: `user_tz`, `now_unix`, `now_label`, `working_memory`, `calendar_history`
+- `RecentEvent` — lightweight event record stored in `WorkdayMemory` and persisted to `session_event`
+- `ManagerOutput` — manager_agent output: `summary`, optional `clarification_question`
+- `OrchestratorRequest` / `OrchestratorResult` — API request/response
 
 **`models/email_models.py`**
-- `EmailMeta` — id, subject, sender, date, snippet, is_unread
-- `EmailNodeOutput` — per-email triage (classification + optional draft)
+- `EmailNodeOutput` — per-email triage result (classification + optional draft)
 - `EmailClassification` — `urgent | fyi | actionable` + reasoning
-- `DraftReply` — subject, body, to
+- `DraftReply` — `subject`, `body`, `to`
 - `PendingItem` — stored approval request (UUID id, email metadata, draft)
 - `ProcessingResult` — pipeline summary (processed count, actionable count, pending_ids)
 
 **`models/calendar_models.py`**
-- `CalendarEvent` — id, title, start_time/end_time (Unix timestamps), participants
-- `ConflictPair` — two overlapping events (built inside the agent's `check_conflicts` tool)
-- `CalendarDeps` — agent run deps: user_tz, now_unix, now_label, changed_calendar
+- `CalendarEvent` — id, title, start/end Unix timestamps, participants
+- `CalendarDeps` — calendar agent deps: `user_tz`, `now_unix`, `now_label`, `sink` (WorkdayMemory)
 - `CalendarActionResult` — description, executed, awaiting_user
 
 ### Nylas Integration (`config/nylas_client.py`, `tools/`)
 
-Nylas SDK is synchronous; all calls are wrapped in `asyncio.to_thread()`. HTML stripping and 2000-char truncation handled by `utils/graph_utils.py`'s `clean_email_body`. Calendar tools use the first calendar on the account and filter by today's UTC date range. The `clock_to_unix` helper in `tools/calendar_tools.py` converts wall-clock times to Unix timestamps using `USER_TIMEZONE`.
+Nylas SDK is synchronous; all calls wrapped in `asyncio.to_thread()`. Calendar tools use the first calendar on the account and filter by today's UTC date range. `clock_to_unix` in `tools/calendar_tools.py` converts wall-clock times to Unix via `USER_TIMEZONE`. `add_participant` in `tools/calendar_tools.py` patches an existing event to add an attendee.
 
 ### Routes
 
 - `GET /health` — Verifies Nylas connection
 - `POST /orchestrate` — Main entry point; accepts `OrchestratorRequest`, returns `OrchestratorResult`
-- `GET /auth/status` — Stub (Phase 1, not implemented)
+- `GET /sessions` — List all sessions (id, name, timestamps)
+- `GET /sessions/{session_id}/history` — Paginated manager message history as `turns`
 - `GET /pending` — List pending approvals
 - `POST /pending/{id}/approve` — Send the drafted reply
 - `POST /pending/{id}/reject` — Discard without sending
+- `GET /auth/status` — Stub (Phase 1, not implemented)
 
 ## Notes
 
 - Do not add comments
 - `controllers/` directory is reserved and currently empty
-- `repository/` now contains `pending_repository.py` and `session_repository.py` — raw SQL layer, no business logic
-- `email_agent` and `send_agent` are Phase 1 remnants not connected to the main graph; do not remove until Phase 3 direction is clear
+- `planner_agent`, `email_agent`, `send_agent`, `synthesize_agent` are Phase 1/2 remnants not connected to the main flow; do not remove until Phase 3 direction is clear
+- CORS allows `http://localhost:5173` (Vite dev server for frontend)

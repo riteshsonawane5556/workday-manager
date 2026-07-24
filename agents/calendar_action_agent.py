@@ -177,6 +177,15 @@ async def create_event(
         log.error("create_event tool -> failed: %s", exc, exc_info=True)
         return f"Failed to create event: {exc}"
     ctx.deps.changed_calendar = True
+    if ctx.deps.sink is not None:
+        from models.orchestrator_models import RecentEvent
+        ctx.deps.sink.record_event(RecentEvent(
+            id=event_id,
+            title=title,
+            start_unix=start_time,
+            end_unix=end_time,
+            attendees=participants or [],
+        ))
     log.info("create_event tool -> created id=%r title=%r at %s", event_id, title, when)
     return f"Created event {title!r} on {when} (id={event_id})."
 
@@ -214,6 +223,15 @@ async def update_event(
         log.error("update_event tool -> failed: %s", exc, exc_info=True)
         return f"Failed to update event: {exc}"
     ctx.deps.changed_calendar = True
+    if ctx.deps.sink is not None and day_offset is not None and hour is not None and start_time is not None:
+        from models.orchestrator_models import RecentEvent
+        ctx.deps.sink.record_event(RecentEvent(
+            id=event_id,
+            title=title or event_id,
+            start_unix=start_time,
+            end_unix=end_time,
+            attendees=participants or [],
+        ))
     log.info("update_event tool -> updated id=%r", event_id)
     return f"Updated event id={event_id}."
 

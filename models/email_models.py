@@ -9,6 +9,7 @@ class EmailMeta(BaseModel):
     date: str
     snippet: str
     is_unread: bool
+    thread_id: str | None = None
 
 
 class ChatRequest(BaseModel):

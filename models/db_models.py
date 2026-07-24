@@ -58,3 +58,22 @@ class SentEmailRow(Base):
 
     email_id: Mapped[str] = mapped_column(String, primary_key=True)
     sent_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+
+
+class SessionEventRow(Base):
+    __tablename__ = "session_event"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    session_id: Mapped[str] = mapped_column(
+        String, ForeignKey("session.session_id", ondelete="CASCADE"), nullable=False
+    )
+    event_id: Mapped[str] = mapped_column(String, nullable=False)
+    title: Mapped[str] = mapped_column(String, nullable=False)
+    start_unix: Mapped[int] = mapped_column(Integer, nullable=False)
+    end_unix: Mapped[int] = mapped_column(Integer, nullable=False)
+    attendees: Mapped[str] = mapped_column(Text, nullable=False, default="[]")
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+
+    __table_args__ = (
+        Index("ix_session_event_session_id", "session_id"),
+    )

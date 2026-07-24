@@ -5,7 +5,7 @@ from tools.email_tools import fetch_email_body
 email_node_agent = Agent(
     "groq:llama-3.3-70b-versatile",
     output_type=EmailNodeOutput,
-    system_prompt=(
+    instructions=(
         "You are an email triage assistant. Given an email:\n"
         "1. Classify it as urgent, fyi, or actionable.\n"
         "   - urgent: requires immediate attention today\n"
@@ -13,7 +13,10 @@ email_node_agent = Agent(
         "   - fyi: informational, no reply needed\n"
         "2. If actionable, draft a professional reply.\n"
         "Populate email_id, subject, sender exactly as given in the input.\n"
-        "Set draft.to to the exact sender email address from the input — never guess or invent an address."
+        "Set draft.to to the exact sender email address from the input — never guess or invent an address.\n"
+        "If a THREAD SO FAR section is present in the input, read the prior messages for context and "
+        "draft a reply that is aware of the conversation history — acknowledge what was discussed, "
+        "reference prior agreements or times, and respond in-context. Do NOT ignore thread history."
     ),
 )
 

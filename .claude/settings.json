@@ -20,7 +20,14 @@
       "WebFetch(domain:console.groq.com)",
       "Bash(curl -s -X POST http://localhost:8123/orchestrate -H 'Content-Type: application/json' -d '{\"message\":\"book Standup today at 8pm\",\"session_id\":\"__TRACKED_VAR__\"}')",
       "Bash(python -c \"import sys,json;d=json.load\\(sys.stdin\\);r=d['calendar_action_result'];print\\('executed:',r['executed'],'awaiting:',r['awaiting_user']\\);print\\('reply:',d['summary']\\)\")",
-      "Bash(curl -s -X POST http://localhost:8123/orchestrate -H 'Content-Type: application/json' -d '{\"message\":\"yes book it anyway\",\"session_id\":\"__TRACKED_VAR__\"}')"
+      "Bash(curl -s -X POST http://localhost:8123/orchestrate -H 'Content-Type: application/json' -d '{\"message\":\"yes book it anyway\",\"session_id\":\"__TRACKED_VAR__\"}')",
+      "Bash(docker build *)",
+      "Bash(docker run *)",
+      "Bash(docker exec *)",
+      "Bash(docker rm *)",
+      "Bash(docker info *)",
+      "Bash(grep -v \"^DATABASE_URL\" .env)",
+      "Bash(cp /tmp/wd.env __TRACKED_VAR__/wd.env)"
     ]
   }
 }

@@ -104,7 +104,7 @@ def _create_event(title: str, start_time: int, end_time: int, participants: list
     result = nylas.events.create(
         NYLAS_GRANT_ID,
         request_body=body,
-        query_params={"calendar_id": calendar_id},
+        query_params={"calendar_id": calendar_id, "notify_participants": True},
     )
     return result.data.id
 
@@ -129,7 +129,7 @@ def _update_event(
         NYLAS_GRANT_ID,
         event_id,
         request_body=body,
-        query_params={"calendar_id": calendar_id},
+        query_params={"calendar_id": calendar_id, "notify_participants": True},
     )
 
 
@@ -158,3 +158,25 @@ async def update_event(
 
 async def delete_event(event_id: str) -> None:
     await asyncio.to_thread(_delete_event, event_id)
+
+
+def _add_participant(event_id: str, email: str) -> bool:
+    if not _EMAIL_RE.match(email.strip()):
+        return False
+    calendar_id = _get_primary_calendar_id()
+    event = nylas.events.find(NYLAS_GRANT_ID, event_id, query_params={"calendar_id": calendar_id})
+    existing = {p.email for p in (event.data.participants or []) if getattr(p, "email", None)}
+    if email.strip() in existing:
+        return False
+    participants = list(existing) + [email.strip()]
+    nylas.events.update(
+        NYLAS_GRANT_ID,
+        event_id,
+        request_body={"participants": [{"email": e} for e in participants]},
+        query_params={"calendar_id": calendar_id, "notify_participants": True},
+    )
+    return True
+
+
+async def add_participant(event_id: str, email: str) -> bool:
+    return await asyncio.to_thread(_add_participant, event_id, email)

@@ -1,4 +1,5 @@
 import type {
+  DraftReply,
   HealthStatus,
   OrchestratorRequest,
   OrchestratorResult,

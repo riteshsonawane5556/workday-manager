@@ -47,7 +47,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-logfire.instrument_fastapi(app)
+logfire.instrument_fastapi(app, excluded_urls=r"/health.*|/pending.*|/auth.*|/sessions.*")
 
 app.include_router(auth_router)
 app.include_router(pending_router)

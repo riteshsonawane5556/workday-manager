@@ -21,6 +21,7 @@ class CalendarDeps:
     now_unix: int
     now_label: str
     changed_calendar: bool = False
+    sink: object | None = None
 
 
 class CalendarActionResult(BaseModel):

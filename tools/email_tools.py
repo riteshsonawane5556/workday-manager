@@ -21,6 +21,7 @@ def _build_email_meta(msg, is_unread: bool) -> EmailMeta:
         date=date_str,
         snippet=msg.snippet or "",
         is_unread=is_unread,
+        thread_id=getattr(msg, "thread_id", None),
     )
 
 
@@ -67,3 +68,30 @@ def _mark_read(email_id: str) -> None:
 
 async def mark_email_read(email_id: str) -> None:
     await asyncio.to_thread(_mark_read, email_id)
+
+
+def _fetch_thread_messages(thread_id: str) -> list[dict]:
+    response = nylas.messages.list(
+        NYLAS_GRANT_ID,
+        query_params={"thread_id": thread_id, "limit": 10},
+    )
+    result = []
+    for msg in response.data:
+        sender = ""
+        if msg.from_:
+            first = msg.from_[0]
+            sender = first.get("email") or first.get("name", "")
+        date_str = ""
+        if msg.date:
+            date_str = datetime.fromtimestamp(msg.date).strftime("%Y-%m-%d %H:%M")
+        result.append({
+            "id": msg.id,
+            "sender": sender,
+            "date": date_str,
+            "body": msg.body or msg.snippet or "",
+        })
+    return result
+
+
+async def fetch_thread(thread_id: str) -> list[dict]:
+    return await asyncio.to_thread(_fetch_thread_messages, thread_id)

@@ -22,7 +22,9 @@ export function MessageBubble({ message }: Props) {
           isError && "bg-red-50 text-red-700 border border-red-200 rounded-bl-sm"
         )}
       >
-        <p className="whitespace-pre-wrap leading-relaxed">{message.text}</p>
+        {message.text && (
+          <p className="whitespace-pre-wrap leading-relaxed">{message.text}</p>
+        )}
 
         {message.result?.email_result && (
           <EmailTriageCard result={message.result.email_result} />
