@@ -27,7 +27,9 @@
       "Bash(docker rm *)",
       "Bash(docker info *)",
       "Bash(grep -v \"^DATABASE_URL\" .env)",
-      "Bash(cp /tmp/wd.env __TRACKED_VAR__/wd.env)"
+      "Bash(cp /tmp/wd.env __TRACKED_VAR__/wd.env)",
+      "Read(//c/Program Files/Amazon/AWSCLIV2/**)",
+      "PowerShell(\\([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent\\(\\)\\).IsInRole\\([Security.Principal.WindowsBuiltinRole]::Administrator\\))"
     ]
   }
 }

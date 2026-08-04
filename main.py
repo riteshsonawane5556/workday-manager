@@ -2,17 +2,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-import logfire
+from langfuse import Langfuse
+from pydantic_ai import Agent
 
-logfire.configure(
-    service_name="workday-manager",
-    scrubbing=False,
-    inspect_arguments=False,
-)
-logfire.instrument_pydantic_ai(
-    include_content=True,
-    version=3,
-)
+langfuse = Langfuse()
+Agent.instrument_all()
 
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
@@ -33,7 +27,7 @@ async def lifespan(app: FastAPI):
     from config.database import DATABASE_URL
     log.info("Workday Manager starting up  (db=%s)", DATABASE_URL)
     yield
-    logfire.force_flush()
+    langfuse.flush()
 
 
 app = FastAPI(title="Workday Manager", version="0.1.0", lifespan=lifespan)
@@ -46,8 +40,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-logfire.instrument_fastapi(app, excluded_urls=r"/health.*|/pending.*|/auth.*|/sessions.*")
 
 app.include_router(auth_router)
 app.include_router(pending_router)

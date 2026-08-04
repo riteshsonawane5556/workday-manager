@@ -11639,3 +11639,44 @@ There are no conflicts in your calendar for today.
 2026-06-19 17:30:42  DEBUG     [workday_pipeline]  [model-response] tool-call: final_result  args: {"clarification_question":null,"summary":"Your day today includes three scheduled meetings: 1:00 PM‑1:45 PM c360 client call (with ritesh.sonawane@coditas.com), 2:00 PM‑3:00 PM \"lala the meet\", and 4:00 PM‑4:30 PM client call. You have five actionable emails awaiting replies, with drafts prepared in Pending Approvals."}
 2026-06-19 17:30:42  DEBUG     [workday_pipeline]  [tool-return] final_result -> Final result processed.
 2026-06-19 17:30:42  INFO      [workday_pipeline]  === Pipeline END  session='84ef0469-e07e-4270-a37c-4c9e874c3cce'  manager_h=9  cal_h=6  events=0 ===
+2026-08-04 13:53:46  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-08-04 13:53:53  INFO      [workday_pipeline]  === Pipeline START  query='hey, what can you help me with?'  session='595bba7a-6631-4809-9531-f1a8243cc4cb' ===
+2026-08-04 13:53:56  DEBUG     [workday_pipeline]  [model-request] prompt: hey, what can you help me with?
+2026-08-04 13:53:56  DEBUG     [workday_pipeline]  [model-response] tool-call: json  args: {'summary': 'I can manage your workday: check or modify your calendar (view schedule, book, reschedule, cancel meetings), triage your inbox (summarize new emails, suggest replies), draft new outbound emails, and send meeting invitations that both add attendees to the calendar and email them. Just let me know what you need, and I’ll take care of it.'}
+2026-08-04 13:53:56  DEBUG     [workday_pipeline]  [model-response] tool-call: json  args: {'summary': 'I’m here to help you manage your workday efficiently. I can:\n• View, book, reschedule, or cancel calendar events and check for conflicts.\n• Triage your inbox – give you a quick overview of new emails, categorize them, and draft suggested replies.\n• Compose new outbound emails for you to review and send.\n• Send meeting invitations that both add attendees to the calendar and email them the details.\nJust let me know what you’d like to do, and I’ll take care of the rest!'}
+2026-08-04 13:53:56  DEBUG     [workday_pipeline]  [model-response] tool-call: final_result  args: {"summary":"I can help you manage your workday: view, book, reschedule, or cancel calendar events; check for conflicts; triage your inbox and suggest replies; compose new outbound emails; and send meeting invitations that add attendees to your calendar and email them the details. Just let me know what you need."}
+2026-08-04 13:53:56  DEBUG     [workday_pipeline]  [tool-return] final_result -> Final result processed.
+2026-08-04 13:53:56  INFO      [workday_pipeline]  === Pipeline END  session='595bba7a-6631-4809-9531-f1a8243cc4cb'  manager_h=9  cal_h=0  events=0 ===
+2026-08-04 13:57:19  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-08-04 13:57:49  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-08-04 13:57:56  INFO      [workday_pipeline]  === Pipeline START  query='what meetings do I have coming up?'  session='0d246e49-6943-4783-ab73-2d3b6e6a1b6c' ===
+2026-08-04 13:57:56  INFO      [manager_agent]  manage_calendar tool -> delegating: 'list upcoming meetings'
+2026-08-04 13:57:59  INFO      [manager_agent]  manage_calendar tool -> done, changed=False
+2026-08-04 13:58:01  DEBUG     [workday_pipeline]  [model-request] prompt: what meetings do I have coming up?
+2026-08-04 13:58:01  DEBUG     [workday_pipeline]  [model-response] tool-call: manage_calendar  args: {"request":"list upcoming meetings"}
+2026-08-04 13:58:01  DEBUG     [workday_pipeline]  [tool-return] manage_calendar -> You have no meetings scheduled in the next week.
+2026-08-04 13:58:01  DEBUG     [workday_pipeline]  [model-response] tool-call: final_result  args: {"summary":"You have no meetings scheduled in the next week."}
+2026-08-04 13:58:01  DEBUG     [workday_pipeline]  [tool-return] final_result -> Final result processed.
+2026-08-04 13:58:01  INFO      [workday_pipeline]  === Pipeline END  session='0d246e49-6943-4783-ab73-2d3b6e6a1b6c'  manager_h=7  cal_h=4  events=0 ===
+2026-08-04 14:09:55  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-08-04 14:10:24  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-08-04 14:11:22  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-08-04 14:11:53  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-08-04 14:12:14  INFO      [workday_pipeline]  === Pipeline START  query='give me a one-line status check'  session='7222f851-ba6c-4982-8bfc-293f7dd40f0e' ===
+2026-08-04 14:12:15  DEBUG     [workday_pipeline]  [model-request] prompt: give me a one-line status check
+2026-08-04 14:12:15  DEBUG     [workday_pipeline]  [model-response] tool-call: final_result  args: {"clarification_question":"Sure, could you clarify which status you'd like a one-line check for—your calendar schedule, inbox overview, upcoming meetings, or something else?","summary":""}
+2026-08-04 14:12:15  DEBUG     [workday_pipeline]  [tool-return] final_result -> Final result processed.
+2026-08-04 14:12:15  INFO      [workday_pipeline]  === Pipeline END  session='7222f851-ba6c-4982-8bfc-293f7dd40f0e'  manager_h=3  cal_h=0  events=0 ===
+2026-08-04 14:14:09  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-08-04 14:14:24  INFO      [workday_pipeline]  === Pipeline START  query='quick check'  session='788f1adc-59d2-4ebc-8222-95cef2a53397' ===
+2026-08-04 14:14:25  DEBUG     [workday_pipeline]  [model-request] prompt: quick check
+2026-08-04 14:14:25  DEBUG     [workday_pipeline]  [model-response] tool-call: final_result  args: {"clarification_question":"Could you please clarify what you'd like me to check? For example, your calendar, inbox, or something else?","summary":"Awaiting clarification."}
+2026-08-04 14:14:25  DEBUG     [workday_pipeline]  [tool-return] final_result -> Final result processed.
+2026-08-04 14:14:25  INFO      [workday_pipeline]  === Pipeline END  session='788f1adc-59d2-4ebc-8222-95cef2a53397'  manager_h=3  cal_h=0  events=0 ===
+2026-08-04 14:15:20  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-08-04 14:15:50  INFO      [main]  Workday Manager starting up  (db=sqlite+aiosqlite:///./workday.db)
+2026-08-04 14:15:59  INFO      [workday_pipeline]  === Pipeline START  query='service name check'  session='95559a4d-4842-4c0d-9fee-788601c65408' ===
+2026-08-04 14:16:00  DEBUG     [workday_pipeline]  [model-request] prompt: service name check
+2026-08-04 14:16:00  DEBUG     [workday_pipeline]  [model-response] tool-call: final_result  args: {"clarification_question":"Could you please clarify what you would like to check regarding the service name? Are you looking to verify a service name, schedule something related to it, or something else?","summary":""}
+2026-08-04 14:16:00  DEBUG     [workday_pipeline]  [tool-return] final_result -> Final result processed.
+2026-08-04 14:16:00  INFO      [workday_pipeline]  === Pipeline END  session='95559a4d-4842-4c0d-9fee-788601c65408'  manager_h=3  cal_h=0  events=0 ===

@@ -24,6 +24,8 @@ Copy `.env.example` and fill in:
 - `GROQ_API_KEY` — LLM access (llama-3.3-70b-versatile)
 - `USER_TIMEZONE` — IANA timezone string (default: `Asia/Kolkata`)
 - `DATABASE_URL` — SQLAlchemy async DB URL (default: `sqlite+aiosqlite:///./workday.db`)
+- `LANGFUSE_PUBLIC_KEY` + `LANGFUSE_SECRET_KEY` + `LANGFUSE_BASE_URL` — Langfuse tracing
+- `LANGFUSE_TRACING_ENVIRONMENT` — Langfuse environment label (default: `development`)
 
 ## Database & Migrations
 
@@ -35,7 +37,7 @@ Read pydantic-ai docs at https://pydantic.dev/docs/ai/llms.txt before building o
 
 ## Observability
 
-`logfire` is configured in `main.py` (service: `workday-manager`). It instruments both FastAPI and pydantic-ai with `include_content=True`. The custom `config/logger.py` layer also writes all agent run messages to `server.log` at DEBUG level via `log_agent_run`.
+Langfuse is the sole tracing backend, wired in `main.py`: `Langfuse()` is instantiated at import time (creates and owns the global OTEL `TracerProvider` since nothing else claims it), followed by `Agent.instrument_all()` to make every pydantic-ai agent emit OTEL GenAI spans. `Langfuse()` applies a default span filter that only exports Langfuse/GenAI-scoped spans. `graph/planner_graph.py` wraps each `manager_agent.run()` call in `langfuse_client.start_as_current_observation(...)` (trace root, sets `input`/`output`) plus `propagate_attributes(session_id=...)` so traces group by session in the Langfuse Sessions view. `langfuse.flush()` runs in the `main.py` lifespan shutdown. The custom `config/logger.py` layer separately writes all agent run messages to `server.log` at DEBUG level via `log_agent_run`.
 
 ## Architecture
 

@@ -4,6 +4,9 @@ from zoneinfo import ZoneInfo
 import os
 
 from pydantic_ai import UsageLimits
+from langfuse import get_client, propagate_attributes
+
+langfuse_client = get_client()
 
 from agents.manager_agent import manager_agent
 from graph.session_store import session_store
@@ -42,12 +45,22 @@ async def run_orchestrator_pipeline(query: str, session_id: str | None = None) -
         output_obj = None
         new_manager_msgs = []
         try:
-            result = await manager_agent.run(
-                query,
-                deps=deps,
-                message_history=list(h.manager),
-                usage_limits=UsageLimits(request_limit=20),
-            )
+            with langfuse_client.start_as_current_observation(
+                as_type="span",
+                name="orchestrate",
+                input={"query": query},
+            ) as span:
+                with propagate_attributes(
+                    trace_name="orchestrate",
+                    session_id=session_id,
+                ):
+                    result = await manager_agent.run(
+                        query,
+                        deps=deps,
+                        message_history=list(h.manager),
+                        usage_limits=UsageLimits(request_limit=20),
+                    )
+                span.update(output={"summary": getattr(result.output, "summary", str(result.output))})
             log_agent_run(log, result)
             output_obj = result.output
             if isinstance(output_obj, str):
